@@ -14,3 +14,14 @@ Ever since I opened my first bank account and started working at 16, my dad has 
 - Logs transactions that can be categorized by date, store/vendor, and expense type
 - Logs income that can be categorized by date, source, and income type
 - Displays your total monthly spendings as well as individual expense category spending trends
+
+## User Stories
+- As a user, I want to be able to add a transaction to a list of transactions with the same expense category
+- As a user, I want to be able to view a list of all my transactions categorized under one expense
+- As a user, I want to be able to check all my spendings within a specific month
+- As a user, I want to be able to set a limit on my monthly spendings for a specific category
+- As a user, I want to be able to transfer amounts between accounts
+- As a user, I want to be able to edit a previous transaction
+- As a user, I want to be able to hide a transaction but still make it valid
+- As a user, I want to be able to visualize my spending trends
+- As a user, I want to be able to add/remove expense categories
