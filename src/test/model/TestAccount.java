@@ -37,4 +37,11 @@ public class TestAccount {
         assertEquals(200, account.getCredit());
     }
 
+    @Test
+    void testOverdraft() {
+        account.updateChequeing(-500);
+        assertEquals(-400, account.getChequeing());
+        assertEquals(true, account.checkOverdraft());
+    }
+
 }

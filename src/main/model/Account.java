@@ -5,6 +5,7 @@ public class Account {
     private int chequeing;
     private int savings;
     private int credit;
+    private boolean overdraft;
 
     // REQUIRES: chequeing, savings, credit > 0
     // EFFECTS: constructs an account with chequeing, savings, and credit amounts
@@ -12,6 +13,13 @@ public class Account {
         this.chequeing = chequeing;
         this.savings = savings;
         this.credit = credit;
+        this.overdraft = false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns true/false for account overdraft
+    public boolean checkOverdraft() {
+        return false;
     }
 
     // MODIFES: this
