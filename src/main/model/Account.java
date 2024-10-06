@@ -7,7 +7,8 @@ public class Account {
     private int chequeing;
     private int savings;
     private int credit;
-    private boolean overdraft;
+    private boolean overdraftChequeing;
+    private boolean overdraftSavings;
     private int creditLimit;
     private boolean overLimit;
 
@@ -17,17 +18,29 @@ public class Account {
         this.chequeing = chequeing;
         this.savings = savings;
         this.credit = credit;
-        this.overdraft = false;
+        this.overdraftChequeing = false;
+        this.overdraftSavings = false;
         this.overLimit = false;
         this.bank = bank;
         this.creditLimit = creditLimit;
     }
 
     // MODIFIES: this
-    // EFFECTS: returns true/false for account overdraft
-    // and checks for overdraft
-    public boolean checkOverdraft() {
-        return overdraft;
+    // EFFECTS: returns true/false for chequeing overdraft
+    public boolean checkOverdraftChequeing() {
+        return overdraftChequeing;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns true/false for savings overdraft
+    public boolean checkOverdraftSavings() {
+        return overdraftSavings;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns true/false for credit over limit
+    public boolean checkOverLimit() {
+        return overLimit;
     }
 
     // MODIFES: this
@@ -48,9 +61,9 @@ public class Account {
     public void updateSavings(int Amount) {
         this.savings += Amount;
         if (this.savings < 0) {
-            overdraft = true;
+            overdraftSavings = true;
         } else {
-            overdraft = false;
+            overdraftSavings = false;
         }
     }
 
@@ -60,9 +73,9 @@ public class Account {
     public void updateChequeing(int Amount) {
         this.chequeing += Amount;
         if (this.chequeing < 0) {
-            overdraft = true;
+            overdraftChequeing = true;
         } else {
-            overdraft = false;
+            overdraftChequeing = false;
         }
     }
 

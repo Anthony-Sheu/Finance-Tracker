@@ -15,7 +15,7 @@ public class Expense {
     // MODIFIES: this
     // EFFECTS: changes expense category name
     private void updateExpense(String expense) {
-        
+        this.expense = expense;
     }
 
 

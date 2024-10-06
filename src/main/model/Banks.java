@@ -15,8 +15,7 @@ public class Banks {
     // MODIFIES: this
     // EFFECTS: creates a new bank account and adds 
     // it to the list
-    public void newAccount(int chequeing, int savings, int credit, String bank, int creditLimit) {
-        Account account = new Account(chequeing, savings, credit, bank, creditLimit);
+    public void newAccount(Account account) {
         this.bank.add(account);
     }
 

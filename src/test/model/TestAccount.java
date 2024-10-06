@@ -32,21 +32,25 @@ public class TestAccount {
         assertEquals(600, account.getSavings());
         account.updateSavings(-100);
         assertEquals(500, account.getSavings());
+        assertEquals(false, account.checkOverdraftSavings());
     }
 
     @Test
     void testCredit() {
         account.updateCredit(100);
         assertEquals(300, account.getCredit());
-        account.updateCredit(-100);
-        assertEquals(200, account.getCredit());
+        account.updateCredit(5000);
+        assertEquals(5300, account.getCredit());
+        assertEquals(true, account.checkOverLimit());
     }
 
     @Test
     void testOverdraft() {
         account.updateChequeing(-500);
         assertEquals(-400, account.getChequeing());
-        assertEquals(true, account.checkOverdraft());
+        assertEquals(true, account.checkOverdraftChequeing());
+        account.updateSavings(-600);
+        assertEquals(true, account.checkOverdraftSavings());
     }
 
 }

@@ -15,19 +15,19 @@ public class Categories {
     // MODIFIES: this
     // EFFECTS: adds new expense category
     public void addCategory(Expense expense) {
-        
+        this.category.add(expense);
     }
 
     // MODIFIES: this
     // EFFECTS: removes certain expense category
     public void removeCategory(Expense expense) {
-
+        this.category.remove(expense);
     }
 
     // EFFECTS: returns true if an expense category is 
     // within the collection, otherwise false
     public boolean checkCategory(Expense expense) {
-        return false;
+        return this.category.contains(expense);
     }
 
 }
