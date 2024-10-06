@@ -24,10 +24,19 @@ public class Categories {
         this.category.remove(expense);
     }
 
-    // EFFECTS: returns true if an expense category is 
-    // within the collection, otherwise false
-    public boolean checkCategory(Expense expense) {
-        return this.category.contains(expense);
+    // EFFECTS: returns expense category based on its name
+    public Expense checkCategory(String expense) {
+        for (Expense e : category) {
+            if (e.getExpense().equals(expense)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public void updateExpense(String oldName, String newName) {
+        Expense e = checkCategory(oldName);
+        e.updateExpense(newName);
     }
 
 }

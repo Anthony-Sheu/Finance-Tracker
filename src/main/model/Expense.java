@@ -14,8 +14,13 @@ public class Expense {
 
     // MODIFIES: this
     // EFFECTS: changes expense category name
-    private void updateExpense(String expense) {
+    public void updateExpense(String expense) {
         this.expense = expense;
+    }
+
+    // EFFECTS: returns expense category name
+    public String getExpense() {
+        return this.expense;
     }
 
 
