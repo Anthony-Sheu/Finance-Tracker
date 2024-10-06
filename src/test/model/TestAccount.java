@@ -10,7 +10,7 @@ public class TestAccount {
 
     @BeforeEach
     void runBefore() {
-        account = new Account(100, 500, 200, "CIBC");
+        account = new Account(100, 500, 200, "CIBC", 1500);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class TestAccount {
     void testCredit() {
         account.updateCredit(100);
         assertEquals(300, account.getCredit());
-        account.updateCredit(100);
+        account.updateCredit(-100);
         assertEquals(200, account.getCredit());
     }
 

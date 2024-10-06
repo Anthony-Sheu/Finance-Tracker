@@ -15,9 +15,34 @@ public class Banks {
     // MODIFIES: this
     // EFFECTS: creates a new bank account and adds 
     // it to the list
-    public void newAccount(int chequeing, int savings, int credit, String bank) {
-        Account account = new Account(chequeing, savings, credit, bank);
+    public void newAccount(int chequeing, int savings, int credit, String bank, int creditLimit) {
+        Account account = new Account(chequeing, savings, credit, bank, creditLimit);
         this.bank.add(account);
+    }
+
+    // EFFCTS: returns account from account name
+    public Account findAccount(String name) {
+        for (Account account : bank) {
+            if (account.getBank() == name) {
+                return account;
+            }
+        }
+        return null;
+    }
+
+    // EFFECTS: returns chequeing value of a certain account
+    public int getChequeing(Account account) {
+        return account.getChequeing();
+    }
+
+    // EFFECTS: returns credit value of a certain account
+    public int getCredit(Account account) {
+        return account.getCredit();
+    }
+
+    // EFFECTS: returns savings value of a certain account
+    public int getSavings(Account account) {
+        return account.getSavings();
     }
 
 }

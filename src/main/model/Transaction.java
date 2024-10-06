@@ -4,9 +4,9 @@ package model;
 // store, expense category, notes, account, and spend type
 public class Transaction {
 
-    private String month;
-    private String date;
-    private String year;
+    private int month;
+    private int date;
+    private int year;
     private int amount;
     private String store;
     private Expense expense;
@@ -15,7 +15,7 @@ public class Transaction {
     private boolean type;  // true = income, false = spending
 
     // EFFECTS: constructs a single transaction
-    public Transaction(String month, String date, String year, int amount, String store, Expense expense, String note, Account account) {
+    public Transaction(int month, int date, int year, int amount, String store, Expense expense, String note, Account account) {
         this.month = month;
         this.date = date;
         this.year = year;
@@ -33,20 +33,22 @@ public class Transaction {
 
     // MODIFIES: this
     // EFFECTS: updates the date of a transaction
-    public void updateDate(String month, String date, String year) {
-        
+    public void updateDate(int month, int date, int year) {
+        this.month = month;
+        this.date = date;
+        this.year = year;
     }
 
     // MODIFIES: this
     // EFFECTS: updates the amount of a transaction
     public void updateAmount(int amount) {
-
+        this.amount = amount;
     }
 
     // MODIFIES: this
     // EFFECTS: changes the expense category
     public void updateExpense(Expense expense) {
-
+        this.expense = expense;
     }
 
 }
