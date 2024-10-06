@@ -1,7 +1,9 @@
 package model;
 
-// Represents a bank account with chequeing, savings, and credit accounts
+// Represents a bank account with bank name,chequeing, 
+// savings, and credit accounts
 public class Account {
+    private String bank;
     private int chequeing;
     private int savings;
     private int credit;
@@ -9,11 +11,12 @@ public class Account {
 
     // REQUIRES: chequeing, savings, credit > 0
     // EFFECTS: constructs an account with chequeing, savings, and credit amounts
-    public Account(int chequeing, int savings, int credit) {
+    public Account(int chequeing, int savings, int credit, String bank) {
         this.chequeing = chequeing;
         this.savings = savings;
         this.credit = credit;
         this.overdraft = false;
+        this.bank = bank;
     }
 
     // MODIFIES: this
@@ -53,6 +56,11 @@ public class Account {
     // EFFECTS: returns chequeing account balance
     public int getChequeing() {
         return 0;
+    }
+
+    //EFFECTS: returns bank name
+    public String getBank() {
+        return null;
     }
 
 }

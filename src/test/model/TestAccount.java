@@ -10,7 +10,12 @@ public class TestAccount {
 
     @BeforeEach
     void runBefore() {
-        account = new Account(100, 500, 200);
+        account = new Account(100, 500, 200, "CIBC");
+    }
+
+    @Test
+    void testBank() {
+        assertEquals("CIBC", account.getBank());
     }
 
     @Test
