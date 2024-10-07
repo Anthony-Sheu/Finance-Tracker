@@ -7,7 +7,7 @@ public class Transaction {
     private int month;
     private int date;
     private int year;
-    private int amount;
+    private Double amount;
     private String store;
     private String expense;
     private String note;
@@ -15,7 +15,7 @@ public class Transaction {
     private boolean type;  // true = income, false = spending
 
     // EFFECTS: constructs a single transaction
-    public Transaction(int month, int date, int year, int amount, String store, String expense, String note, String account) {
+    public Transaction(int month, int date, int year, Double amount, String store, String expense, String note, String account) {
         this.month = month;
         this.date = date;
         this.year = year;
@@ -55,7 +55,7 @@ public class Transaction {
         String m = Integer.toString(month);
         String d = Integer.toString(date);
         String y = Integer.toString(year);
-        String a = Integer.toString(amount);
+        String a = Double.toString(amount);
         return m+"/"+d+"/"+y+", $"+a+", "+store+", "+expense+", "+note+", "+account;
     }
 

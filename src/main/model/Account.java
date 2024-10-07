@@ -4,17 +4,17 @@ package model;
 // savings, and credit accounts
 public class Account {
     private String bank;
-    private int chequeing;
-    private int savings;
-    private int credit;
+    private double chequeing;
+    private double savings;
+    private double credit;
     private boolean overdraftChequeing;
     private boolean overdraftSavings;
-    private int creditLimit;
+    private double creditLimit;
     private boolean overLimit;
 
     // REQUIRES: chequeing, savings, credit > 0
     // EFFECTS: constructs an account with chequeing, savings, and credit amounts
-    public Account(int chequeing, int savings, int credit, String bank, int creditLimit) {
+    public Account(double chequeing, double savings, double credit, String bank, double creditLimit) {
         this.chequeing = chequeing;
         this.savings = savings;
         this.credit = credit;
@@ -46,7 +46,7 @@ public class Account {
     // MODIFES: this
     // EFFECTS: subtracts/adds credit account by Amount
     // and checks for overdraft
-    public void updateCredit(int Amount) {
+    public void updateCredit(double Amount) {
         this.credit += Amount;
         if (this.credit > creditLimit) {
             overLimit = true;
@@ -58,7 +58,7 @@ public class Account {
     // MODIFES: this
     // EFFECTS: subtracts/adds savings account by Amount
     // and checks for overdraft
-    public void updateSavings(int Amount) {
+    public void updateSavings(double Amount) {
         this.savings += Amount;
         if (this.savings < 0) {
             overdraftSavings = true;
@@ -70,7 +70,7 @@ public class Account {
     // MODIFES: this
     // EFFECTS: subtracts/adds chequeing account by Amount 
     // and checks for overdraft
-    public void updateChequeing(int Amount) {
+    public void updateChequeing(double Amount) {
         this.chequeing += Amount;
         if (this.chequeing < 0) {
             overdraftChequeing = true;
@@ -80,17 +80,17 @@ public class Account {
     }
 
     // EFFECTS: returns credit account balance
-    public int getCredit() {
+    public double getCredit() {
         return this.credit;
     }
 
     // EFFECTS: returns savings account balance
-    public int getSavings() {
+    public double getSavings() {
         return this.savings;
     }
 
     // EFFECTS: returns chequeing account balance
-    public int getChequeing() {
+    public double getChequeing() {
         return this.chequeing;
     }
 
@@ -99,11 +99,15 @@ public class Account {
         return this.bank;
     }
 
+    // EFFECTS: prints banking information
     public String printAccount() {
-        String cheq = Integer.toString(this.chequeing);
-        String save = Integer.toString(this.savings);
-        String cred = Integer.toString(this.credit);
+        String cheq = Double.toString(this.chequeing);
+        String save = Double.toString(this.savings);
+        String cred = Double.toString(this.credit);
         return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred;
     }
+
+    // MODIFIES: this
+    // EFFCTS: transfer amount between accounts
 
 }

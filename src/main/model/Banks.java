@@ -29,17 +29,17 @@ public class Banks {
     }
 
     // EFFECTS: returns chequeing value of a certain account
-    public int getChequeing(Account account) {
+    public double getChequeing(Account account) {
         return account.getChequeing();
     }
 
     // EFFECTS: returns credit value of a certain account
-    public int getCredit(Account account) {
+    public double getCredit(Account account) {
         return account.getCredit();
     }
 
     // EFFECTS: returns savings value of a certain account
-    public int getSavings(Account account) {
+    public double getSavings(Account account) {
         return account.getSavings();
     }
 

@@ -90,7 +90,7 @@ public class Menu {
         int month;
         int date;
         int year;
-        int amount;
+        Double amount;
         String store;
         String expense;
         String note;
@@ -103,7 +103,7 @@ public class Menu {
         month = Integer.parseInt(split[0]);
         date = Integer.parseInt(split[1]);
         year = Integer.parseInt(split[2]);
-        amount = -Integer.parseInt(split[3]);
+        amount = -Double.parseDouble(split[3]);
         store = split[4];
         expense = split[5];
         note = split[6];
@@ -113,7 +113,7 @@ public class Menu {
         updateBank(account, amount);
     }
 
-    public void updateBank(String info, int amount) {
+    public void updateBank(String info, double amount) {
         String[] accountSplit = info.split(" ");
         String name = accountSplit[0];
         String acc = accountSplit[1];
@@ -129,10 +129,15 @@ public class Menu {
 
     public void showTransaction(List<Transaction> show) {
         System.out.println("=====================================================");
-        for(int i = 0; i < show.size(); i++) {
-            System.out.print(Integer.toString(i+1)+". ");
-            System.out.println(show.get(i).printTransaction());
+        if (show.size() == 0) {
+            System.out.println("There are currently no transactions.");
+        } else {
+            for(int i = 0; i < show.size(); i++) {
+                System.out.print(Integer.toString(i+1)+". ");
+                System.out.println(show.get(i).printTransaction());
+            }
         }
+        enter();
     }
 
     public void showMonthTransaction() {
@@ -142,7 +147,6 @@ public class Menu {
         System.out.println("What month (in numbers)?");
         int month = Integer.parseInt(input.nextLine());
         showTransaction(tracker.sortMonth(month, year));
-        enter();
     }
 
     public void showExpenseTransaction() {
@@ -150,7 +154,6 @@ public class Menu {
         System.out.println("What expense category would you like to view?");
         String expense = input.nextLine();
         showTransaction(tracker.sortExpense(expense));
-        enter();
     }
 
     public void addBank() {
@@ -158,13 +161,13 @@ public class Menu {
         System.out.println("What is the name of your banking institution?");
         String name = input.nextLine();
         System.out.println("Please enter your chequeing balance");
-        int cheq = Integer.parseInt(input.nextLine());
+        double cheq = Double.parseDouble(input.nextLine());
         System.out.println("Please enter your savings balance");
-        int save = Integer.parseInt(input.nextLine());
+        double save = Double.parseDouble(input.nextLine());
         System.out.println("Please enter your credit balance");
-        int cred = Integer.parseInt(input.nextLine());
+        double cred = Double.parseDouble(input.nextLine());
         System.out.println("Please enter your credit limit");
-        int credLim = Integer.parseInt(input.nextLine());
+        double credLim = Double.parseDouble(input.nextLine());
         account = new Account(cheq, save, cred, name, credLim);
         bank.newAccount(account);
     }
