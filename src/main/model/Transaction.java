@@ -31,22 +31,6 @@ public class Transaction {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: updates the date of a transaction
-    public void updateDate(int month, int date, int year) {
-        this.month = month;
-        this.date = date;
-        this.year = year;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: updates the amount of a transaction
-    public void updateAmount(int amount) {
-        this.amount = amount;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: changes the expense category
     public void updateExpense(String expense) {
         this.expense = expense;
     }
@@ -61,6 +45,18 @@ public class Transaction {
 
     public String getExpense() {
         return this.expense;
+    }
+
+    public boolean getType() {
+        return type;
+    }
+
+    public String printTransaction() {
+        String m = Integer.toString(month);
+        String d = Integer.toString(date);
+        String y = Integer.toString(year);
+        String a = Integer.toString(amount);
+        return m+"/"+d+"/"+y+", $"+a+", "+store+", "+expense+", "+note+", "+account;
     }
 
 }

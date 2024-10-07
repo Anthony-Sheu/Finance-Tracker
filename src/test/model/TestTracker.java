@@ -22,7 +22,7 @@ public class TestTracker {
         account = new Account(200, 5000, 0, "CIBC", 1500);
         transaction1 = new Transaction(9, 1, 2024, 1500, "Interac", "Rent", "", "CIBC Chequeing");
         transaction2 = new Transaction(9, 20, 2024, 20, "McDonald's", "Food", "", "CIBC Credit");
-        transaction3 = new Transaction(10, 2, 2024, 5, "Bookstore", "Education", "", "CIBC Credit");
+        transaction3 = new Transaction(10, 2, 2024, -5, "Bookstore", "Education", "Refund", "CIBC Credit");
         transaction4 = new Transaction(9, 27, 2023, 10, "Pizza Hut", "Food", "", "CIBC Chequeing");
     }
 
@@ -36,6 +36,7 @@ public class TestTracker {
         tracker.addTransaction(transaction1);
         check.add(transaction1);
         assertEquals(check, tracker.getTracker());
+        assertEquals(false, tracker.findTransaction(0).getType());
         tracker.removeTransaction(transaction1);
         assertFalse(check == tracker.getTracker());
     }
@@ -60,6 +61,13 @@ public class TestTracker {
         tracker.addTransaction(transaction3);
         tracker.addTransaction(transaction4);
         assertEquals(check, tracker.sortExpense("Food"));
+    }
+
+    @Test
+    void testUpdateDate() {
+        tracker.addTransaction(transaction1);
+        tracker.updateExpense(0, "Home");
+        assertEquals("Home", tracker.findTransaction(0).getExpense());
     }
 
 }

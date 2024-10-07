@@ -52,4 +52,17 @@ public class Tracker {
         }
         return sortedTransaction;
     }
+
+    // EFFECTS: returns the transaction at a certain index
+    public Transaction findTransaction(int index) {
+        return tracker.get(index);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: modifies the expense category of a specific 
+    // transaction
+    public void updateExpense(int index, String expense) {
+        findTransaction(index).updateExpense(expense);
+    }
+
 }

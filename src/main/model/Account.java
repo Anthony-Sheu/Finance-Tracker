@@ -96,7 +96,14 @@ public class Account {
 
     //EFFECTS: returns bank name
     public String getBank() {
-        return bank;
+        return this.bank;
+    }
+
+    public String printAccount() {
+        String cheq = Integer.toString(this.chequeing);
+        String save = Integer.toString(this.savings);
+        String cred = Integer.toString(this.credit);
+        return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred;
     }
 
 }

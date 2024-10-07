@@ -13,16 +13,15 @@ public class Banks {
     }
 
     // MODIFIES: this
-    // EFFECTS: creates a new bank account and adds 
-    // it to the list
+    // EFFECTS: adds new bank account to list
     public void newAccount(Account account) {
         this.bank.add(account);
     }
 
     // EFFCTS: returns account from account name
     public Account findAccount(String name) {
-        for (Account account : bank) {
-            if (account.getBank() == name) {
+        for (Account account : this.bank) {
+            if (account.getBank().equals(name)) {
                 return account;
             }
         }
@@ -42,6 +41,10 @@ public class Banks {
     // EFFECTS: returns savings value of a certain account
     public int getSavings(Account account) {
         return account.getSavings();
+    }
+
+    public List<Account> getBank() {
+        return bank;
     }
 
 }
