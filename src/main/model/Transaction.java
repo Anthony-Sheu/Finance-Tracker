@@ -9,13 +9,13 @@ public class Transaction {
     private int year;
     private int amount;
     private String store;
-    private Expense expense;
+    private String expense;
     private String note;
-    private Account account;
+    private String account;
     private boolean type;  // true = income, false = spending
 
     // EFFECTS: constructs a single transaction
-    public Transaction(int month, int date, int year, int amount, String store, Expense expense, String note, Account account) {
+    public Transaction(int month, int date, int year, int amount, String store, String expense, String note, String account) {
         this.month = month;
         this.date = date;
         this.year = year;
@@ -47,8 +47,20 @@ public class Transaction {
 
     // MODIFIES: this
     // EFFECTS: changes the expense category
-    public void updateExpense(Expense expense) {
+    public void updateExpense(String expense) {
         this.expense = expense;
+    }
+
+    public int getMonth() {
+        return this.month;
+    }
+
+    public int getYear() {
+        return this.year;
+    }
+
+    public String getExpense() {
+        return this.expense;
     }
 
 }
