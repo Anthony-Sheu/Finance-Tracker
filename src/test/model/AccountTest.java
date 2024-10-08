@@ -14,6 +14,14 @@ public class AccountTest {
     }
 
     @Test
+    void testConstructor() {
+        assertEquals(100, account.getChequeing());
+        assertEquals(500, account.getSavings());
+        assertEquals(200, account.getCredit());
+        assertEquals(1500, account.getCreditLimit());
+    }
+
+    @Test
     void testBank() {
         assertEquals("CIBC", account.getBank());
     }
@@ -69,6 +77,6 @@ public class AccountTest {
         account.refund("Savings", 100);
         assertEquals(600, account.getSavings());
         account.refund("Credit", 100);
-        assertEquals(300, account.getCredit());
+        assertEquals(100, account.getCredit());
     }
 }

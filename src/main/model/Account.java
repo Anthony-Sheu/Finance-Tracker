@@ -110,16 +110,22 @@ public class Account {
         return this.bank;
     }
 
+    // EFFECTS: returns credit card limit
+    public double getCreditLimit() {
+        return this.creditLimit;
+    }
+
     // REQUIRES: amount >= 0
     // MODIFIES: this
-    // EFFECTS: refunds amount to accType
+    // EFFECTS: refunds amount to accType, chequeing and savings
+    // gain amount while credit loses amount
     public void refund(String accType, double amount) {
         if (accType.equals("Chequeing")) {
             updateChequeing(amount);;
         } else if (accType.equals("Savings")) {
             updateSavings(amount);
         } else {
-            updateCredit(amount);
+            updateCredit(-amount);
         }
     }
 
@@ -131,5 +137,4 @@ public class Account {
         String credLim = Double.toString(this.creditLimit);
         return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred+"\nCredit Limit: $"+credLim;
     }
-
 }

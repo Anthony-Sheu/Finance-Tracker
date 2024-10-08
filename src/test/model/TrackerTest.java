@@ -20,10 +20,10 @@ public class TrackerTest {
         tracker = new Tracker();
         check = new ArrayList<>();
         account = new Account(200, 5000, 0, "CIBC", 1500);
-        transaction1 = new Transaction(9, 1, 2024, 1500.00, "Interac", "Rent", "", "CIBC Chequeing");
-        transaction2 = new Transaction(9, 20, 2024, 20.00, "McDonald's", "Food", "", "CIBC Credit");
-        transaction3 = new Transaction(10, 2, 2024, -5.00, "Bookstore", "Education", "Refund", "CIBC Credit");
-        transaction4 = new Transaction(9, 27, 2023, 10.00, "Pizza Hut", "Food", "", "CIBC Chequeing");
+        transaction1 = new Transaction(9, 1, 2024, 1500.00, "Interac", "Rent", "", "CIBC", "Chequeing");
+        transaction2 = new Transaction(9, 20, 2024, 20.00, "McDonald's", "Food", "", "CIBC", "Credit");
+        transaction3 = new Transaction(10, 2, 2024, -5.00, "Bookstore", "Education", "Refund", "CIBC", "Credit");
+        transaction4 = new Transaction(9, 27, 2023, 10.00, "Pizza Hut", "Food", "", "CIBC", "Chequeing");
     }
 
     @Test

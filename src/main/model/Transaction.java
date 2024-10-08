@@ -11,11 +11,12 @@ public class Transaction {
     private String store;
     private String expense;
     private String note;
-    private String account;
+    private String accountName;
+    private String accountType;
     private boolean type;  // true = income, false = spending
 
     // EFFECTS: constructs a single transaction
-    public Transaction(int month, int date, int year, double amount, String store, String expense, String note, String account) {
+    public Transaction(int month, int date, int year, double amount, String store, String expense, String note, String accountName, String accountType) {
         this.month = month;
         this.date = date;
         this.year = year;
@@ -23,7 +24,8 @@ public class Transaction {
         this.store = store;
         this.expense = expense;
         this.note = note;
-        this.account = account;
+        this.accountName = accountName;
+        this.accountType = accountType;
         if(amount < 0) {
             type = true;
         } else {
@@ -56,7 +58,7 @@ public class Transaction {
         String d = Integer.toString(date);
         String y = Integer.toString(year);
         String a = Double.toString(amount);
-        return m+"/"+d+"/"+y+", $"+a+", "+store+", "+expense+", "+note+", "+account;
+        return m+"/"+d+"/"+y+", $"+a+", "+store+", "+expense+", "+note+", "+accountName+" "+accountType;
     }
 
 }

@@ -19,13 +19,14 @@ public class Menu {
     private Tracker tracker;
     private Transaction transaction;
 
-    //EFFECTS: runs start application
+    // EFFECTS: runs start application
     public Menu(){
         start();
     }
 
+    // REQUIRES: 1 <= option <= 5
     // MODIFIES: this
-    //EFFECTS: takes in user input
+    // EFFECTS: takes in user input
     public void start() {
         int option = 0;
         init();
@@ -58,6 +59,7 @@ public class Menu {
         addBank();
     }
 
+    // REQUIRES: 1 <= command <= 5
     // EFFECTS: prompts user input from main menu
     public int mainMenu() {
         System.out.println("======================MAIN MENU======================");
@@ -71,6 +73,7 @@ public class Menu {
         return Integer.parseInt(command);
     }
 
+    // REQUIRES: 1 <= command <= 6
     // MODIFIES: this
     // EFFECTS: prompts user input from transactions menu
     public void transactionsProcess() {
@@ -102,20 +105,44 @@ public class Menu {
     // it to the tracker 
     public void addTransaction() {
         System.out.println("=====================================================");
-        System.out.println("Please enter your transaction separated by commas (month, date, year, amount, store, expense category, note, account)");
-        String command = input.nextLine();
-        String[] split = command.split(",");
-        int month = Integer.parseInt(split[0]);
-        int date = Integer.parseInt(split[1]);
-        int year = Integer.parseInt(split[2]);
-        double amount = Double.parseDouble(split[3]);
-        String store = split[4];
-        String expense = split[5];
-        String note = split[6];
-        String account = split[7];
-        transaction = new Transaction(month, date, year, amount, store, expense, note, account);
+        System.out.println("What is the month of your transaction?");
+        int month = Integer.parseInt(input.nextLine());
+        System.out.println("What is the date of your transaction?");
+        int date = Integer.parseInt(input.nextLine());
+        System.out.println("What was the year of your transaction?");
+        int year = Integer.parseInt(input.nextLine());
+        System.out.println("What is the amount spent?");
+        double amount = Double.parseDouble(input.nextLine());
+        System.out.println("What is the name of the store/vendor?");
+        String store = input.nextLine();
+        System.out.println("What is the expense category?");
+        String expense = input.nextLine();
+        System.out.println("Any notes?");
+        String note = input.nextLine();
+        System.out.println("What is the account name?");
+        String accountName = input.nextLine();
+        System.out.println("What is the account type?");
+        String accountType = input.nextLine();
+        transaction = new Transaction(month, date, year, amount, store, expense, note, accountName, accountType);
         tracker.addTransaction(transaction);
-        updateBank(account, -amount);
+        updateBank(accountName, accountType, -amount);
+    }
+
+    
+    // EFFECTS: checks for account overdraft and warns the user
+    public void checkOverdraft(Account account) {
+        if (account.checkOverdraftChequeing()) {
+            System.out.println("***WARNING***");
+            System.out.println("Your "+account.getBank()+" chequeing account is overdrafted by $" + account.getChequeing());
+        }
+        if (account.checkOverdraftSavings()) {
+            System.out.println("***WARNING***");
+            System.out.println("Your "+account.getBank()+" savings account is overdrafted by $" + account.getSavings());
+        }
+        if (account.checkOverLimit()) {
+            System.out.println("***WARNING***");
+            System.out.println("Your "+account.getBank()+" credit account is overused by $" + (account.getCredit()-account.getCreditLimit()));
+        }
     }
 
     // EFFECTS: prints out all transactions given
@@ -141,6 +168,7 @@ public class Menu {
         showTransaction(tracker.sortExpense(expense));
     }
 
+    // REQUIRES: year, month >= 0
     // EFFECTS: finds all transactions within a certain month/year
     // and prints it
     public void showMonthTransaction() {
@@ -152,7 +180,7 @@ public class Menu {
         showTransaction(tracker.sortMonth(month, year));
     }
 
-    // REQUIRES: amount >= 0
+    // REQUIRES: amount >= 0, accName in bank and accType in bank
     // MODIFIES: this
     // EFFECTS: processes a refund by returning the amount back to
     // the proper account
@@ -161,11 +189,10 @@ public class Menu {
         String accType;
         double amount;
         System.out.println("=====================================================");
-        System.out.println("Please enter in the format: CIBC Chequeing");
         System.out.println("Which account would you like to refund to?");
-        String[] in = input.nextLine().split(" ");
-        accName = in[0];
-        accType = in[1];
+        accName = input.nextLine();
+        System.out.println("Which account type?");
+        accType = input.nextLine();
         System.out.println("What is the amount you would like to refund today?");
         amount = Double.parseDouble(input.nextLine());
         account = bank.findAccount(accName);
@@ -174,6 +201,7 @@ public class Menu {
         enter();
     }
 
+    // REQUIRES: 1 <= command <= 3
     // MODIFIES: this
     // EFFECTS: prompts user input in bank accounts menu
     public void bankAccountsProcess() {
@@ -190,42 +218,24 @@ public class Menu {
         }
     }
 
+    // REQUIRES: amount <= 0
     // MODIFIES: this
     // EFFECTS: updates a bank account with new amount
-    public void updateBank(String info, double amount) {
-        String[] accountSplit = info.split(" ");
-        String name = accountSplit[0];
-        String acc = accountSplit[1];
+    public void updateBank(String name, String acc, double amount) {
         account = bank.findAccount(name);
         if (acc.equals("Chequeing")) {
             account.updateChequeing(amount);
         } else if (acc.equals("Savings")) {
             account.updateSavings(amount);
         } else if (acc.equals("Credit")) {
-            account.updateCredit(amount);
+            account.updateCredit(-amount);
         }
         System.out.println("Updated!");
         checkOverdraft(account);
         enter();
     }
 
-    // EFFECTS: checks for account overdraft and warns
-    // the user
-    public void checkOverdraft(Account account) {
-        if (account.checkOverdraftChequeing()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your "+account.getBank()+" chequeing account is overdrafted by" + account.getChequeing());
-        }
-        if (account.checkOverdraftSavings()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your"+account.getBank()+"savings account is overdrafted by" + account.getSavings());
-        }
-        if (account.checkOverLimit()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your"+account.getBank()+"credit account is overused by" + account.getCredit());
-        }
-    }
-
+    // REQUIRES: credLim > 0
     // MODIFIES: this
     // EFFECTS: adds a new bank account
     public void addBank() {
@@ -257,6 +267,7 @@ public class Menu {
         enter();
     }
 
+    // REQUIRES: 1 <= command <= 3
     // MODIFIES: this
     // EFFECTS: prompts user input from credit cards menu
     public void creditCardProcess() {
@@ -273,7 +284,7 @@ public class Menu {
         }
     }
 
-    // REQUIRES: amount <= account.getCredit()
+    // REQUIRES: 0 <= amount <= account.getCredit()
     // MODIFIES: this
     // EFFECTS: pays credit card by specified amount
     public void payCreditCard() {
@@ -290,6 +301,7 @@ public class Menu {
         enter();
     }
 
+    // REQUIRES: acc in bank, amount > 0
     // MODIFIES: this
     // EFFECTS: changes credit card limit on a certain credit card
     public void changeCreditLimit() {
@@ -306,6 +318,7 @@ public class Menu {
         enter();
     }
 
+    // REQUIRES: 1 <= command <= 2
     // MODIFIES: this
     // EFFECTS: prompts user input from transfer menu
     public void transferProcess() {
@@ -319,31 +332,29 @@ public class Menu {
 
     }
 
-    // REQUIRES: amount >= 0
+    // REQUIRES: amount >= 0, acc1Type != acc2Type != "Credit"
     // MODIFIES: this
     // EFFECTS: moves a certain amount from one 
     // account to another
     public void transfer() {
-        String[] in;
         String acc1Name;
         String acc1Type;
         String acc2Name;
         String acc2Type;
         double amount;
         System.out.println("=====================================================");
-        System.out.println("Please input in the format: CIBC Chequeing");
         System.out.println("What is the first account you would like to transfer out of?");
-        in = input.nextLine().split(" ");
-        acc1Name = in[0];
-        acc1Type = in[1];
+        acc1Name = input.nextLine();
+        System.out.println("What is the account type? (Credit is not allowed)");
+        acc1Type = input.nextLine();
         System.out.println("What is the second account you would like to transfer into?");
-        in = input.nextLine().split(" ");
-        acc2Name = in[0];
-        acc2Type = in[1];
+        acc2Name = input.nextLine();
+        System.out.println("What is the account type? (Credit is not allowed)");
+        acc2Type = input.nextLine();
         System.out.println("What is the amount you would like to transfer?");
         amount = Double.parseDouble(input.nextLine());
         bank.transfer(acc1Name, acc1Type, acc2Name, acc2Type, amount);
-        System.out.println("Transfered!");
+        System.out.println("Transferred!");
         enter();
     }
 
