@@ -43,8 +43,31 @@ public class Banks {
         return account.getSavings();
     }
 
+    // EFFECTS: returns list of bank accounts
     public List<Account> getBank() {
         return bank;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates a certain account of a banking account
+    public void updateTransfer(Account account, String type, double amount) {
+        if(type.equals("Chequeing")) {
+            account.updateChequeing(amount);
+        } else if (type.equals("Savings")) {
+            account.updateSavings(amount);
+        } else {
+            account.updateCredit(amount);
+        }
+    }
+
+    // REQUIRES: account1Name and account2Name to be valid bank accounts
+    // MODIFIES: this
+    // EFFECTS: performs a transaction between two accounts from account1 to account2
+    public void transfer(String account1Name, String account2Name, String account1Type, String account2Type, double amount) {
+        Account account1 = findAccount(account1Name);
+        Account account2 = findAccount(account2Name);
+        updateTransfer(account1, account1Type, -amount);
+        updateTransfer(account2, account2Type, amount);
     }
 
 }

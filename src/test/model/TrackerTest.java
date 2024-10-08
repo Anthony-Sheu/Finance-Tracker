@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
-public class TestTracker {
+public class TrackerTest {
 
     private Tracker tracker;
     private Transaction transaction1;
@@ -68,6 +68,12 @@ public class TestTracker {
         tracker.addTransaction(transaction1);
         tracker.updateExpense(0, "Home");
         assertEquals("Home", tracker.findTransaction(0).getExpense());
+    }
+
+    @Test
+    void testPrint() {
+        tracker.addTransaction(transaction1);
+        assertEquals("9/1/2024, $1500.0, Interac, Rent, , CIBC Chequeing", transaction1.printTransaction());
     }
 
 }

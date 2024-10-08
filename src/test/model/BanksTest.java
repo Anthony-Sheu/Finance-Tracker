@@ -1,10 +1,13 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestBanks {
+public class BanksTest {
 
     private Banks bank;
     private Account account1;
@@ -30,6 +33,27 @@ public class TestBanks {
     void testFind() {
         assertEquals(account1, bank.findAccount("CIBC"));
         assertEquals(null, bank.findAccount("BMO"));
+    }
+
+    @Test
+    void testTransfer() {
+        bank.transfer("CIBC", "RBC", "Chequeing",  "Savings", 50);
+        assertEquals(50, account1.getChequeing());
+        assertEquals(1050, account2.getSavings());
+    }
+
+    @Test
+    void testBank() {
+        List<Account> temp = new ArrayList<>();
+        temp.add(account1);
+        temp.add(account2);
+        assertEquals(temp, bank.getBank());
+    }
+
+    @Test
+    void testUpdateTransfer() {
+        bank.updateTransfer(account1, "Credit", 100);
+        assertEquals(300, account1.getCredit());
     }
 
 }

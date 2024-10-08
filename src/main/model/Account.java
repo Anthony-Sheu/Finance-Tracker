@@ -107,7 +107,4 @@ public class Account {
         return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred;
     }
 
-    // MODIFIES: this
-    // EFFCTS: transfer amount between accounts
-
 }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestAccount {
+public class AccountTest {
     
     private Account account;
 
@@ -51,6 +51,11 @@ public class TestAccount {
         assertEquals(true, account.checkOverdraftChequeing());
         account.updateSavings(-600);
         assertEquals(true, account.checkOverdraftSavings());
+    }
+
+    @Test
+    void testPrint() {
+        assertEquals("CIBC\nChequeing: $100.0\nSavings: $500.0\nCredit: $200.0", account.printAccount());
     }
 
 }
