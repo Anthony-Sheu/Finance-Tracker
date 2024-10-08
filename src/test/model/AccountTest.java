@@ -32,7 +32,7 @@ public class AccountTest {
         assertEquals(600, account.getSavings());
         account.updateSavings(-100);
         assertEquals(500, account.getSavings());
-        assertEquals(false, account.checkOverdraftSavings());
+        assertFalse(account.checkOverdraftSavings());
     }
 
     @Test
@@ -41,21 +41,34 @@ public class AccountTest {
         assertEquals(300, account.getCredit());
         account.updateCredit(5000);
         assertEquals(5300, account.getCredit());
-        assertEquals(true, account.checkOverLimit());
+        assertTrue(account.checkOverLimit());
+        account.updateCreditLimit(5300);
+        assertFalse(account.checkOverLimit());
+        account.updateCreditLimit(2000);
+        assertTrue(account.checkOverLimit());
     }
 
     @Test
     void testOverdraft() {
         account.updateChequeing(-500);
         assertEquals(-400, account.getChequeing());
-        assertEquals(true, account.checkOverdraftChequeing());
+        assertTrue(account.checkOverdraftChequeing());
         account.updateSavings(-600);
-        assertEquals(true, account.checkOverdraftSavings());
+        assertTrue(account.checkOverdraftSavings());
     }
 
     @Test
     void testPrint() {
-        assertEquals("CIBC\nChequeing: $100.0\nSavings: $500.0\nCredit: $200.0", account.printAccount());
+        assertEquals("CIBC\nChequeing: $100.0\nSavings: $500.0\nCredit: $200.0\nCredit Limit: $1500.0", account.printAccount());
     }
 
+    @Test
+    void testRefund() {
+        account.refund("Chequeing", 100);
+        assertEquals(200, account.getChequeing());
+        account.refund("Savings", 100);
+        assertEquals(600, account.getSavings());
+        account.refund("Credit", 100);
+        assertEquals(300, account.getCredit());
+    }
 }

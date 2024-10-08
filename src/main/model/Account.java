@@ -44,10 +44,10 @@ public class Account {
     }
 
     // MODIFES: this
-    // EFFECTS: subtracts/adds credit account by Amount
+    // EFFECTS: adds credit account by amount
     // and checks for overdraft
-    public void updateCredit(double Amount) {
-        this.credit += Amount;
+    public void updateCredit(double amount) {
+        this.credit += amount;
         if (this.credit > creditLimit) {
             overLimit = true;
         } else {
@@ -55,11 +55,22 @@ public class Account {
         }
     }   
 
+    // MODIFIES: this
+    // EFFECTS: updates credit card limit
+    public void updateCreditLimit(double amount) {
+        this.creditLimit = amount;
+        if (this.credit > creditLimit) {
+            overLimit = true;
+        } else {
+            overLimit = false;
+        }
+    }
+
     // MODIFES: this
-    // EFFECTS: subtracts/adds savings account by Amount
+    // EFFECTS: adds savings account by amount
     // and checks for overdraft
-    public void updateSavings(double Amount) {
-        this.savings += Amount;
+    public void updateSavings(double amount) {
+        this.savings += amount;
         if (this.savings < 0) {
             overdraftSavings = true;
         } else {
@@ -68,10 +79,10 @@ public class Account {
     }
 
     // MODIFES: this
-    // EFFECTS: subtracts/adds chequeing account by Amount 
+    // EFFECTS: adds chequeing account by amount 
     // and checks for overdraft
-    public void updateChequeing(double Amount) {
-        this.chequeing += Amount;
+    public void updateChequeing(double amount) {
+        this.chequeing += amount;
         if (this.chequeing < 0) {
             overdraftChequeing = true;
         } else {
@@ -94,9 +105,22 @@ public class Account {
         return this.chequeing;
     }
 
-    //EFFECTS: returns bank name
+    // EFFECTS: returns bank name
     public String getBank() {
         return this.bank;
+    }
+
+    // REQUIRES: amount >= 0
+    // MODIFIES: this
+    // EFFECTS: refunds amount to accType
+    public void refund(String accType, double amount) {
+        if (accType.equals("Chequeing")) {
+            updateChequeing(amount);;
+        } else if (accType.equals("Savings")) {
+            updateSavings(amount);
+        } else {
+            updateCredit(amount);
+        }
     }
 
     // EFFECTS: prints banking information
@@ -104,7 +128,8 @@ public class Account {
         String cheq = Double.toString(this.chequeing);
         String save = Double.toString(this.savings);
         String cred = Double.toString(this.credit);
-        return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred;
+        String credLim = Double.toString(this.creditLimit);
+        return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred+"\nCredit Limit: $"+credLim;
     }
 
 }

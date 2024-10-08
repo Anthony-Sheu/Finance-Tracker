@@ -7,7 +7,7 @@ public class Transaction {
     private int month;
     private int date;
     private int year;
-    private Double amount;
+    private double amount;
     private String store;
     private String expense;
     private String note;
@@ -15,7 +15,7 @@ public class Transaction {
     private boolean type;  // true = income, false = spending
 
     // EFFECTS: constructs a single transaction
-    public Transaction(int month, int date, int year, Double amount, String store, String expense, String note, String account) {
+    public Transaction(int month, int date, int year, double amount, String store, String expense, String note, String account) {
         this.month = month;
         this.date = date;
         this.year = year;
