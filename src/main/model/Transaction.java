@@ -23,7 +23,11 @@ public class Transaction {
         this.amount = amount;
         this.store = store;
         this.expense = expense;
-        this.note = note;
+        if (note.equals("")) {
+            this.note = "No note";
+        } else {
+            this.note = note;
+        }
         this.accountName = accountName;
         this.accountType = accountType;
         if(amount < 0) {

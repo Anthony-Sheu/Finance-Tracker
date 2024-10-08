@@ -50,6 +50,8 @@ public class Account {
         this.credit += amount;
         if (this.credit > creditLimit) {
             overLimit = true;
+            System.out.println("***WARNING***");
+            System.out.println("Your "+getBank()+" credit account is overused by $" + (getCredit()-getCreditLimit()));
         } else {
             overLimit = false;
         }
@@ -61,6 +63,8 @@ public class Account {
         this.creditLimit = amount;
         if (this.credit > creditLimit) {
             overLimit = true;
+            System.out.println("***WARNING***");
+            System.out.println("Your "+getBank()+" credit account is overused by $" + (getCredit()-getCreditLimit()));
         } else {
             overLimit = false;
         }
@@ -73,6 +77,8 @@ public class Account {
         this.savings += amount;
         if (this.savings < 0) {
             overdraftSavings = true;
+            System.out.println("***WARNING***");
+            System.out.println("Your "+getBank()+" savings account is overdrafted by $" + getSavings());
         } else {
             overdraftSavings = false;
         }
@@ -85,6 +91,8 @@ public class Account {
         this.chequeing += amount;
         if (this.chequeing < 0) {
             overdraftChequeing = true;
+            System.out.println("***WARNING***");
+            System.out.println("Your "+getBank()+" chequeing account is overdrafted by $" +getChequeing());
         } else {
             overdraftChequeing = false;
         }

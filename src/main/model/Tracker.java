@@ -46,7 +46,7 @@ public class Tracker {
     public List<Transaction> sortExpense(String expense) {
         List<Transaction> sortedTransaction = new ArrayList<>();
         for (Transaction t : tracker) {
-            if (t.getExpense() == expense) {
+            if (t.getExpense().equals(expense)) {
                 sortedTransaction.add(t);
             }
         }

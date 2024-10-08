@@ -99,13 +99,13 @@ public class Menu {
         }
     }
 
-    // REQUIRES: amount >= 0
+    // REQUIRES: amount >= 0, accountName is accountName, accountType is accountType
     // MODIFIES: this
     // EFFECTS: creates a new transaction and adds
     // it to the tracker 
     public void addTransaction() {
         System.out.println("=====================================================");
-        System.out.println("What is the month of your transaction?");
+        System.out.println("What is the number month of your transaction?");
         int month = Integer.parseInt(input.nextLine());
         System.out.println("What is the date of your transaction?");
         int date = Integer.parseInt(input.nextLine());
@@ -117,32 +117,15 @@ public class Menu {
         String store = input.nextLine();
         System.out.println("What is the expense category?");
         String expense = input.nextLine();
-        System.out.println("Any notes?");
+        System.out.println("Any notes? (press enter to skip)");
         String note = input.nextLine();
         System.out.println("What is the account name?");
         String accountName = input.nextLine();
-        System.out.println("What is the account type?");
+        System.out.println("What is the account type?\nChequeing, Savings, Credit");
         String accountType = input.nextLine();
         transaction = new Transaction(month, date, year, amount, store, expense, note, accountName, accountType);
         tracker.addTransaction(transaction);
         updateBank(accountName, accountType, -amount);
-    }
-
-    
-    // EFFECTS: checks for account overdraft and warns the user
-    public void checkOverdraft(Account account) {
-        if (account.checkOverdraftChequeing()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your "+account.getBank()+" chequeing account is overdrafted by $" + account.getChequeing());
-        }
-        if (account.checkOverdraftSavings()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your "+account.getBank()+" savings account is overdrafted by $" + account.getSavings());
-        }
-        if (account.checkOverLimit()) {
-            System.out.println("***WARNING***");
-            System.out.println("Your "+account.getBank()+" credit account is overused by $" + (account.getCredit()-account.getCreditLimit()));
-        }
     }
 
     // EFFECTS: prints out all transactions given
@@ -231,7 +214,6 @@ public class Menu {
             account.updateCredit(-amount);
         }
         System.out.println("Updated!");
-        checkOverdraft(account);
         enter();
     }
 

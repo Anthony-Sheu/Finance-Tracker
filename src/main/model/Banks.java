@@ -63,7 +63,7 @@ public class Banks {
     // REQUIRES: account1Name and account2Name to be valid bank accounts
     // MODIFIES: this
     // EFFECTS: performs a transaction between two accounts from account1 to account2
-    public void transfer(String account1Name, String account2Name, String account1Type, String account2Type, double amount) {
+    public void transfer(String account1Name, String account1Type, String account2Name, String account2Type, double amount) {
         Account account1 = findAccount(account1Name);
         Account account2 = findAccount(account2Name);
         updateTransfer(account1, account1Type, -amount);
