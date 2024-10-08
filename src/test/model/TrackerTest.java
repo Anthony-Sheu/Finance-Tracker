@@ -73,7 +73,7 @@ public class TrackerTest {
     @Test
     void testPrint() {
         tracker.addTransaction(transaction1);
-        assertEquals("9/1/2024, $1500.0, Interac, Rent, , CIBC Chequeing", transaction1.printTransaction());
+        assertEquals("9/1/2024, $1500.0, Interac, Rent, No note, CIBC Chequeing", transaction1.printTransaction());
     }
 
 }

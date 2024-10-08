@@ -51,7 +51,7 @@ public class Banks {
     // MODIFIES: this
     // EFFECTS: updates a certain account of a banking account
     public void updateTransfer(Account account, String type, double amount) {
-        if(type.equals("Chequeing")) {
+        if (type.equals("Chequeing")) {
             account.updateChequeing(amount);
         } else if (type.equals("Savings")) {
             account.updateSavings(amount);
@@ -63,11 +63,11 @@ public class Banks {
     // REQUIRES: account1Name and account2Name to be valid bank accounts
     // MODIFIES: this
     // EFFECTS: performs a transaction between two accounts from account1 to account2
-    public void transfer(String account1Name, String account1Type, String account2Name, String account2Type, double amount) {
-        Account account1 = findAccount(account1Name);
-        Account account2 = findAccount(account2Name);
-        updateTransfer(account1, account1Type, -amount);
-        updateTransfer(account2, account2Type, amount);
+    public void transfer(String acc1Name, String acc1Type, String acc2Name, String acc2Type, double amount) {
+        Account account1 = findAccount(acc1Name);
+        Account account2 = findAccount(acc2Name);
+        updateTransfer(account1, acc1Type, -amount);
+        updateTransfer(account2, acc2Type, amount);
     }
 
 }

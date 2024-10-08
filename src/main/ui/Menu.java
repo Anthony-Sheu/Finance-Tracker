@@ -14,13 +14,11 @@ public class Menu {
     private Scanner input;
     private Banks bank;
     private Account account;
-    private Categories category;
-    private Expense expense;
     private Tracker tracker;
     private Transaction transaction;
 
     // EFFECTS: runs start application
-    public Menu(){
+    public Menu() {
         start();
     }
 
@@ -51,7 +49,6 @@ public class Menu {
     // EFFECTS: initializes and prompts user to add bank info
     public void init() {
         bank = new Banks();
-        category = new Categories();
         tracker = new Tracker();
         input = new Scanner(System.in);
         System.out.println("======================START UP======================");
@@ -80,21 +77,24 @@ public class Menu {
         System.out.println("====================TRANSACTIONS=====================");
         System.out.println("What would you like to do? (enter the number)");
         System.out.println("1. Add a transaction");
-        System.out.println("2. See all transactions");
-        System.out.println("3. See all transactions in a given month/year");
-        System.out.println("4. See all transactions by an expense category");
-        System.out.println("5. Record a refund");
-        System.out.println("6. Return to main menu");
+        System.out.println("2. Remove a transaction");
+        System.out.println("3. See all transactions");
+        System.out.println("4. See all transactions in a given month/year");
+        System.out.println("5. See all transactions by an expense category");
+        System.out.println("6. Record a refund");
+        System.out.println("7. Return to main menu");
         int command = Integer.parseInt(input.nextLine());
         if (command == 1) {
             addTransaction();
         } else if (command == 2) {
-            showTransaction(tracker.getTracker());
+            removeTransaction();
         } else if (command == 3) {
-            showMonthTransaction();
+            showTransaction(tracker.getTracker());
         } else if (command == 4) {
-            showExpenseTransaction();
+            showMonthTransaction();
         } else if (command == 5) {
+            showExpenseTransaction();
+        } else if (command == 6) {
             refund();
         }
     }
@@ -128,14 +128,21 @@ public class Menu {
         updateBank(accountName, accountType, -amount);
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes a transaction
+    public void removeTransaction() {
+
+    }
+
     // EFFECTS: prints out all transactions given
     public void showTransaction(List<Transaction> show) {
         System.out.println("=====================================================");
         if (show.size() == 0) {
             System.out.println("There are currently no transactions.");
         } else {
-            for(int i = 0; i < show.size(); i++) {
-                System.out.print(Integer.toString(i+1)+". ");
+            for (int i = 0; i < show.size(); i++) {
+                String s = ". ";
+                System.out.print(Integer.toString(i + 1) + s);
                 System.out.println(show.get(i).printTransaction());
             }
         }
@@ -242,7 +249,7 @@ public class Menu {
     public void showBank() {
         System.out.println("=====================================================");
         System.out.println("Your banking information");
-        for(Account acc : bank.getBank()) {
+        for (Account acc : bank.getBank()) {
             System.out.println(acc.printAccount());
             System.out.println();
         }

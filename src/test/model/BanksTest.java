@@ -37,7 +37,7 @@ public class BanksTest {
 
     @Test
     void testTransfer() {
-        bank.transfer("CIBC", "RBC", "Chequeing",  "Savings", 50);
+        bank.transfer("CIBC", "Chequeing", "RBC",  "Savings", 50);
         assertEquals(50, account1.getChequeing());
         assertEquals(1050, account2.getSavings());
     }

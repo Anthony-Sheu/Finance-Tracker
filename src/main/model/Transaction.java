@@ -30,7 +30,7 @@ public class Transaction {
         }
         this.accountName = accountName;
         this.accountType = accountType;
-        if(amount < 0) {
+        if (amount < 0) {
             type = true;
         } else {
             type = false;

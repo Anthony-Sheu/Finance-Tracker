@@ -50,9 +50,11 @@ public class Account {
         this.credit += amount;
         if (this.credit > creditLimit) {
             overLimit = true;
+            double difference = getCredit() - getCreditLimit();
             System.out.println("***WARNING***");
-            System.out.println("Your "+getBank()+" credit account is overused by $" + (getCredit()-getCreditLimit()));
+            System.out.println("Your " + getBank() + " credit account is overused by $" + difference);
         } else {
+            
             overLimit = false;
         }
     }   
@@ -63,8 +65,9 @@ public class Account {
         this.creditLimit = amount;
         if (this.credit > creditLimit) {
             overLimit = true;
+            double difference = getCredit() - getCreditLimit();
             System.out.println("***WARNING***");
-            System.out.println("Your "+getBank()+" credit account is overused by $" + (getCredit()-getCreditLimit()));
+            System.out.println("Your " + getBank() + " credit account is overused by $" + difference);
         } else {
             overLimit = false;
         }
@@ -78,7 +81,7 @@ public class Account {
         if (this.savings < 0) {
             overdraftSavings = true;
             System.out.println("***WARNING***");
-            System.out.println("Your "+getBank()+" savings account is overdrafted by $" + getSavings());
+            System.out.println("Your " + getBank() + " savings account is overdrafted by $" + getSavings());
         } else {
             overdraftSavings = false;
         }
@@ -92,7 +95,7 @@ public class Account {
         if (this.chequeing < 0) {
             overdraftChequeing = true;
             System.out.println("***WARNING***");
-            System.out.println("Your "+getBank()+" chequeing account is overdrafted by $" +getChequeing());
+            System.out.println("Your " + getBank() + " chequeing account is overdrafted by $" + getChequeing());
         } else {
             overdraftChequeing = false;
         }
@@ -139,10 +142,10 @@ public class Account {
 
     // EFFECTS: prints banking information
     public String printAccount() {
-        String cheq = Double.toString(this.chequeing);
-        String save = Double.toString(this.savings);
-        String cred = Double.toString(this.credit);
-        String credLim = Double.toString(this.creditLimit);
-        return bank+"\nChequeing: $"+cheq+"\nSavings: $"+save+"\nCredit: $"+cred+"\nCredit Limit: $"+credLim;
+        String cheq = "\nChequeing: $" + Double.toString(this.chequeing);
+        String save = "\nSavings: $" + Double.toString(this.savings);
+        String cred = "\nCredit: $" + Double.toString(this.credit);
+        String credLim = "\nCredit Limit: $" + Double.toString(this.creditLimit);
+        return bank + cheq +  save +  cred +  credLim;
     }
 }
