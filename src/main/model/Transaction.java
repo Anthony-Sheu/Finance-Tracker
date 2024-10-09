@@ -68,6 +68,7 @@ public class Transaction {
         return this.amount;
     }
 
+    // EFFECTS: returns string of transaction information
     public String printTransaction() {
         String m = Integer.toString(month) + "/";
         String d = Integer.toString(date) + "/";
