@@ -2,6 +2,8 @@ package ui;
 
 import java.util.*;
 
+import org.junit.platform.engine.discovery.PackageNameFilter;
+
 import model.Account;
 import model.Banks;
 import model.Categories;
@@ -252,7 +254,7 @@ public class Menu {
         showTransaction(tracker.sortMonth(month, year));
     }
 
-    // EFFECTS: prints spendings in each expense category
+    // EFFECTS: prints spendings in each expense category by increasing line number
     public void showExpense() {
         System.out.println("=====================================================");
         List<Expense> c = category.getExpense();
@@ -272,24 +274,28 @@ public class Menu {
     // for overdraft, refunding to the proper expense category, and removing the transaction 
     // from tracker
     public void refund() {
-        System.out.println("=====================================================");
-        System.out.println("Here are your transactions:");
-        showTransaction(tracker.getTracker());
-        System.out.println("Which transaction would you like to refund? (enter the line number)");
-        int line = intInput() - 1;
-        transaction = tracker.findTransaction(line);
-        String accName = transaction.getAccountName();
-        String accType = transaction.getAccountType();
-        String exp = transaction.getExpense();
-        double amount = transaction.getAmount();
-        account = bank.findAccount(accName);
-        account.refund(accType, amount);
-        checkOverdraft(account);
-        expense = category.checkCategory(exp);
-        expense.updateSpending(-amount);
-        tracker.removeTransaction(transaction);
-        System.out.println("Refunded!");
-        enter();
+        if (tracker.getTracker().size() != 0) {
+            System.out.println("=====================================================");
+            System.out.println("Here are your transactions:");
+            showTransaction(tracker.getTracker());
+            System.out.println("Which transaction would you like to refund? (enter the line number)");
+            int line = intInput() - 1;
+            transaction = tracker.findTransaction(line);
+            String accName = transaction.getAccountName();
+            String accType = transaction.getAccountType();
+            String exp = transaction.getExpense();
+            double amount = transaction.getAmount();
+            account = bank.findAccount(accName);
+            account.refund(accType, amount);
+            checkOverdraft(account);
+            expense = category.checkCategory(exp);
+            expense.updateSpending(-amount);
+            tracker.removeTransaction(transaction);
+            System.out.println("Refunded!");
+            enter();
+        } else {
+            showTransaction(tracker.getTracker());
+        }
     }
 
     // EFFECT: prints all current bank institutions
@@ -474,25 +480,23 @@ public class Menu {
     // MODIFIES: this
     // EFFECTS: moves a certain amount from one account to another
     public void transfer() {
-        String acc1Name;
-        String acc1Type;
-        String acc2Name;
-        String acc2Type;
         double amount;
         System.out.println("=====================================================");
         System.out.println("What is the first account you would like to transfer out of?");
-        acc1Name = checkBank();
+        String acc1Name = checkBank();
         System.out.println("What is the account type? (Credit is not allowed)");
-        acc1Type = checkAccount();
+        String acc1Type = checkAccount();
         System.out.println("What is the second account you would like to transfer into?");
-        acc2Name = checkBank();
+        String acc2Name = checkBank();
         System.out.println("What is the account type? (Credit is not allowed)");
-        acc2Type = checkAccount();
+        String acc2Type = checkAccount();
         System.out.println("What is the amount you would like to transfer?");
         amount = doubleInput();
         bank.transfer(acc1Name, acc1Type, acc2Name, acc2Type, amount);
         checkOverdraft(bank.findAccount(acc1Name));
-        checkOverdraft(bank.findAccount(acc2Name));
+        if (!acc1Name.equals(acc2Name)) {
+            checkOverdraft(bank.findAccount(acc2Name));
+        }
         System.out.println("Transferred!");
         enter();
     }

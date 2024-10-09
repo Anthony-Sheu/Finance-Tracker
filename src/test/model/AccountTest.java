@@ -67,7 +67,11 @@ public class AccountTest {
 
     @Test
     void testPrint() {
-        assertEquals("CIBC\nChequeing: $100.0\nSavings: $500.0\nCredit: $200.0\nCredit Limit: $1500.0", account.printAccount());
+        String s = "CIBC\nChequeing:";
+        s += " $100.0\nSavings:";
+        s += " $500.0\nCredit:";
+        s += " $200.0\nCredit Limit: $1500.0";
+        assertEquals(s, account.printAccount());
     }
 
     @Test

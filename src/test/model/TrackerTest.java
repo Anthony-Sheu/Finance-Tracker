@@ -37,7 +37,8 @@ public class TrackerTest {
         check.add(transaction1);
         assertEquals(check, tracker.getTracker());
         tracker.removeTransaction(transaction1);
-        assertFalse(check == tracker.getTracker());
+        check.remove(0);
+        assertEquals(check, tracker.getTracker());
     }
 
     @Test
