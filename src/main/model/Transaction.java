@@ -15,24 +15,27 @@ public class Transaction {
     private String accountType;
 
     // EFFECTS: constructs a single transaction
-    public Transaction(int month, int date, int year, double amount, String store, String expense, String note, String accountName, String accountType) {
-        this.month = month;
-        this.date = date;
-        this.year = year;
-        this.amount = amount;
-        this.store = store;
-        this.expense = expense;
-        if (note.equals("")) {
+    public Transaction(int m, int d, int y, double amt, String s, String e, String n, String an, String at) {
+        this.month = m;
+        this.date = d;
+        this.year = y;
+        this.amount = amt;
+        this.store = s;
+        this.expense = e;
+        if (n.equals("")) {
             this.note = "No note";
         } else {
-            this.note = note;
+            this.note = n;
         }
-        this.accountName = accountName;
-        this.accountType = accountType;
+        this.accountName = an;
+        this.accountType = at;
     }
 
-    public void updateExpense(String expense) {
-        this.expense = expense;
+    // REQUIRES: amount >= 0
+    // MODIFIES: this
+    // EFFECTS: updates the current transaction's amount
+    public void updateAmount(double amount) {
+        this.amount = amount;
     }
 
     // GETTER

@@ -58,11 +58,4 @@ public class Tracker {
         return tracker.get(index);
     }
 
-    // MODIFIES: this
-    // EFFECTS: modifies the expense category of a specific 
-    // transaction
-    public void updateExpense(int index, String expense) {
-        findTransaction(index).updateExpense(expense);
-    }
-
 }

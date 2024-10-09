@@ -34,9 +34,9 @@ public class Categories {
         return null;
     }
 
-    public void updateExpense(String oldName, String newName) {
-        Expense e = checkCategory(oldName);
-        e.updateExpense(newName);
+    // EFFECTS: returns expenses
+    public List<Expense> getExpense() {
+        return category;
     }
 
 }

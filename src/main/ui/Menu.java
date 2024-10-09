@@ -105,8 +105,9 @@ public class Menu {
         System.out.println("4. See all transactions");
         System.out.println("5. See all transactions in a given month/year");
         System.out.println("6. See all transactions by an expense category");
-        System.out.println("7. Record a refund");
-        System.out.println("8. Return to main menu");
+        System.out.println("7. Show spending in each expense category");
+        System.out.println("8. Record a refund");
+        System.out.println("9. Return to main menu");
         transactionProcess();
     }
 
@@ -126,6 +127,8 @@ public class Menu {
         } else if (command == 6) {
             showExpenseTransaction();
         } else if (command == 7) {
+            showExpense();
+        } else if (command == 8) {
             refund();
         }
     }
@@ -133,6 +136,7 @@ public class Menu {
     // REQUIRES: amount >= 0, accountName is accountName, accountType is accountType
     // MODIFIES: this
     // EFFECTS: creates a new transaction and adds it to the tracker 
+    @SuppressWarnings("methodlength")
     public void addTransaction() {
         System.out.println("=====================================================");
         System.out.println("What is the number month of your transaction?");
@@ -146,18 +150,18 @@ public class Menu {
         System.out.println("What is the name of the store/vendor?");
         String store = input.nextLine();
         System.out.println("What is the expense category?");
+        printExpenseCategories();
         String exp = input.nextLine();
         System.out.println("Any notes? (press enter to skip)");
         String note = input.nextLine();
         System.out.println("What is the account name?");
+        printAccountNames();
         String accountName = input.nextLine();
         System.out.println("What is the account type?\nChequeing, Savings, Credit");
         String accountType = input.nextLine();
-        transaction = new Transaction(month, date, year, amount, store, exp, note, accountName, accountType);
-        tracker.addTransaction(transaction);
+        tracker.addTransaction(new Transaction(month, date, year, amount, store, exp, note, accountName, accountType));
         updateBank(accountName, accountType, -amount);
-        expense = category.checkCategory(exp);
-        expense.updateSpending(amount);
+        category.checkCategory(exp).updateSpending(amount);
     }
 
     // REQUIRES: 0 <= line <= tracker.getTracker.size() and tracker.getTracker.size() > 0
@@ -168,13 +172,14 @@ public class Menu {
         System.out.println("Here are your transactions:");
         showTransaction(tracker.getTracker());
         System.out.println("Enter the line number of the transaction you wish to delete");
-        int line = Integer.parseInt(input.nextLine());
+        int line = Integer.parseInt(input.nextLine()) - 1;
         transaction = tracker.getTracker().get(line);
         account = bank.findAccount(transaction.getAccountName());
         account.refund(transaction.getAccountType(), transaction.getAmount());
         checkOverdraft(account);
         expense = category.checkCategory(transaction.getExpense());
         expense.updateSpending(-transaction.getAmount());
+        tracker.removeTransaction(transaction);
         System.out.println("Deleted!");
         enter();
     }
@@ -187,7 +192,7 @@ public class Menu {
         System.out.println("Here are your transactions:");
         showTransaction(tracker.getTracker());
         System.out.println("Enter the line number of the transaction you wish to edit");
-        int line = Integer.parseInt(input.nextLine());
+        int line = Integer.parseInt(input.nextLine()) - 1;
         transaction = tracker.getTracker().get(line);
         account = bank.findAccount(transaction.getAccountName());
         account.refund(transaction.getAccountType(), transaction.getAmount());
@@ -197,6 +202,7 @@ public class Menu {
         expense = category.checkCategory(transaction.getExpense());
         expense.updateSpending(-transaction.getAmount());
         expense.updateSpending(amount);
+        transaction.updateAmount(amount);
     }
 
     // EFFECTS: prints out all transactions given
@@ -235,30 +241,68 @@ public class Menu {
         showTransaction(tracker.sortMonth(month, year));
     }
 
+    // EFFECTS: prints spendings in each expense category
+    public void showExpense() {
+        System.out.println("=====================================================");
+        List<Expense> c = category.getExpense();
+        System.out.println("Here are your expense spendings:");
+        for (int i = 0; i < c.size(); i++) {
+            Expense e = c.get(i);
+            String name = ". " + e.getExpense();
+            String spend = ": $" + Double.toString(e.getSpending());
+            System.out.println(Integer.toString(i + 1) + name + spend);
+        }
+        enter();
+    }
+
     // REQUIRES: amount >= 0, bank.findAccount(accName) != null
     // MODIFIES: this
     // EFFECTS: processes a refund by returning the amount back to
     // the proper account
     public void refund() {
-        String accName;
-        String accType;
-        double amount;
         System.out.println("=====================================================");
-        System.out.println("Which account would you like to refund to?");
-        accName = input.nextLine();
-        System.out.println("Which account type?");
-        accType = input.nextLine();
-        System.out.println("What expense category?");
-        String exp = input.nextLine();
-        System.out.println("What is the amount you would like to refund today?");
-        amount = Double.parseDouble(input.nextLine());
+        System.out.println("Here are your transactions:");
+        showTransaction(tracker.getTracker());
+        System.out.println("Which transaction would you like to refund? (enter the line number)");
+        int line = Integer.parseInt(input.nextLine()) - 1;
+        transaction = tracker.findTransaction(line);
+        String accName = transaction.getAccountName();
+        String accType = transaction.getAccountType();
+        String exp = transaction.getExpense();
+        double amount = transaction.getAmount();
         account = bank.findAccount(accName);
         account.refund(accType, amount);
         checkOverdraft(account);
         expense = category.checkCategory(exp);
         expense.updateSpending(-amount);
+        tracker.removeTransaction(transaction);
         System.out.println("Refunded!");
         enter();
+    }
+
+    // EFFECT: prints all current bank institutions
+    public void printAccountNames() {
+        String s = "Your current account names are:\n";
+        for (Account a : bank.getBank()) {
+            s += a.getBank() + " ";
+        }
+        System.out.println(s);
+    }
+
+    // EFFECT: prints all current expense categories
+    public void printExpenseCategories() {
+        String s = "Your current expense categories are:\n";
+        Expense e;
+        List<Expense> c = category.getExpense();
+        for (int i = 0; i < c.size(); i++) {
+            e = c.get(i);
+            if (i != c.size() - 1) {
+                s += e.getExpense() + ", ";
+            } else {
+                s += e.getExpense();
+            }
+        }
+        System.out.println(s);
     }
 
     // REQUIRES: 1 <= command <= 3
