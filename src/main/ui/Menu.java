@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.*;
+
 import model.Account;
 import model.Banks;
 import model.Categories;
@@ -40,7 +41,7 @@ public class Menu {
                 bankAccountsProcess();
             } else if (option == 3) {
                 creditCardProcess();
-            } else {
+            } else if (option == 4) {
                 transferProcess();
             }
         }
@@ -83,14 +84,13 @@ public class Menu {
     // EFFECTS: prompts user input from main menu
     public int mainMenu() {
         System.out.println("======================MAIN MENU======================");
-        System.out.println("What would you like to view/edit? (enter the number):");
+        System.out.println("What would you like to do? (enter the number):");
         System.out.println("1. Transactions");
         System.out.println("2. Bank accounts");
         System.out.println("3. Credit card");
         System.out.println("4. Transfer between accounts");
         System.out.println("5. Quit");
-        String command = input.nextLine();
-        return Integer.parseInt(command);
+        return intInput();
     }
 
     // REQUIRES: 1 <= command <= 6
@@ -113,7 +113,7 @@ public class Menu {
 
     // EFFECTS: directs user to correct transaction menu
     public void transactionProcess() {
-        int command = Integer.parseInt(input.nextLine());
+        int command = intInput();
         if (command == 1) {
             addTransaction();
         } else if (command == 2) {
@@ -133,79 +133,92 @@ public class Menu {
         }
     }
 
-    // REQUIRES: amount >= 0, accountName is accountName, accountType is accountType
+    // REQUIRES: amount >= 0; accountName = account.getBank(); accountType is of 
+    // Chequeing, Savings, or Credit; month, date, year > 0; store is String;
+    // category.checkCategory(exp) != null; note is String
     // MODIFIES: this
-    // EFFECTS: creates a new transaction and adds it to the tracker 
+    // EFFECTS: creates a new transaction and adds it to tracker, also updates 
+    // banking accounts and expense category spendings
     @SuppressWarnings("methodlength")
     public void addTransaction() {
         System.out.println("=====================================================");
         System.out.println("What is the number month of your transaction?");
-        int month = Integer.parseInt(input.nextLine());
+        int month = intInput();
         System.out.println("What is the date of your transaction?");
-        int date = Integer.parseInt(input.nextLine());
+        int date = intInput();
         System.out.println("What was the year of your transaction?");
-        int year = Integer.parseInt(input.nextLine());
+        int year = intInput();
         System.out.println("What is the amount spent?");
-        double amount = Double.parseDouble(input.nextLine());
+        double amount = doubleInput();
         System.out.println("What is the name of the store/vendor?");
-        String store = input.nextLine();
+        String store = stringInput();
         System.out.println("What is the expense category?");
         printExpenseCategories();
-        String exp = input.nextLine();
+        String exp = checkExpense();
         System.out.println("Any notes? (press enter to skip)");
-        String note = input.nextLine();
+        String note = stringInput();
         System.out.println("What is the account name?");
         printAccountNames();
-        String accountName = input.nextLine();
+        String accountName = checkBank();
         System.out.println("What is the account type?\nChequeing, Savings, Credit");
-        String accountType = input.nextLine();
+        String accountType = checkAccount();
         tracker.addTransaction(new Transaction(month, date, year, amount, store, exp, note, accountName, accountType));
         updateBank(accountName, accountType, -amount);
         category.checkCategory(exp).updateSpending(amount);
     }
 
-    // REQUIRES: 0 <= line <= tracker.getTracker.size() and tracker.getTracker.size() > 0
+    // REQUIRES: 0 < line <= tracker.getTracker.size() and tracker.getTracker.size() > 0
     // MODIFIES: this
-    // EFFECTS: removes a transaction
+    // EFFECTS: removes a transaction from tracker; refunds the amount to bank accounts; 
+    // refunds amount to expense category; checks for overdraft. If there are not transactions, return to main
+    // menu
     public void removeTransaction() {
-        System.out.println("=====================================================");
-        System.out.println("Here are your transactions:");
-        showTransaction(tracker.getTracker());
-        System.out.println("Enter the line number of the transaction you wish to delete");
-        int line = Integer.parseInt(input.nextLine()) - 1;
-        transaction = tracker.getTracker().get(line);
-        account = bank.findAccount(transaction.getAccountName());
-        account.refund(transaction.getAccountType(), transaction.getAmount());
-        checkOverdraft(account);
-        expense = category.checkCategory(transaction.getExpense());
-        expense.updateSpending(-transaction.getAmount());
-        tracker.removeTransaction(transaction);
-        System.out.println("Deleted!");
-        enter();
+        if (tracker.getTracker().size() != 0) {
+            System.out.println("=====================================================");
+            System.out.println("Here are your transactions:");
+            showTransaction(tracker.getTracker());
+            System.out.println("Enter the line number of the transaction you wish to delete");
+            int line = intInput() - 1;
+            transaction = tracker.getTracker().get(line);
+            account = bank.findAccount(transaction.getAccountName());
+            account.refund(transaction.getAccountType(), transaction.getAmount());
+            checkOverdraft(account);
+            expense = category.checkCategory(transaction.getExpense());
+            expense.updateSpending(-transaction.getAmount());
+            tracker.removeTransaction(transaction);
+            System.out.println("Deleted!");
+            enter();
+        } else {
+            showTransaction(tracker.getTracker());
+        }
     }
 
-    // REQUIRES: 
+    // REQUIRES: 0 < line <= tracker.getTracker().size()
     // MODIFIES: this
     // EFFECTS: edits a previous transaction
     public void editTransaction() {
-        System.out.println("=====================================================");
-        System.out.println("Here are your transactions:");
-        showTransaction(tracker.getTracker());
-        System.out.println("Enter the line number of the transaction you wish to edit");
-        int line = Integer.parseInt(input.nextLine()) - 1;
-        transaction = tracker.getTracker().get(line);
-        account = bank.findAccount(transaction.getAccountName());
-        account.refund(transaction.getAccountType(), transaction.getAmount());
-        System.out.println("What is the new amount?");
-        double amount = Double.parseDouble(input.nextLine());
-        updateBank(account.getBank(), transaction.getAccountType(), -amount);
-        expense = category.checkCategory(transaction.getExpense());
-        expense.updateSpending(-transaction.getAmount());
-        expense.updateSpending(amount);
-        transaction.updateAmount(amount);
+        if (tracker.getTracker().size() != 0) {
+            System.out.println("=====================================================");
+            System.out.println("Here are your transactions:");
+            showTransaction(tracker.getTracker());
+            System.out.println("Enter the line number of the transaction you wish to edit");
+            int line = intInput() - 1;
+            transaction = tracker.getTracker().get(line);
+            account = bank.findAccount(transaction.getAccountName());
+            account.refund(transaction.getAccountType(), transaction.getAmount());
+            System.out.println("What is the new amount?");
+            double amount = doubleInput();
+            updateBank(account.getBank(), transaction.getAccountType(), -amount);
+            expense = category.checkCategory(transaction.getExpense());
+            expense.updateSpending(-transaction.getAmount());
+            expense.updateSpending(amount);
+            transaction.updateAmount(amount);
+        } else {
+            showTransaction(tracker.getTracker());
+        }
     }
 
-    // EFFECTS: prints out all transactions given
+    // EFFECTS: prints out all transactions in show
     public void showTransaction(List<Transaction> show) {
         System.out.println("=====================================================");
         if (show.size() == 0) {
@@ -220,24 +233,22 @@ public class Menu {
         enter();
     }
 
-    // EFFECTS: finds all transactions under an expense category 
-    // and prints it
+    // EFFECTS: finds all transactions under an expense category and prints it
     public void showExpenseTransaction() {
         System.out.println("=====================================================");
         System.out.println("What expense category would you like to view?");
-        String expense = input.nextLine();
+        String expense = checkExpense();
         showTransaction(tracker.sortExpense(expense));
     }
 
-    // REQUIRES: year, month >= 0
-    // EFFECTS: finds all transactions within a certain month/year
-    // and prints it
+    // REQUIRES: year, month > 0
+    // EFFECTS: finds all transactions within a certain month/year and prints it
     public void showMonthTransaction() {
         System.out.println("=====================================================");
         System.out.println("What year would you like to view?");
-        int year = Integer.parseInt(input.nextLine());
+        int year = intInput();
         System.out.println("What month (in numbers)?");
-        int month = Integer.parseInt(input.nextLine());
+        int month = intInput();
         showTransaction(tracker.sortMonth(month, year));
     }
 
@@ -255,16 +266,17 @@ public class Menu {
         enter();
     }
 
-    // REQUIRES: amount >= 0, bank.findAccount(accName) != null
+    // REQUIRES: amount >= 0, bank.findAccount(accName) != null, 0 < line <= tracker.getTracker.size()
     // MODIFIES: this
-    // EFFECTS: processes a refund by returning the amount back to
-    // the proper account
+    // EFFECTS: processes a refund by returning the amount back to the proper account, checking 
+    // for overdraft, refunding to the proper expense category, and removing the transaction 
+    // from tracker
     public void refund() {
         System.out.println("=====================================================");
         System.out.println("Here are your transactions:");
         showTransaction(tracker.getTracker());
         System.out.println("Which transaction would you like to refund? (enter the line number)");
-        int line = Integer.parseInt(input.nextLine()) - 1;
+        int line = intInput() - 1;
         transaction = tracker.findTransaction(line);
         String accName = transaction.getAccountName();
         String accType = transaction.getAccountType();
@@ -314,7 +326,7 @@ public class Menu {
         System.out.println("1. Add new bank account");
         System.out.println("2. See bank account balances");
         System.out.println("3. Return to main menu");
-        int command = Integer.parseInt(input.nextLine());
+        int command = intInput();
         if (command == 1) {
             addBank();
         } else if (command == 2) {
@@ -365,15 +377,15 @@ public class Menu {
     public void addBank() {
         System.out.println("=====================================================");
         System.out.println("What is the name of your banking institution?");
-        String name = input.nextLine();
+        String name = stringInput();
         System.out.println("Please enter your chequeing balance");
-        double cheq = Double.parseDouble(input.nextLine());
+        double cheq = doubleInput();
         System.out.println("Please enter your savings balance");
-        double save = Double.parseDouble(input.nextLine());
+        double save = doubleInput();
         System.out.println("Please enter your credit balance");
-        double cred = Double.parseDouble(input.nextLine());
+        double cred = doubleInput();
         System.out.println("Please enter your credit limit");
-        double credLim = Double.parseDouble(input.nextLine());
+        double credLim = doubleInput();
         account = new Account(cheq, save, cred, name, credLim);
         bank.newAccount(account);
         System.out.println("New bank account added!");
@@ -400,7 +412,7 @@ public class Menu {
         System.out.println("1. Pay credit card");
         System.out.println("2. Change credit card limit");
         System.out.println("3. Return to main menu");
-        int command = Integer.parseInt(input.nextLine());
+        int command = intInput();
         if (command == 1) {
             payCreditCard();
         } else if (command == 2) {
@@ -416,9 +428,9 @@ public class Menu {
         double amount;
         System.out.println("=====================================================");
         System.out.println("What account would you like to pay?");
-        acc = input.nextLine();
+        acc = checkBank();
         System.out.println("How much would you like to pay?");
-        amount = Double.parseDouble(input.nextLine());
+        amount = doubleInput();
         account = bank.findAccount(acc);
         account.updateCredit(-amount);
         System.out.println("Paid!");
@@ -427,15 +439,16 @@ public class Menu {
 
     // REQUIRES: bank.findAccount(acc) != null, amount > 0
     // MODIFIES: this
-    // EFFECTS: changes credit card limit on a certain credit card
+    // EFFECTS: changes credit card limit on a certain credit card and checks
+    // for credit account over-usage
     public void changeCreditLimit() {
         String acc;
         double amount;
         System.out.println("=====================================================");
         System.out.println("What account would you like edit?");
-        acc = input.nextLine();
+        acc = checkBank();
         System.out.println("How much is your new credit card limit?");
-        amount = Double.parseDouble(input.nextLine());
+        amount = doubleInput();
         account = bank.findAccount(acc);
         account.updateCreditLimit(amount);
         System.out.println("Changed!");
@@ -450,7 +463,7 @@ public class Menu {
         System.out.println("======================TRANSFER=======================");
         System.out.println("1. Transfer between accounts");
         System.out.println("2. return to main menu");
-        int command = Integer.parseInt(input.nextLine());
+        int command = intInput();
         if (command == 1) {
             transfer();
         }
@@ -459,8 +472,7 @@ public class Menu {
 
     // REQUIRES: amount >= 0, acc1Type != acc2Type != "Credit"
     // MODIFIES: this
-    // EFFECTS: moves a certain amount from one 
-    // account to another
+    // EFFECTS: moves a certain amount from one account to another
     public void transfer() {
         String acc1Name;
         String acc1Type;
@@ -469,15 +481,15 @@ public class Menu {
         double amount;
         System.out.println("=====================================================");
         System.out.println("What is the first account you would like to transfer out of?");
-        acc1Name = input.nextLine();
+        acc1Name = checkBank();
         System.out.println("What is the account type? (Credit is not allowed)");
-        acc1Type = input.nextLine();
+        acc1Type = checkAccount();
         System.out.println("What is the second account you would like to transfer into?");
-        acc2Name = input.nextLine();
+        acc2Name = checkBank();
         System.out.println("What is the account type? (Credit is not allowed)");
-        acc2Type = input.nextLine();
+        acc2Type = checkAccount();
         System.out.println("What is the amount you would like to transfer?");
-        amount = Double.parseDouble(input.nextLine());
+        amount = doubleInput();
         bank.transfer(acc1Name, acc1Type, acc2Name, acc2Type, amount);
         checkOverdraft(bank.findAccount(acc1Name));
         checkOverdraft(bank.findAccount(acc2Name));
@@ -490,5 +502,106 @@ public class Menu {
         System.out.println("Press enter to continue");
         input.nextLine();
     }
+
+    // EFFECTS: checks to make sure user input is a positive double
+    public double doubleInput() {
+        String in;
+        double inTry;
+        while (true) {
+            in = input.nextLine();
+            try {
+                inTry = Double.parseDouble(in);
+                if (inTry >= 0) {
+                    return inTry;
+                } else {
+                    System.out.println("Please enter a positive decimal amount");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a decmial amount");
+            }
+        }
+    }
     
+    // EFFECTS: checks to make sure user input is of form String
+    public String stringInput() {
+        String in;
+        while (true) {
+            in = input.nextLine();
+            try {
+                Double.parseDouble(in);
+                System.out.println("Please enter a string");
+            } catch (NumberFormatException e) {
+                return in;
+            }
+        }
+    }
+
+    // EFFECTS: checks to make sure user input is a positive integer
+    public int intInput() {
+        String in;
+        int inTry;
+        while (true) {
+            in = input.nextLine();
+            try {
+                inTry = Integer.parseInt(in);
+                if (inTry > 0) {
+                    return inTry;
+                } else {
+                    System.out.println("Please enter a positive number");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a positive number");
+            }
+        }
+    }
+
+    // EFFECT: makes sure user input is a valid bank name
+    public String checkBank() {
+        String in;
+        List<String> check = new ArrayList<>();
+        for (Account a : bank.getBank()) {
+            check.add(a.getBank());
+        }
+        while (true) {
+            in = stringInput();
+            if (check.contains(in)) {
+                return in;
+            } else {
+                System.out.println("Please enter a valid account name");
+                printAccountNames();
+            }
+        }
+    }
+
+    // EFFECT: makes sure user input is a valid bank account type
+    public String checkAccount() {
+        String in;
+        while (true) {
+            in = stringInput();
+            if (in.equals("Chequeing") || in.equals("Savings") || in.equals("Credit")) {
+                return in;
+            } else {
+                System.out.println("Please choose from \nChequeing, Savings, Credit");
+            }
+        }
+
+    }
+
+    // EFFECT: makes sure user input is a valid expense category
+    public String checkExpense() {
+        String in;
+        List<String> check = new ArrayList<>();
+        for (Expense e : category.getExpense()) {
+            check.add(e.getExpense());
+        }
+        while (true) {
+            in = stringInput();
+            if (check.contains(in)) {
+                return in;
+            } else {
+                System.out.println("Please enter a valid expense category");
+                printExpenseCategories();
+            }
+        }
+    }
 }

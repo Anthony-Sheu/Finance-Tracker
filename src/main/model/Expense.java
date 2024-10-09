@@ -1,6 +1,5 @@
 package model;
 
-import java.util.*;
 
 // Represents an expense category
 public class Expense {
@@ -12,12 +11,6 @@ public class Expense {
     public Expense(String expense) {
         this.expense = expense;
         this.spending = 0;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: changes expense category name
-    public void updateExpense(String expense) {
-        this.expense = expense;
     }
 
     // GETTER

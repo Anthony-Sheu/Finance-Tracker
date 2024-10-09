@@ -3,15 +3,18 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.*;
 
 public class CategoriesTest {
 
     private Categories category;
-    private Expense expense;
+    private Expense expense1;
+    private Expense expense2;
 
     @BeforeEach
     void runBefore() {
-        expense = new Expense("Rent");
+        expense1 = new Expense("Rent");
+        expense2 = new Expense("Home");
         category = new Categories();
     }
 
@@ -22,18 +25,28 @@ public class CategoriesTest {
 
     @Test
     void testUpdateCategory() {
-        category.addCategory(expense);
-        assertEquals(expense, category.checkCategory("Rent"));
-        category.removeCategory(expense);
+        category.addCategory(expense1);
+        assertEquals(expense1, category.checkCategory("Rent"));
+        category.removeCategory(expense1);
         assertEquals(null, category.checkCategory("Rent"));
     }
 
     @Test
-    void testUpdateExpense() {
-        category.addCategory(expense);
-        category.updateExpense("Rent", "Groceries");
-        assertEquals("Groceries", category.checkCategory("Groceries").getExpense());
-        assertEquals(null, category.checkCategory("Rent"));
+    void testGetExpense() {
+        List<Expense> exp = new ArrayList<>();
+        exp.add(expense1);
+        exp.add(expense2);
+        category.addCategory(expense1);
+        category.addCategory(expense2);
+        assertEquals(exp, category.getExpense());
+    }
+
+    @Test
+    void testCheckCategory() {
+        assertEquals(null, category.checkCategory("Food"));
+        category.addCategory(expense1);
+        assertEquals(expense1, category.checkCategory("Rent"));
+        assertEquals(null, category.checkCategory("Food"));
     }
 
 

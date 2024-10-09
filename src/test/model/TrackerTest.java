@@ -61,18 +61,18 @@ public class TrackerTest {
         tracker.addTransaction(transaction4);
         assertEquals(check, tracker.sortExpense("Food"));
     }
-
-    @Test
-    void testUpdateDate() {
-        tracker.addTransaction(transaction1);
-        tracker.updateExpense(0, "Home");
-        assertEquals("Home", tracker.findTransaction(0).getExpense());
-    }
-
+    
     @Test
     void testPrint() {
         tracker.addTransaction(transaction1);
         assertEquals("9/1/2024, $1500.0, Interac, Rent, No note, CIBC Chequeing", transaction1.printTransaction());
+    }
+
+    @Test
+    void testFindTransaction() {
+        tracker.addTransaction(transaction1);
+        tracker.addTransaction(transaction2);
+        assertEquals(transaction1, tracker.findTransaction(0));
     }
 
 }
