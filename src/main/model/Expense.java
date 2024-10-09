@@ -6,10 +6,12 @@ import java.util.*;
 public class Expense {
 
     private String expense;
+    private double spending;
 
     // EFFECTS: constructs a list of expenses with expense category names
     public Expense(String expense) {
         this.expense = expense;
+        this.spending = 0;
     }
 
     // MODIFIES: this
@@ -18,9 +20,20 @@ public class Expense {
         this.expense = expense;
     }
 
-    // EFFECTS: returns expense category name
+    // GETTER
     public String getExpense() {
         return this.expense;
+    }
+
+    // GETTER
+    public double getSpending() {
+        return this.spending;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: updates spending
+    public void updateSpending(double amount) {
+        this.spending += amount;
     }
 
 

@@ -50,11 +50,7 @@ public class Account {
         this.credit += amount;
         if (this.credit > creditLimit) {
             overLimit = true;
-            double difference = getCredit() - getCreditLimit();
-            System.out.println("***WARNING***");
-            System.out.println("Your " + getBank() + " credit account is overused by $" + difference);
         } else {
-            
             overLimit = false;
         }
     }   
@@ -65,9 +61,6 @@ public class Account {
         this.creditLimit = amount;
         if (this.credit > creditLimit) {
             overLimit = true;
-            double difference = getCredit() - getCreditLimit();
-            System.out.println("***WARNING***");
-            System.out.println("Your " + getBank() + " credit account is overused by $" + difference);
         } else {
             overLimit = false;
         }
@@ -80,8 +73,6 @@ public class Account {
         this.savings += amount;
         if (this.savings < 0) {
             overdraftSavings = true;
-            System.out.println("***WARNING***");
-            System.out.println("Your " + getBank() + " savings account is overdrafted by $" + getSavings());
         } else {
             overdraftSavings = false;
         }
@@ -94,8 +85,6 @@ public class Account {
         this.chequeing += amount;
         if (this.chequeing < 0) {
             overdraftChequeing = true;
-            System.out.println("***WARNING***");
-            System.out.println("Your " + getBank() + " chequeing account is overdrafted by $" + getChequeing());
         } else {
             overdraftChequeing = false;
         }
@@ -132,7 +121,7 @@ public class Account {
     // gain amount while credit loses amount
     public void refund(String accType, double amount) {
         if (accType.equals("Chequeing")) {
-            updateChequeing(amount);;
+            updateChequeing(amount);
         } else if (accType.equals("Savings")) {
             updateSavings(amount);
         } else {
