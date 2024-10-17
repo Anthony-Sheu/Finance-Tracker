@@ -25,3 +25,5 @@ Ever since I opened my first bank account and started working at 16, my dad has 
 - As a user, I want to be able to hide a transaction but still make it valid
 - As a user, I want to be able to visualize my spending trends
 - As a user, I want to be able to add/remove expense categories
+- As a user, I want to be able to have the choice to save all my transactions and banking information to a file
+- As a user, I want to be able to load my transactions and banking information from a previous session
