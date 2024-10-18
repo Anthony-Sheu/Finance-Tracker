@@ -2,8 +2,6 @@ package ui;
 
 import java.util.*;
 
-import org.junit.platform.engine.discovery.PackageNameFilter;
-
 import model.Account;
 import model.Banks;
 import model.Categories;
@@ -57,9 +55,25 @@ public class Menu {
         tracker = new Tracker();
         input = new Scanner(System.in);
         categoryInit();
+        checkBankFile();
+        checkTrackerFile();
         System.out.println("======================START UP======================");
         System.out.println("Please start by entering your banking information");
         addBank();
+    }
+    
+    // MODIFIES: this
+    // EFFECTS: checks if there is information in bank file, and if there is, prompts
+    // user if they would like to load it
+    public void checkBankFile() {
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks if there is information in tracker file, and if there is, prompts
+    // user if they would like to load it
+    public void checkTrackerFile() {
+
     }
 
     // MODIFIES: this
