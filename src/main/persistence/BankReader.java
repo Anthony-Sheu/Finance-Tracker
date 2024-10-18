@@ -8,6 +8,12 @@ import java.io.IOException;
 // Represents a reader that reads bank from JSON data stored in file
 public class BankReader extends JsonReader {
 
+    // EFFECTS: construcs reader to read Bank JSON file
+    public BankReader(String source) {
+        super(source);
+        //TODO Auto-generated constructor stub
+    }
+
 
 
 }
