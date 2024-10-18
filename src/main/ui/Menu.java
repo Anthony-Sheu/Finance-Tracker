@@ -1,6 +1,8 @@
 package ui;
 
+import java.io.FileNotFoundException;
 import java.util.*;
+import java.io.IOException;
 
 import model.Account;
 import model.Banks;
@@ -8,6 +10,8 @@ import model.Categories;
 import model.Expense;
 import model.Tracker;
 import model.Transaction;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 // Represents a menu on the console application
 public class Menu {
@@ -19,6 +23,8 @@ public class Menu {
     private Transaction transaction;
     private Categories category;
     private Expense expense;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs start application
     public Menu() {
@@ -45,6 +51,7 @@ public class Menu {
                 transferProcess();
             }
         }
+        promptSave();
         System.out.println("Goodbye!");
     }
 
@@ -62,6 +69,13 @@ public class Menu {
         addBank();
     }
     
+    // MODIFIES: this
+    // EFFECTS: asks the user if they would like to save their current bank information
+    // or transactions or both
+    public void promptSave() {
+
+    }
+
     // MODIFIES: this
     // EFFECTS: checks if there is information in bank file, and if there is, prompts
     // user if they would like to load it

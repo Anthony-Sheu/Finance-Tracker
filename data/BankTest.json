@@ -1,0 +1,18 @@
+{
+    "Accounts": [
+        {
+        "bank": "CIBC",
+        "Chequeing": 1,
+        "Savings": 100,
+        "Credit": 0,
+        "Credit Limit": 1500
+        },
+        {
+        "bank": "RBC",
+        "Chequeing": 0,
+        "Savings": 100,
+        "Credit": 600,
+        "Credit Limit": 100
+        }
+    ]
+}

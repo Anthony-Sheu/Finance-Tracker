@@ -1,11 +1,19 @@
 package persistence;
 
+import org.json.JSONObject;
+import model.Banks;
+
 public class BankWriter extends JsonWriter {
 
-    // EFFECTS: constructs writer to write to Bank JSON file
+    // EFFETCS: constructs a jsonwriter for bank
     public BankWriter(String destination) {
         super(destination);
-        //TODO Auto-generated constructor stub
+    }
+
+    // EFFECTS: returns a JSONObject of the data that
+    // is going to be written
+    public JSONObject toJson(Banks bank) {
+        return null;
     }
 
 }

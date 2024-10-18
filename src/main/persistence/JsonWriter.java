@@ -1,12 +1,16 @@
 package persistence;
 
+import model.Banks;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
 
 // represents a write that writes JSON representation to file
 public class JsonWriter {
-
-    private String destination;
+    protected static final int TAB = 4;
+    protected String destination;
+    protected PrintWriter writer;
 
     // EFFECTS: constructs writer to write to destination file
     public JsonWriter(String destination) {
@@ -22,7 +26,7 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation to file
-    public void write() {
+    public void write(JSONObject json) {
 
     }
 

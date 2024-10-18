@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Represents a bank account with bank name,chequeing, 
 // savings, and credit accounts
 public class Account {
@@ -137,4 +139,5 @@ public class Account {
         String credLim = "\nCredit Limit: $" + Double.toString(this.creditLimit);
         return bank + cheq +  save +  cred +  credLim;
     }
+
 }

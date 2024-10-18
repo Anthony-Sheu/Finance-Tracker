@@ -2,6 +2,9 @@ package model;
 
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 // Represents a collection of bank accounts
 public class Banks {
 

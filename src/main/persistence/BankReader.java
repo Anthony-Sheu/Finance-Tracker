@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Banks;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.json.*;
@@ -14,6 +16,9 @@ public class BankReader extends JsonReader {
         //TODO Auto-generated constructor stub
     }
 
-
+    // EFFECTS: converts JSONObject to Bank
+    public Banks toBanks(JSONObject json) {
+        return null;
+    }
 
 }
