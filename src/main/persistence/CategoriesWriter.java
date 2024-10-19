@@ -16,17 +16,26 @@ public class CategoriesWriter extends JsonWriter {
 
     // EFFECTS: returns a JSONObject of the data that is going to be written
     public JSONObject toJson(Categories category) {
-        return null;
+        JSONObject json = new JSONObject();
+        json.put("Expenses", expensesToJsonArray(category.getExpense()));
+        return json;
     }
 
     // EFFECTS: returns expenses in JSON array
     public JSONArray expensesToJsonArray(List<Expense> expenses) {
-        return null;
+        JSONArray jsonArray = new JSONArray();
+        for (Expense e : expenses) {
+            jsonArray.put(expenseToJson(e));
+        }
+        return jsonArray;
     }
 
     // EFFECTS: takes in an expense and converts it into a JSON Object
     public JSONObject expenseToJson(Expense expense) {
-        return null;
+        JSONObject json = new JSONObject();
+        json.put("Name", expense.getExpense());
+        json.put("Spending", expense.getSpending());
+        return json;
     }
 
 }

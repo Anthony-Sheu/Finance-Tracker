@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
-import java.util.*;
-import java.util.jar.JarEntry;
 
 public class CategoriesPersistenceTest {
 
@@ -17,7 +15,6 @@ public class CategoriesPersistenceTest {
     private CategoriesReader reader;
     Categories category;
     Expense expense1, expense2;
-    List<Expense> arr;
 
     @BeforeEach
     void runBefore() {
@@ -27,7 +24,6 @@ public class CategoriesPersistenceTest {
         category = new Categories();
         expense1 = new Expense("Holiday");
         expense2 = new Expense("Field Trip");
-        arr = new ArrayList<>();
     }
 
     @Test
@@ -39,8 +35,7 @@ public class CategoriesPersistenceTest {
             writer.close();
             category = reader.toCategories(reader.read());
             assertNull(category.checkCategory("CPSC 210"));
-            arr.add(expense1);
-            assertEquals(arr, category.getExpense());
+            checkExpense(expense1, category.checkCategory("Holiday"));
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -55,13 +50,17 @@ public class CategoriesPersistenceTest {
             writer.write(writer.toJson(category));
             writer.close();
             category = reader.toCategories(reader.read());
-            assertEquals(expense1.getExpense(), category.checkCategory("Holiday"));
-            arr.add(expense1);
-            arr.add(expense2);
-            assertEquals(arr, category.getExpense());
+            checkExpense(expense1, category.checkCategory("Holiday"));
+            checkExpense(expense2, category.checkCategory("Field Trip"));
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
+    }
+
+    // EFFECTS: takes in two expenses and matches them by content
+    private void checkExpense(Expense exp1, Expense exp2) {
+        assertEquals(exp1.getExpense(), exp2.getExpense());
+        assertEquals(exp1.getSpending(), exp2.getSpending());
     }
 
 }

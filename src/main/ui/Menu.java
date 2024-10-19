@@ -12,13 +12,19 @@ import model.Tracker;
 import model.Transaction;
 import persistence.BankReader;
 import persistence.BankWriter;
+import persistence.CategoriesReader;
+import persistence.CategoriesWriter;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import persistence.TrackerReader;
+import persistence.TrackerWriter;
 
 // Represents a menu on the console application
 public class Menu {
 
     private static final String BANKS_STORE = "./data/Bank.json";
+    private static final String TRACKER_STORE = "./data/Tracker.json";
+    private static final String CATEGORIES_STORE = "./data/Categories.json";
     private Scanner input;
     private Banks bank;
     private Account account;
@@ -28,6 +34,10 @@ public class Menu {
     private Expense expense;
     private BankWriter bankWriter;
     private BankReader bankReader;
+    private TrackerWriter trackerWriter;
+    private TrackerReader trackerReader;
+    private CategoriesWriter categoryWriter;
+    private CategoriesReader categoryReader;
 
     // EFFECTS: runs start application
     public Menu() {
@@ -66,12 +76,18 @@ public class Menu {
         input = new Scanner(System.in);
         bankReader = new BankReader(BANKS_STORE);
         bankWriter = new BankWriter(BANKS_STORE);
+        trackerReader = new TrackerReader(TRACKER_STORE);
+        trackerWriter = new TrackerWriter(TRACKER_STORE);
+        categoryReader = new CategoriesReader(CATEGORIES_STORE);
+        categoryWriter = new CategoriesWriter(CATEGORIES_STORE);
         categoryInit();
-        checkBankFile();
-        checkTrackerFile();
-        System.out.println("======================START UP======================");
-        System.out.println("Please start by entering your banking information");
-        addBank();
+        if (!checkBankFile()) {
+            System.out.println("======================START UP======================");
+            System.out.println("Please start by entering your banking information");
+            addBank();
+        } else {
+            checkTrackerFile();
+        }
     }
     
     // MODIFIES: this
@@ -85,7 +101,21 @@ public class Menu {
         int command = intInput();
         if (command == 1) {
             loadBankFile();
+        } else {
+            System.out.println("Banking information was not saved.");
         }
+        enter();
+        System.out.println("=====================================================");
+        System.out.println("Would you like to save your transaction information?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        command = intInput();
+        if (command == 1) {
+            loadBankFile();
+        } else {
+            System.out.println("Banking information was not saved.");
+        }
+        enter();
     }
 
     // EFFECTS: loads current banking information into json file
@@ -100,11 +130,23 @@ public class Menu {
         }
     }
 
+    // EFFECTS: loads current transactions information into json file
+    public void loadTrackerFile() {
+        try {
+            bankWriter.open();
+            bankWriter.write(bankWriter.toJson(bank));
+            bankWriter.close();
+            System.out.println("Successfully saved!");
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occured.");
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: checks if there is information in bank file, and if there is, prompts
-    // user if they would like to load it
-    public void checkBankFile() {
-
+    // user if they would like to load it, returns boolean
+    public boolean checkBankFile() {
+        return false;
     }
 
     // MODIFIES: this

@@ -17,13 +17,23 @@ public class CategoriesReader extends JsonReader {
 
     // EFFECTS: converts JSONObject to Categories;
     public Categories toCategories(JSONObject json) {
-        return null;
+        Categories category = new Categories();
+        JSONArray jsonArray = json.getJSONArray("Expenses");
+        for (Object o : jsonArray) {
+            JSONObject nextJson = (JSONObject) o;
+            toExpense(category, nextJson);
+        }
+        return category;
     }
 
     // MODIFIES: this
     // EFFECTS: converts JSONObject to Expense and adds it to category
     public void toExpense(Categories category, JSONObject json) {
-        
+        String name = json.getString("Name");
+        double spending = json.getDouble("Spending");
+        Expense expense = new Expense(name);
+        expense.updateSpending(spending);
+        category.addCategory(expense);
     }
 
 }
