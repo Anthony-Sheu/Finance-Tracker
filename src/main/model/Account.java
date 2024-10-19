@@ -1,7 +1,5 @@
 package model;
 
-import org.json.JSONObject;
-
 // Represents a bank account with bank name,chequeing, 
 // savings, and credit accounts
 public class Account {

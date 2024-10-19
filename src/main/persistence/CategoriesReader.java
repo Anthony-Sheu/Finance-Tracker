@@ -3,10 +3,7 @@ package persistence;
 import model.Categories;
 import model.Expense;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.json.*;
-import java.io.IOException;
 
 public class CategoriesReader extends JsonReader {
 

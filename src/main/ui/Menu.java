@@ -14,8 +14,6 @@ import persistence.BankReader;
 import persistence.BankWriter;
 import persistence.CategoriesReader;
 import persistence.CategoriesWriter;
-import persistence.JsonReader;
-import persistence.JsonWriter;
 import persistence.TrackerReader;
 import persistence.TrackerWriter;
 

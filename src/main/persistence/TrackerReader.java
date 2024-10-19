@@ -35,10 +35,9 @@ public class TrackerReader extends JsonReader {
         String store = json.getString("Store");
         String expense = json.getString("Expense");
         String note = json.getString("Note");
-        String accountName = json.getString("Account Name");
-        String accounType = json.getString("Account Type");
-        Transaction transaction = new Transaction(month, date, year, amount, store, expense, note, accountName, accounType);
-        tracker.addTransaction(transaction);
+        String accName = json.getString("Account Name");
+        String accType = json.getString("Account Type");
+        tracker.addTransaction(new Transaction(month, date, year, amount, store, expense, note, accName, accType));
     }
 
 }

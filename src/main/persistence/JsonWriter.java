@@ -1,8 +1,5 @@
 package persistence;
 
-import model.Banks;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
 
