@@ -4,6 +4,8 @@ import model.Categories;
 import model.Expense;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -12,7 +14,7 @@ public class CategoriesPersistenceTest {
 
     private String source;
     private CategoriesWriter writer;
-    private CategoriesReader reader;
+    private CategoriesReader reader, readerEmpty;
     Categories category;
     Expense expense1, expense2;
 
@@ -21,9 +23,22 @@ public class CategoriesPersistenceTest {
         source = "./data/CategoriesTest.json";
         writer = new CategoriesWriter(source);
         reader = new CategoriesReader(source);
+        readerEmpty = new CategoriesReader("./data/CategoriesTestEmpty.json");
         category = new Categories();
         expense1 = new Expense("Holiday");
         expense2 = new Expense("Field Trip");
+    }
+
+    @Test
+    void testReadEmptyFile() {
+        try {
+            category = readerEmpty.toCategories(readerEmpty.read());
+            fail("Error expected");
+        } catch (IOException e) {
+            // pass
+        } catch (JSONException e) {
+            // pass
+        }
     }
 
     @Test

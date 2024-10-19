@@ -36,4 +36,18 @@ public class JsonReader {
 
         return contentBuilder.toString();
     }
+
+    // EFFECTS: checks if source file is empty
+    // true = not empty, false = empty
+    public boolean checkFile() {
+        try {
+            read();
+            return true;
+        } catch (IOException e) {
+            return false;
+        } catch (JSONException e) {
+            return false;
+        }
+    }
+
 }

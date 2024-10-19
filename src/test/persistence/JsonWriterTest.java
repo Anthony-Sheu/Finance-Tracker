@@ -12,7 +12,7 @@ public class JsonWriterTest {
     @Test
     void testReadInvalidFile() {
         try {
-            JsonWriter writer = new JsonWriter("./data/rainbow.json");
+            JsonWriter writer = new JsonWriter("./data/\0rainbow.json");
             writer.open();
             fail("IOException expected");
         } catch (FileNotFoundException e) {

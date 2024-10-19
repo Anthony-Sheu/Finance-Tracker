@@ -3,6 +3,7 @@ package persistence;
 import model.Banks;
 import model.Account;
 
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class BankPersistenceTest {
 
     private String destination;
     private BankWriter writer;
-    private BankReader reader;
+    private BankReader reader, readerEmpty;
     private Banks bank;
     private Account acc1, acc2;
 
@@ -23,9 +24,22 @@ public class BankPersistenceTest {
         destination = "./data/BankTest.json";
         writer = new BankWriter(destination);
         reader = new BankReader(destination);
+        readerEmpty = new BankReader("./data/BankTestEmpty.json");
         bank = new Banks();
         acc1 = new Account(100, 1000, 0, "CIBC", 1500);
         acc2 = new Account(1, 500, 600, "RBC", 1000);
+    }
+
+    @Test
+    void testReadEmptyFile() {
+        try {
+            bank = readerEmpty.toBanks(readerEmpty.read());
+            fail("Error expected");
+        } catch (IOException e) {
+            // pass
+        } catch (JSONException e) {
+            // pass
+        }
     }
 
     @Test

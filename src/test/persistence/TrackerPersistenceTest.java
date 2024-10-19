@@ -3,6 +3,7 @@ package persistence;
 import model.Tracker;
 import model.Transaction;
 
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ public class TrackerPersistenceTest {
     private String source;
     private Tracker tracker;
     private Transaction t1, t2;
-    private TrackerReader reader;
+    private TrackerReader reader, readerEmpty;
     private TrackerWriter writer;
 
     @BeforeEach
@@ -23,9 +24,22 @@ public class TrackerPersistenceTest {
         source = "./data/Tracker.json";
         writer = new TrackerWriter(source);
         reader = new TrackerReader(source);
+        readerEmpty = new TrackerReader("./data/TrackerTestEmpty.json");
         tracker = new Tracker();
         t1 = new Transaction(9, 18, 2024, 100, "Uber", "Transportation", "", "CIBC", "Chequeing");
         t2 = new Transaction(8, 21, 2023, 5, "McDonald's", "Food", "", "RBC", "Credit");
+    }
+
+    @Test
+    void testReadEmptyFile() {
+        try {
+            tracker = readerEmpty.toTracker(readerEmpty.read());
+            fail("Error expected");
+        } catch (IOException e) {
+            // pass
+        } catch (JSONException e) {
+            // pass
+        }
     }
 
     @Test

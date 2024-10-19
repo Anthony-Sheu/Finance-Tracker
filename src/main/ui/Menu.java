@@ -100,18 +100,17 @@ public class Menu {
         System.out.println("2. No");
         int command = intInput();
         if (command == 1) {
-            loadBankFile();
-        } else {
-            System.out.println("Banking information was not saved.");
-        }
-        enter();
-        System.out.println("=====================================================");
-        System.out.println("Would you like to save your transaction information?");
-        System.out.println("1. Yes");
-        System.out.println("2. No");
-        command = intInput();
-        if (command == 1) {
-            loadBankFile();
+            saveBankFile();
+            System.out.println("=====================================================");
+            System.out.println("Would you like to save your transaction information?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+            command = intInput();
+            if (command == 1) {
+                saveTrackerFile();
+            } else { 
+                System.out.println("Transaction information was not saved.");
+            }
         } else {
             System.out.println("Banking information was not saved.");
         }
@@ -119,7 +118,7 @@ public class Menu {
     }
 
     // EFFECTS: loads current banking information into json file
-    public void loadBankFile() {
+    public void saveBankFile() {
         try {
             bankWriter.open();
             bankWriter.write(bankWriter.toJson(bank));
@@ -130,12 +129,15 @@ public class Menu {
         }
     }
 
-    // EFFECTS: loads current transactions information into json file
-    public void loadTrackerFile() {
+    // EFFECTS: loads current transactions and categories information into json file
+    public void saveTrackerFile() {
         try {
-            bankWriter.open();
-            bankWriter.write(bankWriter.toJson(bank));
-            bankWriter.close();
+            trackerWriter.open();
+            trackerWriter.write(trackerWriter.toJson(tracker));
+            trackerWriter.close();
+            categoryWriter.open();
+            categoryWriter.write(categoryWriter.toJson(category));
+            categoryWriter.close();
             System.out.println("Successfully saved!");
         } catch (FileNotFoundException e) {
             System.out.println("An error occured.");
@@ -144,16 +146,58 @@ public class Menu {
 
     // MODIFIES: this
     // EFFECTS: checks if there is information in bank file, and if there is, prompts
-    // user if they would like to load it, returns boolean
+    // user if they would like to load it,
+    // returns true if there is information saved, false otherwise
     public boolean checkBankFile() {
-        return false;
+        if (bankReader.checkFile()) {
+            System.out.println("=====================================================");
+            System.out.println("You currently have saved banking information, would you like to load it?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+            int command = intInput();
+            if (command == 1) {
+                loadBankFile();
+                if (trackerReader.checkFile() && categoryReader.checkFile()) {
+                    checkTrackerFile();
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads bank information from saved json file
+    public void loadBankFile() {
+        try {
+            bank = bankReader.toBanks(bankReader.read());
+            System.out.println("Successfully loaded!");
+        } catch (IOException e) {
+            System.out.println("An error occured, could not load information");
+        }
+        enter();
     }
 
     // MODIFIES: this
     // EFFECTS: checks if there is information in tracker file, and if there is, prompts
     // user if they would like to load it
     public void checkTrackerFile() {
-
+        System.out.println("=====================================================");
+        System.out.println("You currently have saved transaction information, would you like to load it?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int command = intInput();
+        if (command == 1) {
+            try {
+                tracker = trackerReader.toTracker(trackerReader.read());
+                category = categoryReader.toCategories(categoryReader.read());
+                System.out.println("Successfully loaded!");
+            } catch (IOException e) {
+                System.out.println("An error occured, could not load information");
+            }
+            enter();
+        }
     }
 
     // MODIFIES: this

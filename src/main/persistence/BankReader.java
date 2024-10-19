@@ -41,5 +41,4 @@ public class BankReader extends JsonReader {
         account.loadAccount(cheqOver, saveOver, credOver);
         bank.newAccount(account);
     }
-
 }

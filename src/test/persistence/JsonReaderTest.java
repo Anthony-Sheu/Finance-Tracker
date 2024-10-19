@@ -9,8 +9,8 @@ import java.util.jar.JarEntry;
 public class JsonReaderTest {
 
     @Test
-    protected void testReaderNonExistentFile(String source) {
-        JsonReader reader = new JsonReader(source);
+    protected void testReaderNonExistentFile() {
+        JsonReader reader = new JsonReader("./data/rainbow.json");
         try {
             reader.read();
             fail("IOException expected");
