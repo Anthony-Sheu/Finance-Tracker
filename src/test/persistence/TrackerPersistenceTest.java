@@ -65,6 +65,9 @@ public class TrackerPersistenceTest {
         assertEquals(t1.getExpense(), t2.getExpense());
         assertEquals(t1.getAccountType(), t2.getAccountType());
         assertEquals(t1.getAmount(), t2.getAmount());
+        assertEquals(t1.getStore(), t2.getStore());
+        assertEquals(t1.getNote(), t2.getNote());
+        assertEquals(t1.getDate(), t2.getDate());
     }
 
 }

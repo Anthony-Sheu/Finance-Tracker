@@ -49,8 +49,23 @@ public class Transaction {
     }
 
     // GETTER
+    public int getDate() {
+        return this.date;
+    }
+
+    // GETTER
+    public String getStore() {
+        return this.store;
+    }
+
+    // GETTER
     public String getExpense() {
         return this.expense;
+    }
+
+    // GETTER
+    public String getNote() {
+        return this.note;
     }
 
     // GETTER

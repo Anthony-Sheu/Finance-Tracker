@@ -15,6 +15,7 @@ public class BankReader extends JsonReader {
     }
 
     // EFFECTS: converts JSONObject to Bank
+    // citation
     public Banks toBanks(JSONObject json) {
         Banks bank = new Banks();
         JSONArray jsonArray = json.getJSONArray("Accounts");
