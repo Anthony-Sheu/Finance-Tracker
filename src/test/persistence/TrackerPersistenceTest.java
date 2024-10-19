@@ -21,7 +21,7 @@ public class TrackerPersistenceTest {
 
     @BeforeEach
     void runBefore() {
-        source = "./data/Tracker.json";
+        source = "./data/TrackerTest.json";
         writer = new TrackerWriter(source);
         reader = new TrackerReader(source);
         readerEmpty = new TrackerReader("./data/TrackerTestEmpty.json");

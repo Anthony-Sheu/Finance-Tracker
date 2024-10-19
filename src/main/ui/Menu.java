@@ -85,8 +85,6 @@ public class Menu {
             System.out.println("======================START UP======================");
             System.out.println("Please start by entering your banking information");
             addBank();
-        } else {
-            checkTrackerFile();
         }
     }
     
@@ -160,11 +158,10 @@ public class Menu {
                 if (trackerReader.checkFile() && categoryReader.checkFile()) {
                     checkTrackerFile();
                 }
+                return true;
             }
-            return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     // MODIFIES: this
