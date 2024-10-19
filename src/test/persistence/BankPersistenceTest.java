@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BankWriterTest {
+public class BankPersistenceTest {
 
     private String destination;
     private BankWriter writer;

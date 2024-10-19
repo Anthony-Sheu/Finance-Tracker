@@ -18,12 +18,12 @@ public class BankWriter extends JsonWriter {
     // is going to be written
     public JSONObject toJson(Banks bank) {
         JSONObject json = new JSONObject();
-        json.put("Accounts", accountsToJson(bank.getBank()));
+        json.put("Accounts", accountsToJsonArray(bank.getBank()));
         return json;
     }
 
     // EFFECTS: returns accounts in JSON array
-    public JSONArray accountsToJson(List<Account> accounts) {
+    public JSONArray accountsToJsonArray(List<Account> accounts) {
         JSONArray jsonArray = new JSONArray();
         for (Account a : accounts) {
             jsonArray.put(accountToJson(a));

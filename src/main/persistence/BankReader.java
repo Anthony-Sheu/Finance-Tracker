@@ -14,7 +14,6 @@ public class BankReader extends JsonReader {
     // EFFECTS: construcs reader to read Bank JSON file
     public BankReader(String source) {
         super(source);
-        //TODO Auto-generated constructor stub
     }
 
     // EFFECTS: converts JSONObject to Bank
@@ -29,7 +28,7 @@ public class BankReader extends JsonReader {
     }
 
     // MODIFIES: this
-    // EFFECTS: concerts JSONObject to Account and adds it to bank
+    // EFFECTS: converts JSONObject to Account and adds it to bank
     public void toAccount(Banks bank, JSONObject json) {
         String name = json.getString("Bank");
         double cheq = json.getDouble("Chequeing");
