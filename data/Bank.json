@@ -1,0 +1,10 @@
+{"Accounts": [{
+    "Credit Limit": 1500,
+    "Savings": 1000,
+    "Bank": "CIBC",
+    "Credit": 0,
+    "Chequeing Overdraft": false,
+    "Savings Overdraft": false,
+    "Credit Overusage": false,
+    "Chequeing": 100
+}]}

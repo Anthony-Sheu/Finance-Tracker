@@ -10,12 +10,15 @@ import model.Categories;
 import model.Expense;
 import model.Tracker;
 import model.Transaction;
+import persistence.BankReader;
+import persistence.BankWriter;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 // Represents a menu on the console application
 public class Menu {
 
+    private static final String BANKS_STORE = "./data/Bank.json";
     private Scanner input;
     private Banks bank;
     private Account account;
@@ -23,8 +26,8 @@ public class Menu {
     private Transaction transaction;
     private Categories category;
     private Expense expense;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private BankWriter bankWriter;
+    private BankReader bankReader;
 
     // EFFECTS: runs start application
     public Menu() {
@@ -61,6 +64,8 @@ public class Menu {
         bank = new Banks();
         tracker = new Tracker();
         input = new Scanner(System.in);
+        bankReader = new BankReader(BANKS_STORE);
+        bankWriter = new BankWriter(BANKS_STORE);
         categoryInit();
         checkBankFile();
         checkTrackerFile();
@@ -73,7 +78,26 @@ public class Menu {
     // EFFECTS: asks the user if they would like to save their current bank information
     // or transactions or both
     public void promptSave() {
+        System.out.println("=====================================================");
+        System.out.println("Would you like to save your banking information?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int command = intInput();
+        if (command == 1) {
+            loadBankFile();
+        }
+    }
 
+    // EFFECTS: loads current banking information into json file
+    public void loadBankFile() {
+        try {
+            bankWriter.open();
+            bankWriter.write(bankWriter.toJson(bank));
+            bankWriter.close();
+            System.out.println("Successfully saved!");
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occured.");
+        }
     }
 
     // MODIFIES: this

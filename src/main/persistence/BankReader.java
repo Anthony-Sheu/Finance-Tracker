@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Account;
 import model.Banks;
 
 import java.nio.file.Files;
@@ -18,7 +19,29 @@ public class BankReader extends JsonReader {
 
     // EFFECTS: converts JSONObject to Bank
     public Banks toBanks(JSONObject json) {
-        return null;
+        Banks bank = new Banks();
+        JSONArray jsonArray = json.getJSONArray("Accounts");
+        for (Object o : jsonArray) {
+            JSONObject nextJson = (JSONObject) o;
+            toAccount(bank, nextJson);
+        }
+        return bank;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: concerts JSONObject to Account and adds it to bank
+    public void toAccount(Banks bank, JSONObject json) {
+        String name = json.getString("Bank");
+        double cheq = json.getDouble("Chequeing");
+        double save = json.getDouble("Savings");
+        double cred = json.getDouble("Credit");
+        double credLim = json.getDouble("Credit Limit");
+        boolean cheqOver = json.getBoolean("Chequeing Overdraft");
+        boolean saveOver = json.getBoolean("Savings Overdraft");
+        boolean credOver = json.getBoolean("Credit Overusage");
+        Account account = new Account(cheq, save, cred, name, credLim);
+        account.loadAccount(cheqOver, saveOver, credOver);
+        bank.newAccount(account);
     }
 
 }

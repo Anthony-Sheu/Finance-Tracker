@@ -140,4 +140,12 @@ public class Account {
         return bank + cheq +  save +  cred +  credLim;
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates all overdraft booleans
+    public void loadAccount(boolean cheq, boolean save, boolean cred) {
+        this.overdraftChequeing = cheq;
+        this.overdraftSavings = save;
+        this.overLimit = cred;
+    }
+
 }
