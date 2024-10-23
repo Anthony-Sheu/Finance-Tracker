@@ -27,7 +27,7 @@ public class JsonReader {
     }
 
     // EFFECTS: takes in file source as string and returns string of content
-    // Referenced from CPSC 210 - JSONSERIALIZATIONDEMO
+    // Referenced from CPSC 210 - JsonSerializationDemo
     public String readFile(String source) throws IOException, JSONException {
         StringBuilder contentBuilder = new StringBuilder();
 
