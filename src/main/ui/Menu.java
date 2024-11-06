@@ -563,15 +563,23 @@ public class Menu {
     // MODIFIES: this
     // EFFECTS: pays credit card by specified amount
     public void payCreditCard() {
+        String bank1, bank2;
         String acc;
         double amount;
         System.out.println("=====================================================");
-        System.out.println("What account would you like to pay?");
-        acc = checkBank();
+        System.out.println("What credit account would you like to pay? (Enter banking institution name)");
+        bank1 = checkBank();
+        System.out.println("Which banking institution would you like to pay out of?");
+        bank2 = checkBank();
+        System.out.println("Which account would you like to pay from?");
+        acc = checkAccount();
         System.out.println("How much would you like to pay?");
         amount = doubleInput();
-        account = bank.findAccount(acc);
+        account = bank.findAccount(bank1);
         account.updateCredit(-amount);
+        account = bank.findAccount(bank2);
+        bank.updateTransfer(account, acc, -amount);
+        checkOverdraft(account);
         System.out.println("Paid!");
         enter();
     }
