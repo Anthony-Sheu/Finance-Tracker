@@ -4,13 +4,15 @@ import javax.swing.*;
 import java.awt.event.*;
 
 // represents user interface for main menu
-public class MenuUI extends JFrame implements ActionListener {
+public class MenuUI extends Menu implements ActionListener {
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
+    JFrame frame;
 
     public MenuUI() {
-        
+        frame = new JFrame();
+        frame.setSize(WIDTH, HEIGHT);
     }
 
     @Override
