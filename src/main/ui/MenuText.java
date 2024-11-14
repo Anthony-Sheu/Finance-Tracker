@@ -399,16 +399,7 @@ public class MenuText extends Menu {
     // MODIFIES: this
     // EFFECTS: updates a bank account with new amount
     public void updateBank(String name, String acc, double amount) {
-        account = bank.findAccount(name);
-        if (acc.equals("Chequeing")) {
-            account.updateChequeing(amount);
-            
-        } else if (acc.equals("Savings")) {
-            account.updateSavings(amount);
- 
-        } else if (acc.equals("Credit")) {
-            account.updateCredit(-amount);
-        }
+        super.updateBank(name, acc, amount);
         checkOverdraft(account);
         System.out.println("Updated!");
         enter();

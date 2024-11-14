@@ -116,6 +116,23 @@ public class Menu {
         category.checkCategory(e).updateSpending(a);
     }
 
+    // REQUIRES: amount <= 0
+    // MODIFIES: this
+    // EFFECTS: updates a bank account with new amount
+    protected void updateBank(String name, String acc, double amount) {
+        account = bank.findAccount(name);
+        if (acc.equals("Chequeing")) {
+            account.updateChequeing(amount);
+            
+        } else if (acc.equals("Savings")) {
+            account.updateSavings(amount);
+ 
+        } else if (acc.equals("Credit")) {
+            account.updateCredit(-amount);
+        }
+    }
+    
+
     // MODIFIES: this
     // EFFECTS: removes a transaction from tracker; refunds the amount to bank accounts; 
     // refunds amount to expense category; checks for overdraft. If there are not transactions, return to main
