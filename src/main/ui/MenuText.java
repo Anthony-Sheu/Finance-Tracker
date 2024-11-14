@@ -5,17 +5,8 @@ import java.util.*;
 import java.io.IOException;
 
 import model.Account;
-import model.Banks;
-import model.Categories;
 import model.Expense;
-import model.Tracker;
 import model.Transaction;
-import persistence.BankReader;
-import persistence.BankWriter;
-import persistence.CategoriesReader;
-import persistence.CategoriesWriter;
-import persistence.TrackerReader;
-import persistence.TrackerWriter;
 
 // Represents a menu on the console application
 public class MenuText extends Menu {
