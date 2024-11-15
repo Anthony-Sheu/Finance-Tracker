@@ -15,4 +15,7 @@ public interface Communication {
 
     // EFECTS: add transaction
     void addTransactionClick();
+
+    // EFFECTS: show all transactions
+    void showAllClick();
 }

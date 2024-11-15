@@ -1,19 +1,26 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import model.Transaction;
 
 // Represents a transaction menu
 public class TransactionPanel extends PanelManager implements ActionListener {
@@ -32,6 +39,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JButton editButton;
     private JButton showAllButton;
     private JButton backButton;
+    private JButton backTranButton;
     private JButton showInDateButton;
     private JButton showExpButton;
     private JButton showAllExpButton;
@@ -75,13 +83,16 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         for (JButton j : buttonList) {
             mainPanel.add(j);
         }
+        backTranButton = new JButton("Return to transaction menu");
+        backTranButton.addActionListener(this);
+        mainPanel.add(backTranButton);
     }
 
     public void subPanelInit() {
         createAddPanel();
         removePanel = new JPanel();
         editPanel = new JPanel();
-        showAllPanel = new JPanel();
+        createShowAllPanel();
         showInDatePanel = new JPanel();
         showExpPanel = new JPanel();
         showAllExpPanel = new JPanel();
@@ -166,6 +177,32 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         ui.setAccountType((String) temp[8]);
     }
 
+    public void createShowAllPanel() {
+        showAllPanel = createShowPanel(backTranButton);
+    }
+
+    public void runShowAllPanel() {
+        JLabel label = (JLabel) showAllPanel.getComponent(0);
+        JPanel middlePanel = (JPanel) showAllPanel.getComponent(1);
+        JScrollPane scrollPane = (JScrollPane) middlePanel.getComponent(0);
+        JTextArea textArea = (JTextArea) scrollPane.getViewport().getView();
+        label.setText("Showing All Transactions");
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
+        String allTransactions = showTransaction(ui.getTransaction());
+        textArea.setText(allTransactions);
+        textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        refresh(showAllPanel);
+    }
+
+    public String showTransaction(List<Transaction> tracker) {
+        StringBuilder content = new StringBuilder();
+        for (int i = 0; i < tracker.size(); i++) {
+            Transaction t = tracker.get(i);
+            content.append(i+1).append(". ").append(t.printTransaction()).append("\n");
+        }
+        return content.toString();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
@@ -177,15 +214,15 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         } else if (e.getSource() == editButton) {
             
         } else if (e.getSource() == showAllButton) {
-            
+            ui.showAllClick();
         } else if (e.getSource() == showInDateButton) {
             
         } else if (e.getSource() == showExpButton) {
             
         } else if (e.getSource() == showAllButton) {
             
-        } else {
-
+        } else if (e.getSource() == backTranButton) {
+            ui.transactionClick();
         }
     }
 
@@ -197,5 +234,10 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // GETTER
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    // GETTER
+    public JPanel getShowAllPanel() {
+        return showAllPanel;
     }
 }

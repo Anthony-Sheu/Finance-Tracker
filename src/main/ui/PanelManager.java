@@ -1,14 +1,19 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 // Represents a panel manager that contains general methods
@@ -64,6 +69,28 @@ public class PanelManager {
         panel.add(Box.createVerticalStrut(25));
         panel.add(submit); // 5
         panel.add(Box.createVerticalStrut(25));
+        return panel;
+    }
+
+    public JPanel createShowPanel(JButton button) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        JPanel middlePanel = new JPanel();
+        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setBorder(BorderFactory.createEmptyBorder(50,0,100,0));
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        middlePanel.add(scrollPane);
+        JLabel label = new JLabel("", JLabel.CENTER);
+        bottomPanel.add(button);
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(middlePanel, BorderLayout.CENTER);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
         return panel;
     }
 

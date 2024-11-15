@@ -1,6 +1,10 @@
 package ui;
 
+import java.util.*;
+
 import javax.swing.*;
+
+import model.Transaction;
 
 // represents user interface for main menu
 public class MenuUI extends Menu implements Communication {
@@ -64,8 +68,13 @@ public class MenuUI extends Menu implements Communication {
     public void addTransactionClick() {
         switchPanel(transactionPanel.getAddPanel());
         transactionPanel.runAddPanel();
-        // super.addTransaction(month, date, year, amount, expense, store, expense, accountName, accountType);
+        // super.addTransaction(month, date, year, amount, store, expense, note, accountName, accountType);
         // super.updateBank(accountName, accountName, -amount);
+    }
+
+    public void showAllClick() {
+        switchPanel(transactionPanel.getShowAllPanel());
+        transactionPanel.runShowAllPanel();
     }
 
     // EFFECTS: closes the program
@@ -130,4 +139,10 @@ public class MenuUI extends Menu implements Communication {
     public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
+
+    // GETTER
+    public List<Transaction> getTransaction() {
+        return tracker.getTracker();
+    }
+
 }
