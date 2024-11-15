@@ -63,6 +63,7 @@ public class MenuUI extends Menu implements Communication {
     // EFFECTS: add new transaction
     public void addTransactionClick() {
         switchPanel(transactionPanel.getAddPanel());
+        transactionPanel.runAddPanel();
         // super.addTransaction(month, date, year, amount, expense, store, expense, accountName, accountType);
         // super.updateBank(accountName, accountName, -amount);
     }

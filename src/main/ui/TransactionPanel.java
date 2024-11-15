@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 // Represents a transaction menu
 public class TransactionPanel extends PanelManager implements ActionListener {
@@ -37,13 +38,15 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JButton refundButton;
     JLabel label;
     private MenuUI ui;
-    int ind;
+    private Object[] transactionHolder = {0, 0, 0, 0.0, "", "", "", "", ""};
+    private String[] transactionLabels;
 
     // EFFECTS: intializes variables
     public TransactionPanel(MenuUI ui) {
         buttonInit();
         panelInit();
         subPanelInit();
+        initOther();
         this.ui = ui;
     }
 
@@ -85,53 +88,70 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         refundPanel = new JPanel();
     }
 
-    public void createAddPanel() {
-        addPanel = new JPanel();
-        addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.Y_AXIS));
-        ind = 0;
-        Object[] temp = {0, 0, 0, 0, "", "", "", "", ""};
-        JTextField text = new JTextField(40);
-        text.setAlignmentX(Component.CENTER_ALIGNMENT);
-        text.setMaximumSize(new Dimension(200, 40));
-        JLabel l = new JLabel("What is the number month of your transaction?", JLabel.CENTER);
-        l.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton submit = new JButton("Submit");
-        submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                temp[ind] = text.getText();
-                ind++;
-                addPanelChangeLabel(ind, l);
-            }
-        });
-        addPanel.add(Box.createVerticalStrut(100));
-        addPanel.add(l);
-        addPanel.add(Box.createVerticalStrut(50));
-        addPanel.add(text);
-        addPanel.add(Box.createVerticalStrut(25));
-        addPanel.add(submit);
-        changeUITransaction(temp);
+    public void initOther() {
+        transactionLabels = addTransactionLabels();
     }
 
-    public void addPanelChangeLabel(int i, JLabel l) {
-        if (i == 1) {
-            l.setText("What is the date of your transaction?");
-        } else if (i == 2) {
-            l.setText("What was the year of your transaction?");
-        } else if (i == 3) {
-            l.setText("What is the amount spent?");
-        } else if (i == 4) {
-            l.setText("What is the name of the store/vendor?");
-        } else if (i == 5) {
-            l.setText("What is the expense category?");
-        } else if (i == 6) {
-            l.setText("Any notes? (press enter to skip)");
-        } else if (i == 7) {
-            l.setText("What is the account name?");
-        } else if (i == 8) {
-            l.setText("What is the account type?\nChequeing, Savings, Credit");
-        }
+    // MODIFIES: this
+    // EFFECTS: creates the panel to add a transaction
+    public void createAddPanel() {
+        addPanel = createInputPanel();
+    }
+
+    public void runAddPanel() {
+        JButton submit = (JButton) addPanel.getComponent(5);
+        JLabel label = (JLabel) addPanel.getComponent(1);
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        ind = 0;
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+        label.setText(transactionLabels[0]);
+        refresh(addPanel);
+        submit.addActionListener(addTransactionAction());
+    }
+
+    public ActionListener addTransactionAction() {
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        JLabel label = (JLabel) addPanel.getComponent(1);
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (0 <= ind && ind <= 2) {
+                    transactionHolder[ind] = intText(text.getText(), addPanel);
+                } else if (ind == 3) {
+                    transactionHolder[ind] = doubleText(text.getText(), addPanel);
+                } else if (4 <= ind && ind <= 8) {
+                    transactionHolder[ind] = stringText(text.getText(), addPanel);
+                }
+                if (ind < 9) {
+                    label.setText(transactionLabels[ind]);
+                    text.setText("");
+                } else {
+                    changeUITransaction(transactionHolder);
+                    ui.backClick();
+                }
+                refresh(addPanel);
+                SwingUtilities.invokeLater(() -> {
+                    text.requestFocusInWindow();
+                });
+            }
+        };
+        return al;
+    }
+
+    public String[] addTransactionLabels() {
+        return new String[] {
+            "What is the number month of your transaction?",
+            "What is the date of your transaction?",
+            "What was the year of your transaction?",
+            "What is the amount spent?",
+            "What is the name of the store/vendor?",
+            "What is the expense category?",
+            "Any notes? (press enter to skip)",
+            "What is the account name?",
+            "What is the account type? Chequeing, Savings, Credit"
+        };
     }
 
     public void changeUITransaction(Object[] temp) {

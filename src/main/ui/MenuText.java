@@ -576,7 +576,7 @@ public class MenuText extends Menu {
     }
     
     // EFFECTS: checks to make sure user input is a positive integer
-    protected int intInput() {
+    public int intInput() {
         String in;
         int inTry;
         while (true) {
