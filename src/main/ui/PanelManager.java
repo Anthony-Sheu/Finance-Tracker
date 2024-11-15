@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 // Represents a panel manager that contains general methods
 public class PanelManager {
@@ -104,6 +105,19 @@ public class PanelManager {
         panel.add(middlePanel, BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         return panel;
+    }
+
+    // EFFECTS: runs prompt panel
+    protected void runPanel(JPanel panel, String s) {
+        JButton submit = (JButton) panel.getComponent(5);
+        JLabel label = (JLabel) panel.getComponent(1);
+        JTextField text = (JTextField) panel.getComponent(3);
+        ind = 0;
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+        label.setText(s);
+        refresh(panel);
     }
 
     // EFFECTS: checks user input to make sure it is a positive integer

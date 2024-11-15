@@ -117,15 +117,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs add transaction panel
     public void runAddPanel() {
+        runPanel(addPanel, transactionLabels[0]);
         JButton submit = (JButton) addPanel.getComponent(5);
-        JLabel label = (JLabel) addPanel.getComponent(1);
-        JTextField text = (JTextField) addPanel.getComponent(3);
-        ind = 0;
-        SwingUtilities.invokeLater(() -> {
-            text.requestFocusInWindow();
-        });
-        label.setText(transactionLabels[0]);
-        refresh(addPanel);
         submit.addActionListener(addTransactionAction());
     }
 

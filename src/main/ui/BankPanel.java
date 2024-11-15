@@ -16,17 +16,20 @@ import javax.swing.SwingUtilities;
 // Represents a panel that has banking operations
 public class BankPanel extends PanelManager implements ActionListener {
 
-    JButton addButton;
-    JButton balanceButton;
-    JLabel label;
-    GridBagConstraints gbc;
-    JPanel addBankPanel;
+    private JButton addButton;
+    private JButton balanceButton;
+    private JLabel label;
+    private GridBagConstraints gbc;
+    private JPanel addBankPanel;
+    private Object[] bankHolder = {0.0, 0.0, 0.0, "", 0.0};
+    private String[] bankLabels;
 
     // EFFECTS: initializes variables
     public BankPanel(MenuUI ui) {
         buttonInit();
         labelInit();
         subPanelInit();
+        otherInit();
         panelInit();
         this.ui = ui;
     }
@@ -91,15 +94,67 @@ public class BankPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: initializes all other things
+    public void otherInit() {
+        bankLabels = createBankLabels();
+    }
+
+    // EFFECTS: creates bank prompts
+    public String[] createBankLabels() {
+        return new String[] {
+            "What is the name of your banking institution?",
+            "Please enter your chequeing balance",
+            "Please enter your savings balance",
+            "Please enter your credit balance",
+            "Please enter your credit limit"
+        };
+    }
+
+    // MODIFIES: this
     // EFFECTS: runs add banking information panel
     public void runAddBankPanel() {
+        runPanel(addBankPanel, bankLabels[0]);
         JButton submit = (JButton) addBankPanel.getComponent(5);
-        JLabel label = (JLabel) addBankPanel.getComponent(1);
+        submit.addActionListener(addBankAction());
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates an ActionListener for add bank panel
+    public ActionListener addBankAction() {
         JTextField text = (JTextField) addBankPanel.getComponent(3);
-        ind = 0;
-        SwingUtilities.invokeLater(() -> {
-            text.requestFocusInWindow();
-        });
+        JLabel label = (JLabel) addBankPanel.getComponent(1);
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ind == 0) {
+                    bankHolder[ind] = stringText(text.getText(), addBankPanel);
+                } else if (1 <= ind && ind <= 4) {
+                    bankHolder[ind] = doubleText(text.getText(), addBankPanel);
+                }
+                if (ind < 5) {
+                    label.setText(bankLabels[ind]);
+                    text.setText("");
+                } else {
+                    changeUITransaction(bankHolder);
+                    ui.backClick();
+                }
+                refresh(addBankPanel);
+                SwingUtilities.invokeLater(() -> {
+                    text.requestFocusInWindow();
+                });
+            }
+        };
+        return al;
+    }
+    
+    // MODIFIES: MenuUI
+    // EFFECTS: changes the values in MenuUI to update
+    public void changeUITransaction(Object[] temp) {
+        ui.setBankName((String) temp[0]);
+        ui.setCheq((double) temp[1]);
+        ui.setSave((double) temp[2]);
+        ui.setCred((double) temp[3]);
+        ui.setCredLim((double) temp[4]);
     }
 
     // EFFECTS: checks which button is pressed
