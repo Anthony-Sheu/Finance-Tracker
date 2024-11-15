@@ -48,11 +48,11 @@ public class TransactionPanel extends PanelManager implements ActionListener {
 
     // EFFECTS: intializes variables
     public TransactionPanel(MenuUI ui) {
+        super(ui);
         buttonInit();
         panelInit();
         subPanelInit();
         initOther();
-        this.ui = ui;
     }
 
     // MODIFIES: this
@@ -117,9 +117,16 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs add transaction panel
     public void runAddPanel() {
-        runPanel(addPanel, transactionLabels[0]);
         JButton submit = (JButton) addPanel.getComponent(5);
+        JLabel label = (JLabel) addPanel.getComponent(1);
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        ind = 0;
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+        label.setText(transactionLabels[0]);
         submit.addActionListener(addTransactionAction());
+        refresh(addPanel);
     }
 
     // MODIFIES: this
@@ -181,6 +188,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         ui.setNote((String) temp[6]);
         ui.setAccountName((String) temp[7]);
         ui.setAccountType((String) temp[8]);
+        ui.addTransaction();
     }
 
     // MODIFIES: this

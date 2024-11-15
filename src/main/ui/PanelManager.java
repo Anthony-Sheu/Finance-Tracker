@@ -31,7 +31,8 @@ public class PanelManager {
     private JLabel properString;
 
     // EFFECTS: initializes error labels
-    public PanelManager() {
+    public PanelManager(MenuUI ui) {
+        this.ui = ui;
         initErrorLabel();
     }
 
@@ -105,19 +106,6 @@ public class PanelManager {
         panel.add(middlePanel, BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         return panel;
-    }
-
-    // EFFECTS: runs prompt panel
-    protected void runPanel(JPanel panel, String s) {
-        JButton submit = (JButton) panel.getComponent(5);
-        JLabel label = (JLabel) panel.getComponent(1);
-        JTextField text = (JTextField) panel.getComponent(3);
-        ind = 0;
-        SwingUtilities.invokeLater(() -> {
-            text.requestFocusInWindow();
-        });
-        label.setText(s);
-        refresh(panel);
     }
 
     // EFFECTS: checks user input to make sure it is a positive integer

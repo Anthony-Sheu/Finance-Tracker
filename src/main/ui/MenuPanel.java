@@ -18,13 +18,12 @@ public class MenuPanel extends PanelManager implements ActionListener {
     private JButton transactionsButton, bankButton, creditButton, transferButton, quitButton;
     private JLabel label;
     private GridBagConstraints gbc;
-    private MenuUI ui;
     
     // EFFECTS: intializes variables
     public MenuPanel(MenuUI ui) {
+        super(ui);
         buttonInit();
         panelInit();
-        this.ui = ui;
     }
 
     // MODIFIES: this

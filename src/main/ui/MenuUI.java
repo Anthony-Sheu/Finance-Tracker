@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import model.Account;
 import model.Transaction;
 
 // represents user interface for main menu
@@ -35,6 +36,25 @@ public class MenuUI extends Menu implements Communication {
         super();
         super.init();
         init();
+        varInit();
+        super.addBank("CIBC", 100, 1000, 0, 1500);
+    }
+
+    public void varInit() {
+        month = 0;
+        date = 0;
+        year = 0;
+        amount = 0.0;
+        store = "";
+        expense = "";
+        note = "";
+        accountName = "";
+        accountType = "";
+        cheq = 0.0;
+        save = 0.0;
+        cred = 0.0;
+        bankName = "";
+        credLim = 0.0;
     }
 
     // MODIFIES: this
@@ -71,12 +91,23 @@ public class MenuUI extends Menu implements Communication {
     }
 
     // MODIFIES: this
+    // EFFECTS: adds new transaction
+    public void addTransaction() {
+        super.addTransaction(month, date, year, amount, store, expense, note, accountName, accountType);
+        super.updateBank(accountName, accountName, -amount);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds new bank account
+    public void addBank() {
+        super.addBank(bankName, cheq, save, cred, credLim);
+    }
+
+    // MODIFIES: this
     // EFFECTS: add new transaction
     public void addTransactionClick() {
         switchPanel(transactionPanel.getAddPanel());
         transactionPanel.runAddPanel();
-        // super.addTransaction(month, date, year, amount, store, expense, note, accountName, accountType);
-        // super.updateBank(accountName, accountName, -amount);
     }
 
     public void showAllClick() {
@@ -86,11 +117,16 @@ public class MenuUI extends Menu implements Communication {
 
     public void bankClick() {
         switchPanel(bankPanel.getMainPanel());
-        bankPanel.runAddBankPanel();
     }
 
     public void addBankClick() {
         switchPanel(bankPanel.getAddBankPanel());
+        bankPanel.runAddBankPanel();
+    }
+
+    public void bankBalanceClick() {
+        switchPanel(bankPanel.getBalancePanel());
+        bankPanel.runBalancePanel();
     }
 
     // EFFECTS: closes the program
@@ -184,6 +220,11 @@ public class MenuUI extends Menu implements Communication {
     // GETTER
     public List<Transaction> getTransaction() {
         return tracker.getTracker();
+    }
+
+    // GETTER
+    public List<Account> getBanks() {
+        return bank.getBank();
     }
 
 }
