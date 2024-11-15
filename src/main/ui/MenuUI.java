@@ -94,7 +94,7 @@ public class MenuUI extends Menu implements Communication {
     // EFFECTS: adds new transaction
     public void addTransaction() {
         super.addTransaction(month, date, year, amount, store, expense, note, accountName, accountType);
-        super.updateBank(accountName, accountName, -amount);
+        super.updateBank(accountName, accountType, -amount);
     }
 
     // MODIFIES: this

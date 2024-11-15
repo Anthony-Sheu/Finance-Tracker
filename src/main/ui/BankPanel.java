@@ -10,7 +10,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
-import java.util.concurrent.Flow;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,7 +26,6 @@ public class BankPanel extends PanelManager implements ActionListener {
 
     private JButton addButton;
     private JButton balanceButton;
-    private JButton returnToBalanceButton;
     private JButton returnToBankButton;
     private JLabel label;
     private GridBagConstraints gbc;
@@ -35,8 +33,6 @@ public class BankPanel extends PanelManager implements ActionListener {
     private JPanel balancePanel;
     private Object[] bankHolder = {0.0, 0.0, 0.0, "", 0.0};
     private String[] bankLabels;
-    private ArrayList<JButton> bankButtonList;
-    private ArrayList<JPanel> bankPanelList;
 
     // EFFECTS: initializes variables
     public BankPanel(MenuUI ui) {
@@ -108,8 +104,6 @@ public class BankPanel extends PanelManager implements ActionListener {
         backButton.setPreferredSize(new Dimension(200, 40));
         returnToBankButton = new JButton("Return to bank menu");
         returnToBankButton.addActionListener(this);
-        returnToBalanceButton = new JButton("Return");
-        returnToBalanceButton.addActionListener(this);
     }
 
     // MODIFIES: this
@@ -178,7 +172,10 @@ public class BankPanel extends PanelManager implements ActionListener {
         textArea.setEditable(false);
         textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
         middlePanel.add(textArea);
+        JButton returnToBalanceButton = new JButton("Return");
+        returnToBalanceButton.addActionListener(this);
         bottomPanel.add(returnToBalanceButton);
+        returnToBalanceButton.addActionListener(backToBalanceAction(returnToBalanceButton));
         panel.add(middlePanel, BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         return panel;
@@ -190,13 +187,26 @@ public class BankPanel extends PanelManager implements ActionListener {
         JButton submit = (JButton) addBankPanel.getComponent(5);
         JLabel label = (JLabel) addBankPanel.getComponent(1);
         JTextField text = (JTextField) addBankPanel.getComponent(3);
-        ind = 0;
         SwingUtilities.invokeLater(() -> {
             text.requestFocusInWindow();
         });
         label.setText(bankLabels[0]);
-        submit.addActionListener(addBankAction());
+        submit.addActionListener(addBankAction(text, label));
         refresh(addBankPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: returns to balance viewing panel
+    public ActionListener backToBalanceAction(JButton button) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == button) {
+                    ui.switchPanel(balancePanel);
+                }
+            }
+        };
+        return al;
     }
 
     // MODIFIES: this
@@ -215,9 +225,8 @@ public class BankPanel extends PanelManager implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: creates an ActionListener for add bank panel
-    public ActionListener addBankAction() {
-        JTextField text = (JTextField) addBankPanel.getComponent(3);
-        JLabel label = (JLabel) addBankPanel.getComponent(1);
+    public ActionListener addBankAction(JTextField text, JLabel label) {
+        ind = 0;
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -230,7 +239,7 @@ public class BankPanel extends PanelManager implements ActionListener {
                     label.setText(bankLabels[ind]);
                     text.setText("");
                 } else {
-                    changeUITransaction(bankHolder);
+                    changeUIBank(bankHolder);
                     ui.backClick();
                 }
                 refresh(addBankPanel);
@@ -244,14 +253,14 @@ public class BankPanel extends PanelManager implements ActionListener {
     
     // MODIFIES: MenuUI
     // EFFECTS: changes the values in MenuUI to update
-    public void changeUITransaction(Object[] temp) {
+    public void changeUIBank(Object[] temp) {
         ui.setBankName((String) temp[0]);
         ui.setCheq((double) temp[1]);
         ui.setSave((double) temp[2]);
         ui.setCred((double) temp[3]);
         ui.setCredLim((double) temp[4]);
         ui.addBank();
-    }
+    }   
 
     // EFFECTS: checks which button is pressed
     @Override
@@ -264,8 +273,6 @@ public class BankPanel extends PanelManager implements ActionListener {
             ui.backClick();
         } else if (e.getSource() == returnToBankButton) {
             ui.bankClick();
-        } else if (e.getSource() == returnToBalanceButton) {
-            ui.bankBalanceClick();
         }
     }
 
