@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import model.Account;
+import model.Tracker;
 import model.Transaction;
 
 // represents user interface for main menu
@@ -115,6 +116,11 @@ public class MenuUI extends Menu implements Communication {
         transactionPanel.runShowAllPanel();
     }
 
+    public void showInDateClick() {
+        switchPanel(transactionPanel.getMonthPanel());
+        transactionPanel.runMonthInputPanel();
+    }
+
     public void bankClick() {
         switchPanel(bankPanel.getMainPanel());
     }
@@ -220,6 +226,11 @@ public class MenuUI extends Menu implements Communication {
     // GETTER
     public List<Transaction> getTransaction() {
         return tracker.getTracker();
+    }
+
+    // GETTER
+    public Tracker getTracker() {
+        return tracker;
     }
 
     // GETTER

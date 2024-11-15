@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import model.Tracker;
 import model.Transaction;
 
 // Represents a transaction menu
@@ -33,11 +34,12 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JPanel showExpPanel;
     private JPanel showAllExpPanel;
     private JPanel refundPanel;
+    private JPanel monthPanel;
+    private JPanel yearPanel;
     private JButton addButton;
     private JButton removeButton;
     private JButton editButton;
     private JButton showAllButton;
-    private JButton backTranButton;
     private JButton showInDateButton;
     private JButton showExpButton;
     private JButton showAllExpButton;
@@ -45,6 +47,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     JLabel label;
     private Object[] transactionHolder = {0, 0, 0, 0.0, "", "", "", "", ""};
     private String[] transactionLabels;
+    private int month;
+    private int year;
 
     // EFFECTS: intializes variables
     public TransactionPanel(MenuUI ui) {
@@ -62,7 +66,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         removeButton = new JButton("<html><center>Remove<br>a transaction</center></html>");
         editButton = new JButton("<html><center>Edit a<br>previous transaction</center><html>");
         showAllButton = new JButton("<html><center>Show all<br>transactions</center><html>");
-        showInDateButton = new JButton("<html><center>Show transactions<br>within a date/year</center><html>");
+        showInDateButton = new JButton("<html><center>Show transactions<br>within a month/year</center><html>");
         showExpButton = new JButton("<html><center>Show all spendings<br>in an expense category</center><html>");
         showAllExpButton = new JButton("<html><center>Show spendings in<br>all expense categories</center><html>");
         refundButton = new JButton("Refund a transaction");
@@ -84,9 +88,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         for (JButton j : buttonList) {
             mainPanel.add(j);
         }
-        backTranButton = new JButton("Return to transaction menu");
-        backTranButton.addActionListener(this);
-        mainPanel.add(backTranButton);
     }
 
     // MODIFIES: this
@@ -96,7 +97,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         removePanel = new JPanel();
         editPanel = new JPanel();
         createShowAllPanel();
-        showInDatePanel = new JPanel();
+        createShowInDatePanel();
         showExpPanel = new JPanel();
         showAllExpPanel = new JPanel();
         refundPanel = new JPanel();
@@ -127,37 +128,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         label.setText(transactionLabels[0]);
         submit.addActionListener(addTransactionAction());
         refresh(addPanel);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: creates a ActionListener for add transaction panel
-    public ActionListener addTransactionAction() {
-        JTextField text = (JTextField) addPanel.getComponent(3);
-        JLabel label = (JLabel) addPanel.getComponent(1);
-        ActionListener al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (0 <= ind && ind <= 2) {
-                    transactionHolder[ind] = intText(text.getText(), addPanel);
-                } else if (ind == 3) {
-                    transactionHolder[ind] = doubleText(text.getText(), addPanel);
-                } else if (4 <= ind && ind <= 8) {
-                    transactionHolder[ind] = stringText(text.getText(), addPanel);
-                }
-                if (ind < 9) {
-                    label.setText(transactionLabels[ind]);
-                    text.setText("");
-                } else {
-                    changeUITransaction(transactionHolder);
-                    ui.backClick();
-                }
-                refresh(addPanel);
-                SwingUtilities.invokeLater(() -> {
-                    text.requestFocusInWindow();
-                });
-            }
-        };
-        return al;
     }
 
     // MODIFIES: this
@@ -194,7 +164,9 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: creates show all transactions panel
     public void createShowAllPanel() {
-        showAllPanel = createShowPanel(backTranButton);
+        JButton button = new JButton("Return to transaction menu");
+        button.addActionListener(createBackButton(mainPanel, button));
+        showAllPanel = createShowPanel(button);
     }
 
     // MODIFIES: this
@@ -216,6 +188,62 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         refresh(showAllPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates panel to show all transactions within a certain month/year
+    public void createShowInDatePanel() {
+        JButton button = new JButton("Return to transaction menu");
+        button.addActionListener(createBackButton(mainPanel, button)); 
+        showInDatePanel = createShowPanel(button);
+        monthPanel = createInputPanel();
+        yearPanel = createInputPanel();
+    }
+
+    // EFFECTS: runs panel to show all transactions within a certain month/year
+    public void runShowInDatePanel() {
+        JLabel label = (JLabel) showInDatePanel.getComponent(0);
+        JPanel middlePanel = (JPanel) showInDatePanel.getComponent(1);
+        JScrollPane scrollPane = (JScrollPane) middlePanel.getComponent(0);
+        JTextArea textArea = (JTextArea) scrollPane.getViewport().getView();
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
+        Tracker tracker = ui.getTracker();
+        tracker.sortMonth(month, year);
+        if (ui.getTransaction().size() == 0) {
+            label.setText("There are currently no transactions");
+        } else {
+            label.setText("Showing all transactions");
+            String allTransactions = showTransaction(ui.getTransaction());
+            textArea.setText(allTransactions);
+            textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        }
+        refresh(showAllPanel);
+    }
+
+    // EFFECTS: gets month input
+    public void runMonthInputPanel() {
+        JButton submit = (JButton) monthPanel.getComponent(5);
+        JLabel label = (JLabel) monthPanel.getComponent(1);
+        JTextField text = (JTextField) monthPanel.getComponent(3);
+        label.setText("Enter which month you would like to view");
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+        submit.addActionListener(monthAction(submit, text, monthPanel));
+    }
+
+    // EFFECTS: gets year input
+    public void runYearInputPanel() {
+        JButton submit = (JButton) yearPanel.getComponent(5);
+        JLabel label = (JLabel) yearPanel.getComponent(1);
+        JTextField text = (JTextField) yearPanel.getComponent(3);
+        label.setText("Enter which year you would like to view");
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+        submit.addActionListener(yearAction(submit, text, yearPanel));
+    }
+
     // EFFECTS: returns a string of all transactions in tracker
     public String showTransaction(List<Transaction> tracker) {
         StringBuilder content = new StringBuilder();
@@ -224,6 +252,81 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             content.append(i+1).append(". ").append(t.printTransaction()).append("\n");
         }
         return content.toString();
+    }
+
+    // EFFECTS: creates an ActionListener for year input
+    public ActionListener yearAction(JButton button, JTextField text, JPanel panel) {
+        ind = 0;
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == button) {
+                    year = intText(text.getText(), panel);
+                    if (ind != 0) {
+                        ui.switchPanel(showInDatePanel);
+                        runShowInDatePanel();
+                    }
+                    refresh(yearPanel);
+                    SwingUtilities.invokeLater(() -> {
+                        text.requestFocusInWindow();
+                    });
+                }
+            }
+        };
+        return al;
+    }
+
+    // EFFECTS: creates an ActionListener for month input
+    public ActionListener monthAction(JButton button, JTextField text, JPanel panel) {
+        ind = 0;
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == button) {
+                    month = intText(text.getText(), panel);
+                    if (ind != 0) {
+                        ui.switchPanel(yearPanel);
+                        runYearInputPanel();
+                    }
+                }
+                refresh(monthPanel);
+                SwingUtilities.invokeLater(() -> {
+                    text.requestFocusInWindow();
+                });
+            }
+        };
+        return al;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a ActionListener for add transaction panel
+    public ActionListener addTransactionAction() {
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        JLabel label = (JLabel) addPanel.getComponent(1);
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (0 <= ind && ind <= 2) {
+                    transactionHolder[ind] = intText(text.getText(), addPanel);
+                } else if (ind == 3) {
+                    transactionHolder[ind] = doubleText(text.getText(), addPanel);
+                } else if (4 <= ind && ind <= 8) {
+                    transactionHolder[ind] = stringText(text.getText(), addPanel);
+                }
+                if (ind < 9) {
+                    label.setText(transactionLabels[ind]);
+                    text.setText("");
+                } else {
+                    changeUITransaction(transactionHolder);
+                    ui.backClick();
+                }
+                refresh(addPanel);
+                SwingUtilities.invokeLater(() -> {
+                    text.requestFocusInWindow();
+                });
+            }
+        };
+        return al;
     }
 
     // EFFECTS: communication with MenuUI
@@ -240,13 +343,11 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         } else if (e.getSource() == showAllButton) {
             ui.showAllClick();
         } else if (e.getSource() == showInDateButton) {
-            
+            ui.showInDateClick();
         } else if (e.getSource() == showExpButton) {
             
         } else if (e.getSource() == showAllButton) {
             
-        } else if (e.getSource() == backTranButton) {
-            ui.transactionClick();
         }
     }
 
@@ -258,5 +359,15 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // GETTER
     public JPanel getShowAllPanel() {
         return showAllPanel;
+    }
+
+    // GETTER
+    public JPanel getShowInDatePanel() {
+        return showInDatePanel;
+    }
+
+    // GETTER
+    public JPanel getMonthPanel() {
+        return monthPanel;
     }
 }

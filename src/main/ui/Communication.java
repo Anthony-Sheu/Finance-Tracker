@@ -27,4 +27,7 @@ public interface Communication {
 
     // EFFECTS: switches to viewing bank balances
     void bankBalanceClick();
+
+    // EFFECTS: switches to showing transactions in time range
+    void showInDateClick();
 }

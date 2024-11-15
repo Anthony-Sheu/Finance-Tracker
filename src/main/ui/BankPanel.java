@@ -151,7 +151,7 @@ public class BankPanel extends PanelManager implements ActionListener {
             JButton button = new JButton(acc.getBank());
             button.setPreferredSize(new Dimension(100, 40));
             JPanel tempPanel = createBalanceSubPanel(acc);
-            button.addActionListener(balanceAction(tempPanel, button));
+            button.addActionListener(createBackButton(tempPanel, button));
             middlePanel.add(button);
         }
         refresh(balancePanel);
@@ -203,20 +203,6 @@ public class BankPanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == button) {
                     ui.switchPanel(balancePanel);
-                }
-            }
-        };
-        return al;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: creates an ActionListener for balance
-    public ActionListener balanceAction(JPanel panel, JButton button) {
-        ActionListener al = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == button) {
-                    ui.switchPanel(panel);
                 }
             }
         };

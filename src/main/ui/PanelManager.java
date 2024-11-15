@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -85,7 +85,7 @@ public class PanelManager {
         return panel;
     }
 
-    // EFFECTS: creates a panel to show transactions
+    // EFFECTS: creates a panel to show transactions and takes in a return to menu button
     public JPanel createShowPanel(JButton button) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -106,6 +106,19 @@ public class PanelManager {
         panel.add(middlePanel, BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         return panel;
+    }
+
+    // EFFECTS: creates a button that returns to transaction menu
+    public ActionListener createBackButton(JPanel panel, JButton button) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == button) {
+                    ui.switchPanel(panel);
+                }
+            }
+        };
+        return al;
     }
 
     // EFFECTS: checks user input to make sure it is a positive integer
@@ -138,12 +151,12 @@ public class PanelManager {
         return 0;
     }
 
-    // EFFECTS: checks user input to make sure it is a positive double
+    // EFFECTS: checks user input to make sure it is a positive (or zero) double
     protected double doubleText(String text, JPanel panel) {
         double num;
         try {
             num = Double.parseDouble(text);
-            if (num > 0) {
+            if (num >= 0) {
                 ind++;
                 if (checkLastError(panel)) {
                     removeLastComponent(panel);
