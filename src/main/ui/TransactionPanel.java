@@ -25,7 +25,6 @@ import model.Transaction;
 // Represents a transaction menu
 public class TransactionPanel extends PanelManager implements ActionListener {
 
-    private JPanel mainPanel;
     private JPanel addPanel;
     private JPanel removePanel;
     private JPanel editPanel;
@@ -38,14 +37,12 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JButton removeButton;
     private JButton editButton;
     private JButton showAllButton;
-    private JButton backButton;
     private JButton backTranButton;
     private JButton showInDateButton;
     private JButton showExpButton;
     private JButton showAllExpButton;
     private JButton refundButton;
     JLabel label;
-    private MenuUI ui;
     private Object[] transactionHolder = {0, 0, 0, 0.0, "", "", "", "", ""};
     private String[] transactionLabels;
 
@@ -186,11 +183,15 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         JPanel middlePanel = (JPanel) showAllPanel.getComponent(1);
         JScrollPane scrollPane = (JScrollPane) middlePanel.getComponent(0);
         JTextArea textArea = (JTextArea) scrollPane.getViewport().getView();
-        label.setText("Showing All Transactions");
         label.setFont(new Font("SansSerif", Font.PLAIN, 22));
-        String allTransactions = showTransaction(ui.getTransaction());
-        textArea.setText(allTransactions);
-        textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        if (ui.getTransaction().size() == 0) {
+            label.setText("There are currently no transactions");
+        } else {
+            label.setText("Showing all transactions");
+            String allTransactions = showTransaction(ui.getTransaction());
+            textArea.setText(allTransactions);
+            textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        }
         refresh(showAllPanel);
     }
 
@@ -229,11 +230,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // GETTER
     public JPanel getAddPanel() {
         return addPanel;
-    }
-    
-    // GETTER
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 
     // GETTER

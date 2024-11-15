@@ -18,4 +18,7 @@ public interface Communication {
 
     // EFFECTS: show all transactions
     void showAllClick();
+
+    // EFFECTS: switch to bank menu
+    void bankClick();
 }

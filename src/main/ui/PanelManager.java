@@ -20,7 +20,10 @@ import javax.swing.JTextField;
 public class PanelManager {
 
     protected JButton[] buttonList;
+    protected JButton backButton;
     protected int ind;
+    protected JPanel mainPanel;
+    protected MenuUI ui;
     private JLabel posNum;
     private JLabel posDec;
     private JLabel dec;
@@ -179,6 +182,11 @@ public class PanelManager {
 
     public void removeLastComponent(JPanel panel) {
         panel.remove(panel.getComponent(panel.getComponentCount() - 1));
+    }
+
+    // GETTER
+    protected JPanel getMainPanel() {
+        return this.mainPanel;
     }
 
 }

@@ -13,6 +13,7 @@ public class MenuUI extends Menu implements Communication {
     private static final int HEIGHT = 600;
     private JFrame frame;
     private TransactionPanel transactionPanel;
+    private BankPanel bankPanel;
     private MenuPanel menuPanel;
     private int month;
     private int date;
@@ -54,8 +55,9 @@ public class MenuUI extends Menu implements Communication {
     // MODIFIES: this
     // EFFECTS: initializes the sub-panels
     public void panelInit() {
-        transactionPanel = new TransactionPanel(this);
         menuPanel = new MenuPanel(this);
+        transactionPanel = new TransactionPanel(this);
+        bankPanel = new BankPanel(this);
     }
 
     // EFFECTS: switches to transaction menu
@@ -75,6 +77,10 @@ public class MenuUI extends Menu implements Communication {
     public void showAllClick() {
         switchPanel(transactionPanel.getShowAllPanel());
         transactionPanel.runShowAllPanel();
+    }
+
+    public void bankClick() {
+        switchPanel(bankPanel.getMainPanel());
     }
 
     // EFFECTS: closes the program
