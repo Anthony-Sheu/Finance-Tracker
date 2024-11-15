@@ -17,6 +17,7 @@ import persistence.CategoriesWriter;
 import persistence.TrackerReader;
 import persistence.TrackerWriter;
 
+// Represents a superclass that handles operations for both text and GUI
 public class Menu {
 
     protected static final String BANKS_STORE = "./data/Bank.json";

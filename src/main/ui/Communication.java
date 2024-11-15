@@ -21,4 +21,7 @@ public interface Communication {
 
     // EFFECTS: switch to bank menu
     void bankClick();
+
+    // EFFECTS: switches to add bank panel
+    void addBankClick();
 }

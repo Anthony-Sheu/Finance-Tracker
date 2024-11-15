@@ -24,6 +24,11 @@ public class MenuUI extends Menu implements Communication {
     private String note;
     private String accountName;
     private String accountType;
+    private double cheq;
+    private double save;
+    private double cred;
+    private String bankName;
+    private double credLim;
 
     // EFFECTS: constructs main frame and initializes every thing else
     public MenuUI() {
@@ -81,6 +86,11 @@ public class MenuUI extends Menu implements Communication {
 
     public void bankClick() {
         switchPanel(bankPanel.getMainPanel());
+        bankPanel.runAddBankPanel();
+    }
+
+    public void addBankClick() {
+        switchPanel(bankPanel.getAddBankPanel());
     }
 
     // EFFECTS: closes the program
@@ -144,6 +154,31 @@ public class MenuUI extends Menu implements Communication {
     // SETTER
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    // SETTER
+    public void setCheq(double cheq) {
+        this.cheq = cheq;
+    }
+
+    // SETTER
+    public void setSave(double save) {
+        this.save = save;
+    }
+
+    // SETTER
+    public void setCred(double cred) {
+        this.cred = cred;
+    }
+
+    // SETTER
+    public void setBankName(String name) {
+        this.bankName = name;
+    }
+
+    // STTER
+    public void setCredLim(double lim) {
+        this.credLim = lim;
     }
 
     // GETTER

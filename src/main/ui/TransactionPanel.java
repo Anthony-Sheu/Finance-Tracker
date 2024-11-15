@@ -55,6 +55,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         this.ui = ui;
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes buttons
     public void buttonInit() {
         addButton = new JButton("Add a transaction");
         removeButton = new JButton("<html><center>Remove<br>a transaction</center></html>");
@@ -72,6 +74,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         addAction(this, buttonList);
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the main panel
     public void panelInit() {
         label = new JLabel("TRANSACTION MENU", JLabel.CENTER);
         mainPanel = new JPanel();
@@ -85,6 +89,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         mainPanel.add(backTranButton);
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes sub-panels
     public void subPanelInit() {
         createAddPanel();
         removePanel = new JPanel();
@@ -96,6 +102,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         refundPanel = new JPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes all other things
     public void initOther() {
         transactionLabels = addTransactionLabels();
     }
@@ -106,6 +114,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         addPanel = createInputPanel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs add transaction panel
     public void runAddPanel() {
         JButton submit = (JButton) addPanel.getComponent(5);
         JLabel label = (JLabel) addPanel.getComponent(1);
@@ -119,6 +129,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         submit.addActionListener(addTransactionAction());
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a ActionListener for add transaction panel
     public ActionListener addTransactionAction() {
         JTextField text = (JTextField) addPanel.getComponent(3);
         JLabel label = (JLabel) addPanel.getComponent(1);
@@ -148,6 +160,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         return al;
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a list of strings prompting user to enter their transaction info
     public String[] addTransactionLabels() {
         return new String[] {
             "What is the number month of your transaction?",
@@ -162,6 +176,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         };
     }
 
+    // MODIFIES: MenuUI
+    // EFFECTS: changes the values in MenuUI to update
     public void changeUITransaction(Object[] temp) {
         ui.setMonth((int) temp[0]);
         ui.setDate((int) temp[1]);
@@ -174,10 +190,14 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         ui.setAccountType((String) temp[8]);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates show all transactions panel
     public void createShowAllPanel() {
         showAllPanel = createShowPanel(backTranButton);
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the show all transactions panel
     public void runShowAllPanel() {
         JLabel label = (JLabel) showAllPanel.getComponent(0);
         JPanel middlePanel = (JPanel) showAllPanel.getComponent(1);
@@ -195,6 +215,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         refresh(showAllPanel);
     }
 
+    // EFFECTS: returns a string of all transactions in tracker
     public String showTransaction(List<Transaction> tracker) {
         StringBuilder content = new StringBuilder();
         for (int i = 0; i < tracker.size(); i++) {
@@ -204,6 +225,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         return content.toString();
     }
 
+    // EFFECTS: communication with MenuUI
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {

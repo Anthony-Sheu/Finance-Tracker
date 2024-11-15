@@ -21,6 +21,8 @@ public class Main {
         //     }
         // }
     }
+
+    // EFFECTS: checks to make sure user input is a positive integer
     public static int intInput() {
         String in;
         int inTry;

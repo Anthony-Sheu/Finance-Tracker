@@ -29,10 +29,13 @@ public class PanelManager {
     private JLabel dec;
     private JLabel properString;
 
+    // EFFECTS: initializes error labels
     public PanelManager() {
         initErrorLabel();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes error labels
     private void initErrorLabel() {
         posNum = new JLabel("Please enter a positive number", JLabel.CENTER);
         posNum.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -44,17 +47,22 @@ public class PanelManager {
         properString.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     }
 
+    // MODIFIES: JButton in list
+    // EFFECTS: adds panel as ActionListener to each button
     protected void addAction(ActionListener panel, JButton[] list) {
         for (JButton j : list) {
             j.addActionListener(panel);
         }
     }
 
+    // MODIFIES: panel
+    // EFFECTS: refreshes panel for updates
     protected void refresh(JPanel panel) {
         panel.revalidate();
         panel.repaint();
     }
 
+    // EFFECTS: creates an input panel
     protected JPanel createInputPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -75,6 +83,7 @@ public class PanelManager {
         return panel;
     }
 
+    // EFFECTS: creates a panel to show transactions
     public JPanel createShowPanel(JButton button) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -97,6 +106,7 @@ public class PanelManager {
         return panel;
     }
 
+    // EFFECTS: checks user input to make sure it is a positive integer
     protected int intText(String text, JPanel panel) {
         int num;
         try {
@@ -126,6 +136,7 @@ public class PanelManager {
         return 0;
     }
 
+    // EFFECTS: checks user input to make sure it is a positive double
     protected double doubleText(String text, JPanel panel) {
         double num;
         try {
@@ -155,6 +166,7 @@ public class PanelManager {
         return 0.0;
     }
 
+    // EFFECTS: checks user input to make sure it is a valid string
     protected String stringText(String text, JPanel panel) {
         double dec;
         try {
