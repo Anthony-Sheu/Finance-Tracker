@@ -93,7 +93,7 @@ public class PanelManager {
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JPanel middlePanel = new JPanel();
         middlePanel.setLayout(new BorderLayout());
-        middlePanel.setBorder(BorderFactory.createEmptyBorder(50,0,100,0));
+        middlePanel.setBorder(BorderFactory.createEmptyBorder(50,0,75,0));
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -183,9 +183,8 @@ public class PanelManager {
 
     // EFFECTS: checks user input to make sure it is a valid string
     protected String stringText(String text, JPanel panel) {
-        double dec;
         try {
-            dec = Double.parseDouble(text);
+            double dec = Double.parseDouble(text);
             if (!checkLastError(panel)) {
                 panel.add(properString);
             } else {
@@ -207,6 +206,8 @@ public class PanelManager {
         return panel.getComponent(panel.getComponentCount() - 1) instanceof JLabel;
     }
 
+    // MODIFIES: panel
+    // EFFECTS: removes the last component added to a panel
     public void removeLastComponent(JPanel panel) {
         panel.remove(panel.getComponent(panel.getComponentCount() - 1));
     }

@@ -30,4 +30,7 @@ public interface Communication {
 
     // EFFECTS: switches to showing transactions in time range
     void showInDateClick();
+
+    // EFFECTS: switches to showing transactions under a specific expense category
+    void showExpTranClick();
 }

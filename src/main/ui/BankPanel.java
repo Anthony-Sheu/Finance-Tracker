@@ -221,9 +221,9 @@ public class BankPanel extends PanelManager implements ActionListener {
                 } else if (1 <= ind && ind <= 4) {
                     bankHolder[ind] = doubleText(text.getText(), addBankPanel);
                 }
+                text.setText("");
                 if (ind < 5) {
                     label.setText(bankLabels[ind]);
-                    text.setText("");
                 } else {
                     changeUIBank(bankHolder);
                     ui.backClick();

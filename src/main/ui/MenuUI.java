@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import model.Account;
+import model.Expense;
 import model.Tracker;
 import model.Transaction;
 
@@ -39,6 +40,9 @@ public class MenuUI extends Menu implements Communication {
         init();
         varInit();
         super.addBank("CIBC", 100, 1000, 0, 1500);
+        super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
+        super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
+        super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");
     }
 
     public void varInit() {
@@ -119,6 +123,10 @@ public class MenuUI extends Menu implements Communication {
     public void showInDateClick() {
         switchPanel(transactionPanel.getMonthPanel());
         transactionPanel.runMonthInputPanel();
+    }
+
+    public void showExpTranClick() {
+        switchPanel(transactionPanel.getShowExpPanel());
     }
 
     public void bankClick() {
@@ -236,6 +244,11 @@ public class MenuUI extends Menu implements Communication {
     // GETTER
     public List<Account> getBanks() {
         return bank.getBank();
+    }
+
+    // GETTER
+    public List<Expense> getExpenses() {
+        return category.getExpense();
     }
 
 }
