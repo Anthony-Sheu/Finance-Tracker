@@ -33,4 +33,7 @@ public interface Communication {
 
     // EFFECTS: switches to showing transactions under a specific expense category
     void showExpTranClick();
+
+    // EFFECTS: switches to remove transaction panel
+    void removeClick();
 }

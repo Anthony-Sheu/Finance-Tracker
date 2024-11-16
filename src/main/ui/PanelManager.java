@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.*;
 import java.awt.event.*;
 
 import javax.swing.BorderFactory;
@@ -16,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import model.Transaction;
 
 // Represents a panel manager that contains general methods
 public class PanelManager {

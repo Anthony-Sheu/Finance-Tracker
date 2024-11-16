@@ -34,15 +34,15 @@ public class MenuUI extends Menu implements Communication {
     private double credLim;
 
     // EFFECTS: constructs main frame and initializes every thing else
-    public MenuUI() {
+    public MenuUI() {     
         super();
         super.init();
-        init();
-        varInit();
         super.addBank("CIBC", 100, 1000, 0, 1500);
         super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");
+        init();
+        varInit();
     }
 
     public void varInit() {
@@ -90,11 +90,6 @@ public class MenuUI extends Menu implements Communication {
         bankPanel = new BankPanel(this);
     }
 
-    // EFFECTS: switches to transaction menu
-    public void transactionClick() {
-        switchPanel(transactionPanel.getMainPanel());
-    }
-
     // MODIFIES: this
     // EFFECTS: adds new transaction
     public void addTransaction() {
@@ -108,11 +103,21 @@ public class MenuUI extends Menu implements Communication {
         super.addBank(bankName, cheq, save, cred, credLim);
     }
 
-    // MODIFIES: this
+    // EFFECTS: switches to transaction menu
+    public void transactionClick() {
+        switchPanel(transactionPanel.getMainPanel());
+    }
+
     // EFFECTS: add new transaction
     public void addTransactionClick() {
         switchPanel(transactionPanel.getAddPanel());
         transactionPanel.runAddPanel();
+    }
+
+    // EFFECTS: removes transaction
+    public void removeClick() {
+        transactionPanel.runRemovePanel();
+        switchPanel(transactionPanel.getRemovePanel());
     }
 
     public void showAllClick() {
@@ -126,6 +131,7 @@ public class MenuUI extends Menu implements Communication {
     }
 
     public void showExpTranClick() {
+        transactionPanel.runShowEmptyExpPanel();
         switchPanel(transactionPanel.getShowExpPanel());
     }
 
