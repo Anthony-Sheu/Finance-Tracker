@@ -88,7 +88,7 @@ public class MenuPanel extends PanelManager implements ActionListener {
         } else if (e.getSource() == creditButton) {
 
         } else if (e.getSource() == transferButton) {
-
+            ui.transferClick();
         } else if (e.getSource() == quitButton) {
             ui.quitClick();
         }

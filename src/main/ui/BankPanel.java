@@ -151,7 +151,7 @@ public class BankPanel extends PanelManager implements ActionListener {
             JButton button = new JButton(acc.getBank());
             button.setPreferredSize(new Dimension(100, 40));
             JPanel tempPanel = createBalanceSubPanel(acc);
-            button.addActionListener(createBackButton(tempPanel, button));
+            button.addActionListener(createBackButton(tempPanel));
             middlePanel.add(button);
         }
         refresh(balancePanel);

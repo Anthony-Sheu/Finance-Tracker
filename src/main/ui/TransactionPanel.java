@@ -1,22 +1,15 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,7 +20,6 @@ import javax.swing.SwingUtilities;
 
 import model.Account;
 import model.Expense;
-import model.Tracker;
 import model.Transaction;
 
 // Represents a transaction menu
@@ -144,7 +136,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates the panel to edit a previous transaction
     public void createEditPanel() {
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         editPanel = createShowPanel(button);
     }
 
@@ -152,7 +144,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: removes a certain transaction by line number
     public void createRemovePanel() {
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         removePanel = createShowPanel(button);
     }
 
@@ -160,7 +152,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates show all transactions panel
     public void createShowAllPanel() {
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         showAllPanel = createShowPanel(button);
     }
 
@@ -168,7 +160,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates panel to show all transactions under a certain expense
     public void createExpPanel() {
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         showExpPanel = createShowPanel(button);
         JLabel label = (JLabel) showExpPanel.getComponent(0);
         label.setFont(new Font("SansSerif", Font.PLAIN, 22));
@@ -190,7 +182,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates panel to show all transactions within a certain month/year
     public void createShowInDatePanel() {
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button)); 
+        button.addActionListener(createBackButton(mainPanel)); 
         showInDatePanel = createShowPanel(button);
         monthPanel = createInputPanel();
         JButton submit = (JButton) monthPanel.getComponent(5);
@@ -214,7 +206,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         bottomPanel.removeAll();
         JTextField textField = new JTextField(20);
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         if (ui.getTransactionList().size() != 0) {
             bottomPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -249,7 +241,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         bottomPanel.removeAll();
         JTextField textField = new JTextField(20);
         JButton button = new JButton("Return to transaction menu");
-        button.addActionListener(createBackButton(mainPanel, button));
+        button.addActionListener(createBackButton(mainPanel));
         if (ui.getTransactionList().size() != 0) {
             bottomPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -430,15 +422,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         textArea.setText(allTransactions);
         textArea.setFont(new Font("SansSerif", Font.PLAIN, 20));
         refresh(panel);
-    }
-
-    // MODIFIES: panel, textField
-    // EFFECTS: refreshes panel and sets text field focus
-    public void updateWithInput(JTextField text, JPanel panel) {
-        refresh(panel);
-        SwingUtilities.invokeLater(() -> {
-            text.requestFocusInWindow();
-        });
     }
 
 

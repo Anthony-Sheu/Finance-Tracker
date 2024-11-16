@@ -40,6 +40,6 @@ public interface Communication {
     // EFFECTS: switches to edit transaction panel
     void editClick();
 
-    // EFFECTS: switches to refund transaction panel
-    void refundClick();
+    // EFFECTS: switches to transfer panel
+    void transferClick();
 }

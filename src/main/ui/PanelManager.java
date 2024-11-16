@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.util.*;
 import java.awt.event.*;
 
@@ -19,7 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import model.Transaction;
+import model.Account;
 
 // Represents a panel manager that contains general methods
 public class PanelManager {
@@ -68,6 +67,44 @@ public class PanelManager {
         panel.repaint();
     }
 
+    // MODIFIES: panel, textField
+    // EFFECTS: refreshes panel and sets text field focus
+    public void updateWithInput(JTextField text, JPanel panel) {
+        refresh(panel);
+        SwingUtilities.invokeLater(() -> {
+            text.requestFocusInWindow();
+        });
+    }
+
+    // EFFECTS: creates bank input panel
+    protected JPanel createBankPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        List<Account> bank = ui.getBanks();
+        for (int i = 0; i < bank.size(); i++) {
+            Account acc = bank.get(i);
+            JButton button = new JButton(acc.getBank());
+            button.setPreferredSize(new Dimension(100, 40));
+            panel.add(button);
+        }
+        refresh(panel);
+        return panel;
+    }
+
+    // EFFECTS: creates account input panel
+    protected JPanel createAccountPanel() {
+        JPanel panel = new JPanel();
+        String[] temp = {"Chequeing", "Savings", "Credit"};
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        for (int i = 0; i < 3; i++) {
+            JButton button = new JButton(temp[i]);
+            button.setPreferredSize(new Dimension(100, 40));
+            panel.add(button);
+        }
+        refresh(panel);
+        return panel;
+    }
+
     // EFFECTS: creates an input panel
     protected JPanel createInputPanel() {
         JPanel panel = new JPanel();
@@ -112,14 +149,12 @@ public class PanelManager {
         return panel;
     }
 
-    // EFFECTS: creates a button that returns to transaction menu
-    public ActionListener createBackButton(JPanel panel, JButton button) {
+    // EFFECTS: creates a button that goes to a specific menu
+    public ActionListener createBackButton(JPanel panel) {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == button) {
-                    ui.switchPanel(panel);
-                }
+                ui.switchPanel(panel);
             }
         };
         return al;

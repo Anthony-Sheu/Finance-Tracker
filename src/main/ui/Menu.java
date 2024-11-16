@@ -37,6 +37,7 @@ public class Menu {
     protected CategoriesWriter categoryWriter;
     protected CategoriesReader categoryReader;
 
+    // EFFECTS: constructor
     public Menu() {
 
     }
