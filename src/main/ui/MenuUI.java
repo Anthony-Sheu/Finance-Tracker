@@ -23,7 +23,7 @@ public class MenuUI extends Menu implements Communication {
     private int year;
     private double amount;
     private String store;
-    private String expense;
+    private String exp;
     private String note;
     private String accountName;
     private String accountType;
@@ -51,7 +51,7 @@ public class MenuUI extends Menu implements Communication {
         year = 0;
         amount = 0.0;
         store = "";
-        expense = "";
+        exp = "";
         note = "";
         accountName = "";
         accountType = "";
@@ -93,7 +93,7 @@ public class MenuUI extends Menu implements Communication {
     // MODIFIES: this
     // EFFECTS: adds new transaction
     public void addTransaction() {
-        super.addTransaction(month, date, year, amount, store, expense, note, accountName, accountType);
+        super.addTransaction(month, date, year, amount, store, exp, note, accountName, accountType);
         super.updateBank(accountName, accountType, -amount);
     }
 
@@ -108,42 +108,57 @@ public class MenuUI extends Menu implements Communication {
         switchPanel(transactionPanel.getMainPanel());
     }
 
+    // MODIFIES: this
     // EFFECTS: add new transaction
     public void addTransactionClick() {
         switchPanel(transactionPanel.getAddPanel());
         transactionPanel.runAddPanel();
     }
 
+    // MODIFIES: this
     // EFFECTS: removes transaction
     public void removeClick() {
         transactionPanel.runRemovePanel();
         switchPanel(transactionPanel.getRemovePanel());
     }
 
+    // EFFECTS: edits transaction
+    public void editClick() {
+        transactionPanel.runEditPanel();
+        switchPanel(transactionPanel.getEditPanel());
+    }
+
+    // EFFECTS: shows all transactions
     public void showAllClick() {
         switchPanel(transactionPanel.getShowAllPanel());
         transactionPanel.runShowAllPanel();
     }
 
+    // EFFECTS: shows all transactions in certain month/year
     public void showInDateClick() {
         switchPanel(transactionPanel.getMonthPanel());
         transactionPanel.runMonthInputPanel();
     }
 
+    // EFFECTS: shows a transactions in a certain expense category
     public void showExpTranClick() {
         transactionPanel.runShowEmptyExpPanel();
         switchPanel(transactionPanel.getShowExpPanel());
     }
 
+    // EFFECTS: opens bank menu
     public void bankClick() {
         switchPanel(bankPanel.getMainPanel());
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds bank
     public void addBankClick() {
         switchPanel(bankPanel.getAddBankPanel());
         bankPanel.runAddBankPanel();
     }
 
+    // EFFECTS: checks bank account balances
     public void bankBalanceClick() {
         switchPanel(bankPanel.getBalancePanel());
         bankPanel.runBalancePanel();
@@ -166,6 +181,11 @@ public class MenuUI extends Menu implements Communication {
         frame.revalidate();
         frame.repaint();
     }
+
+
+
+
+
 
     // SETTER
     public void setMonth(int month) {
@@ -193,8 +213,8 @@ public class MenuUI extends Menu implements Communication {
     }
 
     // SETTER
-    public void setExpense(String expense) {
-        this.expense = expense;
+    public void setExp(String expense) {
+        this.exp = expense;
     }
 
     // SETTER
@@ -232,13 +252,17 @@ public class MenuUI extends Menu implements Communication {
         this.bankName = name;
     }
 
-    // STTER
+    // SETTER
     public void setCredLim(double lim) {
         this.credLim = lim;
     }
 
+
+
+
+
     // GETTER
-    public List<Transaction> getTransaction() {
+    public List<Transaction> getTransactionList() {
         return tracker.getTracker();
     }
 
@@ -257,4 +281,18 @@ public class MenuUI extends Menu implements Communication {
         return category.getExpense();
     }
 
+    // GETTER
+    public Account getAccount() {
+        return account;
+    }
+
+    // GETTER
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    // GETTER
+    public Expense getExpense() {
+        return expense;
+    }
 }
