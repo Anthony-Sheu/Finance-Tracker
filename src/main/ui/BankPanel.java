@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -39,9 +40,9 @@ public class BankPanel extends PanelManager implements ActionListener {
         super(ui);
         buttonInit();
         labelInit();
-        subPanelInit();
         otherInit();
         panelInit();
+        subPanelInit();
     }
 
     // MODIFIES: this
@@ -62,7 +63,7 @@ public class BankPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: initializes sub-panels
     public void subPanelInit() {
-        addBankPanel = createInputPanel();
+        createBankInputPanel();
         balancePanel = createBalancePanel();
     }
 
@@ -121,6 +122,15 @@ public class BankPanel extends PanelManager implements ActionListener {
             "Please enter your credit balance",
             "Please enter your credit limit"
         };
+    }
+
+    // EFFECTS: initializes add bank menu
+    public void createBankInputPanel() {
+        addBankPanel = createInputPanel();
+        JButton backButton = new JButton("Return to banking menu");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(createBackButton(mainPanel));
+        addBankPanel.add(backButton);
     }
 
     // REQUIRES: bank.size() > 0
@@ -184,6 +194,8 @@ public class BankPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs add banking information panel
     public void runAddBankPanel() {
+        ind = 0;
+        createBankInputPanel();
         JButton submit = (JButton) addBankPanel.getComponent(5);
         JLabel label = (JLabel) addBankPanel.getComponent(1);
         JTextField text = (JTextField) addBankPanel.getComponent(3);
@@ -212,10 +224,10 @@ public class BankPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: creates an ActionListener for add bank panel
     public ActionListener addBankAction(JTextField text, JLabel label) {
-        ind = 0;
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(ind);
                 if (ind == 0) {
                     bankHolder[ind] = stringText(text.getText(), addBankPanel);
                 } else if (1 <= ind && ind <= 4) {

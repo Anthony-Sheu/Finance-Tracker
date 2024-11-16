@@ -1,5 +1,7 @@
 package ui;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -8,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.PrivateKey;
 import java.util.*;
 
 import javax.swing.JButton;
@@ -33,6 +36,9 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JPanel showInDatePanel;
     private JPanel monthPanel;
     private JPanel yearPanel;
+    private JPanel bankPanel;
+    private JPanel accPanel;
+    private JPanel expPanel;
     private JButton addButton;
     private JButton removeButton;
     private JButton editButton;
@@ -40,13 +46,15 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     private JButton showInDateButton;
     private JButton showExpButton;
     JLabel label;
-    private Object[] transactionHolder = {0, 0, 0, 0.0, "", "", "", "", ""};
+    private Object[] transactionHolder = {0, 0, 0, 0.0, "", "", ""};
     private String[] transactionLabels;
     private int month;
     private int year;
     private int line;
     private double amount;
     private String expense;
+    private String accountName;
+    private String accountType;
 
     // EFFECTS: intializes variables
     public TransactionPanel(MenuUI ui) {
@@ -55,6 +63,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         panelInit();
         subPanelInit();
         initOther();
+        expPanelInit();
     }
 
     // MODIFIES: this
@@ -98,6 +107,41 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: initializes bank and acc panel
+    public void bankAccPanelInit() {
+        bankPanel = createBankPanel();
+        bankPanelButtonInit();
+        accPanel = createAccountPanel();
+        accPanelButtonInit();
+    }
+
+    // MODIFIES: this
+    // EFFECTSL initializes expense panel
+    public void expPanelInit() {
+        expPanel = new JPanel();
+        expPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        addExpPanelButtons(expPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes bank buttons
+    public void bankPanelButtonInit() {
+        for (int i = 0; i < bankPanel.getComponentCount(); i++) {
+            JButton button = (JButton) bankPanel.getComponent(i);
+            button.addActionListener(bankAction(button));
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes account buttons
+    public void accPanelButtonInit() {
+        for (int i = 0; i < accPanel.getComponentCount(); i++) {
+            JButton button = (JButton) accPanel.getComponent(i);
+            button.addActionListener(accountAction(button));
+        }
+    }
+
+    // MODIFIES: this
     // EFFECTS: initializes all other things
     public void initOther() {
         transactionLabels = addTransactionLabels();
@@ -130,6 +174,10 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         addPanel = createInputPanel();
         JButton submit = (JButton) addPanel.getComponent(5);
         submit.addActionListener(addTransactionAction());
+        JButton backButton = new JButton("Return to transaction menu");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(createBackButton(mainPanel));
+        addPanel.add(backButton);
     }
 
     // MODIFIES: this
@@ -193,6 +241,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         text = (JTextField) yearPanel.getComponent(3);
         submit.addActionListener(yearAction(text, yearPanel));
     }
+
 
 
 
@@ -293,6 +342,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs add transaction panel
     public void runAddPanel() {
+        bankAccPanelInit();
+        createAddPanel();
         JLabel label = (JLabel) addPanel.getComponent(1);
         JTextField text = (JTextField) addPanel.getComponent(3);
         ind = 0;
@@ -350,23 +401,82 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs bank panel
+    public void runBankPanel() {
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        JButton submit = (JButton) addPanel.getComponent(5);
+        addPanel.remove(text);
+        addPanel.remove(submit);
+        addPanel.add(bankPanel, 3);
+        refresh(addPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs acc panel
+    public void runAccPanel() {
+        JPanel middlePanel = (JPanel) addPanel.getComponent(3);
+        addPanel.remove(middlePanel);
+        addPanel.add(accPanel, 3);
+        refresh(addPanel);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs expense panel
+    public void runExpPanel() {
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        JButton submit = (JButton) addPanel.getComponent(5);
+        addPanel.remove(text);
+        addPanel.remove(submit);
+        addPanel.add(expPanel, 3);
+        refresh(addPanel);
+    }
+
 
 
 
 
     // MODIFIES: MenuUI
     // EFFECTS: changes the values in MenuUI to update
-    public void changeUITransaction(Object[] temp) {
-        ui.setMonth((int) temp[0]);
-        ui.setDate((int) temp[1]);
-        ui.setYear((int) temp[2]);
-        ui.setAmount((double) temp[3]);
-        ui.setStore((String) temp[4]);
-        ui.setExp((String) temp[5]);
-        ui.setNote((String) temp[6]);
-        ui.setAccountName((String) temp[7]);
-        ui.setAccountType((String) temp[8]);
+    public void changeUITransaction() {
+        ui.setMonth((int) transactionHolder[0]);
+        ui.setDate((int) transactionHolder[1]);
+        ui.setYear((int) transactionHolder[2]);
+        ui.setAmount((double) transactionHolder[3]);
+        ui.setStore((String) transactionHolder[4]);
+        ui.setExp(expense);
+        ui.setNote((String) transactionHolder[5]);
+        ui.setAccountName(accountName);
+        ui.setAccountType(accountType);
         ui.addTransaction();
+    }
+
+    // MODIFIES: middlePanel
+    // EFFECTS: adds expense buttons to middle panel
+    public void addExpPanelButtons(JPanel panel) {
+        int[][] temp = {
+            {0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6}, 
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1}
+        };
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 5, 10, 5);
+        List<Expense> categories = ui.getExpenses();
+        JButton button;
+        for (int i = 0; i < categories.size(); i++) {
+            Expense exp = categories.get(i);
+            button = new JButton(exp.getExpense());
+            gbc.gridx = temp[0][i];
+            gbc.gridy = temp[1][i];
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    expense = exp.getExpense();
+                    ind++;
+                    resetToTextAddPanel();
+                }
+            });
+            panel.add(button, gbc);
+        }
     }
 
     // MODIFIES: middlePanel
@@ -424,10 +534,57 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         refresh(panel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: resets to text input in add panel
+    public void resetToTextAddPanel() {
+        JLabel label = (JLabel) addPanel.getComponent(1);
+        label.setText(transactionLabels[ind]);
+        JTextField text = new JTextField(40);
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+        text.setMaximumSize(new Dimension(200, 40));
+        JButton submit = new JButton("Submit");
+        submit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        submit.addActionListener(addTransactionAction());
+        JPanel middlePanel = (JPanel) addPanel.getComponent(3);
+        addPanel.remove(middlePanel);
+        addPanel.add(text, 3);
+        addPanel.add(submit, 5);
+        updateWithInput(text, addPanel);
+    }
 
 
 
 
+
+
+
+    // EFFECTS: creates an ActionListener to check bank name input
+    public ActionListener bankAction(JButton button) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accountName = button.getText();
+                JLabel label = (JLabel) addPanel.getComponent(1);
+                ind++;
+                label.setText(transactionLabels[ind]);
+                runAccPanel();
+            }
+        };
+        return al;
+    }
+
+    // EFFECTS: creates an ActionListener to check account name input
+    public ActionListener accountAction(JButton button) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accountType = button.getText();
+                changeUITransaction();
+                ui.backClick();
+            }
+        };
+        return al;
+    }
 
     // EFFECTS: creates an ActionListener for taking in an amount to change a transaction by
     public ActionListener editAction(JTextField text, JPanel panel) {
@@ -528,26 +685,27 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: creates a ActionListener for add transaction panel
     public ActionListener addTransactionAction() {
-        JTextField text = (JTextField) addPanel.getComponent(3);
-        JLabel label = (JLabel) addPanel.getComponent(1);
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JTextField text = (JTextField) addPanel.getComponent(3);
+                JLabel label = (JLabel) addPanel.getComponent(1);
                 if (0 <= ind && ind <= 2) {
                     transactionHolder[ind] = intText(text.getText(), addPanel);
                 } else if (ind == 3) {
                     transactionHolder[ind] = doubleText(text.getText(), addPanel);
-                } else if (4 <= ind && ind <= 8) {
+                } else if (ind == 4 || ind == 6) {
                     transactionHolder[ind] = stringText(text.getText(), addPanel);
-                }
+                } 
                 text.setText("");
-                if (ind < 9) {
-                    label.setText(transactionLabels[ind]);  
-                } else {
-                    changeUITransaction(transactionHolder);
-                    ui.backClick();
-                }
+                label.setText(transactionLabels[ind]);  
                 updateWithInput(text, addPanel);
+                if (ind == 5) {
+                    runExpPanel();
+                }
+                if (ind == 7) {
+                    runBankPanel();
+                }
             }
         };
         return al;

@@ -32,6 +32,7 @@ public class TransferPanel extends PanelManager implements ActionListener {
         buttonInit();
         labelInit();
         panelInit();
+        subPanelInit();
     }
 
     // MODIFIES: this
@@ -80,7 +81,6 @@ public class TransferPanel extends PanelManager implements ActionListener {
         bankPanel = createBankPanel();
         bankPanelButtonInit();
         amountPanel = createAmountPanel();
-        accPanelButtonInit();
     }
 
     // MODIFIES: this
@@ -114,6 +114,8 @@ public class TransferPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: initializes account buttons
     public void accPanelButtonInit() {
+        JButton credit = (JButton) accPanel.getComponent(2);
+        accPanel.remove(credit);
         for (int i = 0; i < accPanel.getComponentCount(); i++) {
             JButton button = (JButton) accPanel.getComponent(i);
             button.addActionListener(accountAction(button));
@@ -123,8 +125,10 @@ public class TransferPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs transfer panel
     public void runTransferPanel() {
-        subPanelInit();
+        bankPanel = createBankPanel();
+        bankPanelButtonInit();
         JLabel label = (JLabel) mainPanel.getComponent(1);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         JPanel middlePanel = (JPanel) mainPanel.getComponent(3);
         mainPanel.remove(middlePanel);
         mainPanel.add(bankPanel, 3);
@@ -144,9 +148,9 @@ public class TransferPanel extends PanelManager implements ActionListener {
     public void nextPanel() {
         JPanel middlePanel = (JPanel) mainPanel.getComponent(3);
         JLabel label = (JLabel) mainPanel.getComponent(1);
-        label.setText(labels[ind]);
         mainPanel.remove(middlePanel);
         ind++;
+        label.setText(labels[ind]);
         if (ind == 0 || ind == 2) {
             mainPanel.add(bankPanel, 3);
         } else if (ind == 1 || ind == 3) {
@@ -193,15 +197,17 @@ public class TransferPanel extends PanelManager implements ActionListener {
 
     // EFFECTS: creates an ActionListener to take in double input
     public ActionListener submitAction(JTextField text) {
-        JLabel label = (JLabel) mainPanel.getComponent(1);
-        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ind = 0;
                 amount = doubleText(text.getText(), mainPanel);
-                runTransfer();
+                text.setText("");
                 updateWithInput(text, mainPanel);
-                ui.backClick();
+                if (ind != 0) {
+                    runTransfer();
+                    ui.backClick();
+                }
             }
         };
         return al;

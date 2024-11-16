@@ -69,7 +69,7 @@ public class PanelManager {
 
     // MODIFIES: panel, textField
     // EFFECTS: refreshes panel and sets text field focus
-    public void updateWithInput(JTextField text, JPanel panel) {
+    protected void updateWithInput(JTextField text, JPanel panel) {
         refresh(panel);
         SwingUtilities.invokeLater(() -> {
             text.requestFocusInWindow();
@@ -123,11 +123,12 @@ public class PanelManager {
         panel.add(Box.createVerticalStrut(25));
         panel.add(submit); // 5
         panel.add(Box.createVerticalStrut(25));
+        panel.add(Box.createVerticalStrut(150));
         return panel;
     }
 
     // EFFECTS: creates a panel to show transactions and takes in a return to menu button
-    public JPanel createShowPanel(JButton button) {
+    protected JPanel createShowPanel(JButton button) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JPanel bottomPanel = new JPanel();
@@ -150,7 +151,7 @@ public class PanelManager {
     }
 
     // EFFECTS: creates a button that goes to a specific menu
-    public ActionListener createBackButton(JPanel panel) {
+    protected ActionListener createBackButton(JPanel panel) {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,23 +169,23 @@ public class PanelManager {
             if (num > 0) {
                 ind++;
                 if (checkLastError(panel)) {
-                    removeLastComponent(panel);
+                    removeErrorLabel(panel);
                 }
                 return num;
             } else {
                 if (!checkLastError(panel)) {
-                    panel.add(posNum);
+                    panel.add(posNum, panel.getComponentCount() - 2);
                 } else {
-                    removeLastComponent(panel);
-                    panel.add(posNum);
+                    removeErrorLabel(panel);
+                    panel.add(posNum, panel.getComponentCount() - 2);
                 }
             }
         } catch (NumberFormatException e) {
             if (!checkLastError(panel)) {
-                panel.add(posNum);
+                panel.add(posNum, panel.getComponentCount() - 2);
             } else {
-                removeLastComponent(panel);
-                panel.add(posNum);
+                removeErrorLabel(panel);
+                panel.add(posNum, panel.getComponentCount() - 2);
             }
         }
         return 0;
@@ -198,23 +199,23 @@ public class PanelManager {
             if (num >= 0) {
                 ind++;
                 if (checkLastError(panel)) {
-                    removeLastComponent(panel);
+                    removeErrorLabel(panel);
                 }
                 return num;
             } else {
                 if (!checkLastError(panel)) {
-                    panel.add(posDec);
+                    panel.add(posDec, panel.getComponentCount() - 2);
                 } else {
-                    removeLastComponent(panel);
-                    panel.add(posDec);
+                    removeErrorLabel(panel);
+                    panel.add(posDec, panel.getComponentCount() - 2);
                 }
             }
         } catch (NumberFormatException e) {
             if (!checkLastError(panel)) {
-                panel.add(dec);
+                panel.add(dec, panel.getComponentCount() - 2);
             } else {
-                removeLastComponent(panel);
-                panel.add(dec);
+                removeErrorLabel(panel);
+                panel.add(dec, panel.getComponentCount() - 2);
             }
         }
         return 0.0;
@@ -223,32 +224,32 @@ public class PanelManager {
     // EFFECTS: checks user input to make sure it is a valid string
     protected String stringText(String text, JPanel panel) {
         try {
-            double dec = Double.parseDouble(text);
+            Double.parseDouble(text);
             if (!checkLastError(panel)) {
-                panel.add(properString);
+                panel.add(properString, panel.getComponentCount() - 2);
             } else {
-                removeLastComponent(panel);
-                panel.add(properString);
+                removeErrorLabel(panel);
+                panel.add(properString, panel.getComponentCount() - 2);
             }
         } catch (NumberFormatException e) {
             ind++;
             if (checkLastError(panel)) {
-                removeLastComponent(panel);
+                removeErrorLabel(panel);
             }
             return text;
         }
         return "";
     }
 
-    // EFFECTS: checks whether the most recent item added was a JLabel (error message)
-    public boolean checkLastError(JPanel panel) {
-        return panel.getComponent(panel.getComponentCount() - 1) instanceof JLabel;
+    // EFFECTS: checks whether the third recent item added was a JLabel (error message)
+    protected boolean checkLastError(JPanel panel) {
+        return panel.getComponent(panel.getComponentCount() - 3) instanceof JLabel;
     }
 
     // MODIFIES: panel
-    // EFFECTS: removes the last component added to a panel
-    public void removeLastComponent(JPanel panel) {
-        panel.remove(panel.getComponent(panel.getComponentCount() - 1));
+    // EFFECTS: removes the latest error label
+    protected void removeErrorLabel(JPanel panel) {
+        panel.remove(panel.getComponent(panel.getComponentCount() - 3));
     }
 
     // GETTER
