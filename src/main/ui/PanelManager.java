@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.*;
 import java.awt.event.*;
 
@@ -114,6 +115,7 @@ public class PanelManager {
         text.setMaximumSize(new Dimension(200, 40));
         JLabel label = new JLabel("", JLabel.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         JButton submit = new JButton("Submit");
         submit.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(Box.createVerticalStrut(100));

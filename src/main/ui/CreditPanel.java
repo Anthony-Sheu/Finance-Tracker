@@ -12,7 +12,7 @@ import java.util.*;
 
 import javax.swing.*;
 
-import org.junit.internal.builders.JUnit3Builder;
+import org.json.JSONML;
 
 import model.Account;
 
@@ -28,6 +28,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     private JPanel limitPanel;
     private JPanel bankPanel;
     private JPanel accPanel;
+    private JPanel amountPanel;
     private String[] payLabels;
     private String accountName1;
     private String accountName2;
@@ -40,7 +41,6 @@ public class CreditPanel extends PanelManager implements ActionListener {
         buttonInit();
         labelInit();
         panelInit();
-        subPanelInit();
         otherInit();
     }
 
@@ -66,9 +66,12 @@ public class CreditPanel extends PanelManager implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: initializes sub panels
-    public void subPanelInit() {
+    public void payPanelSubPanelInit() {
+        bankPanel = createBankPanel();
         accPanel = createAccountPanel();
-        accPanelButtonInit();
+        payPanelAccButtonInit();
+        amountPanel = createInputPanel();
+        payPanelAmountButtonInit();
     }
 
     // MODIFIES: this
@@ -87,24 +90,93 @@ public class CreditPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: initializes limit panel
+    public void createLimitPanel() {
+        limitPanel = createInputPanel();
+        bankPanel = createBankPanel();
+        amountPanel = createInputPanel();
+        limitPanelBankButtonInit();
+        limitPanelAmountButtonInit();
+        JButton button = new JButton("Return to credit menu");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.creditClick();
+            }
+        });
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        limitPanel.add(button);
+    }
+
+    // MODIFIES: this
     // EFFECTS: initializes bank buttons on bank panel
-    public void bankPanelButtonInit() {
+    public void payPanelBankButtonInit() {
         List<Account> bank = ui.getBanks();
         for (int i = 0; i < bank.size(); i++) {
             JButton button =  (JButton) bankPanel.getComponent(i);
-            button.addActionListener(bankAction(button.getText()));
+            button.addActionListener(payPanelBankAction(button.getText()));
         }
     }
 
     // MODIFIES: this
     // EFFECTS: initializes account buttons on acc panel
-    public void accPanelButtonInit() {
+    public void payPanelAccButtonInit() {
         JButton credit = (JButton) accPanel.getComponent(2);
         accPanel.remove(credit);
         for (int i = 0; i < 2; i++) {
             JButton button = (JButton) accPanel.getComponent(i);
             button.addActionListener(accountAction(button.getText()));
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes submit button on amount panel
+    public void payPanelAmountButtonInit() {
+        JTextField text = (JTextField) amountPanel.getComponent(3);
+        JButton submit = (JButton) amountPanel.getComponent(5);
+        submit.addActionListener(payPanelAmountAction(text));
+        JLabel label = (JLabel) amountPanel.getComponent(1);
+        label.setText("How much would you like to pay?");
+        JButton button = new JButton("Return to credit menu");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.creditClick();
+            }
+        });
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setPreferredSize(new Dimension(200, 40));
+        amountPanel.add(button);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes bank buttons on bank panel
+    public void limitPanelBankButtonInit() {
+        List<Account> bank = ui.getBanks();
+        for (int i = 0; i < bank.size(); i++) {
+            JButton button =  (JButton) bankPanel.getComponent(i);
+            button.addActionListener(limitPanelBankAction(button.getText()));
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes submit button on amount panel
+    public void limitPanelAmountButtonInit() {
+        JTextField text = (JTextField) amountPanel.getComponent(3);
+        JButton submit = (JButton) amountPanel.getComponent(5);
+        submit.addActionListener(limitPanelAmountAction(text));
+        JLabel label = (JLabel) amountPanel.getComponent(1);
+        label.setText("How much is your new credit card limit?");
+        JButton button = new JButton("Return to credit menu");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.creditClick();
+            }
+        });
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setPreferredSize(new Dimension(200, 40));
+        amountPanel.add(button);
     }
 
     // MODIFIES: this
@@ -142,25 +214,127 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates pay panel
     public void createPayPanel() {
         payPanel = createInputPanel();
+        JButton button = new JButton("Return to credit menu");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.creditClick();
+            }
+        });
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        payPanel.add(button);
     }
 
     // EFFECTS: runs pay panel
     public void runPayPanel() {
         ind = 0;
+        payPanelSubPanelInit();
         createPayPanel();
-        bankPanel = createBankPanel();
         JLabel label = (JLabel) payPanel.getComponent(1);
         label.setText(payLabels[ind]);
         JTextField text = (JTextField) payPanel.getComponent(3);
         payPanel.remove(text);
         payPanel.add(bankPanel, 3);
-        bankPanelButtonInit();
-        refresh(mainPanel);
+        JButton submit = (JButton) payPanel.getComponent(5);
+        payPanel.remove(submit);
+        payPanelBankButtonInit();
+        refresh(payPanel);
+    }
+
+    // EFFECTS: runs account panel
+    public void runAccPanel() {
+        JLabel label = (JLabel) payPanel.getComponent(1);
+        label.setText(payLabels[ind]);
+        payPanel.remove(bankPanel);
+        payPanel.add(accPanel, 3);
+        refresh(payPanel);
+    }
+
+    // EFFECTS: runs amount panel
+    public void runAmountPanel() {
+        JTextField text = (JTextField) amountPanel.getComponent(3);
+        updateWithInput(text, amountPanel);
+        ui.switchPanel(amountPanel);
     }
 
     // EFFECTS: runs change credit limit panel
     public void runLimitPanel() {
+        createLimitPanel();
+        JLabel label = (JLabel) limitPanel.getComponent(1);
+        label.setText("What account would you like to change the limit of?");
+        limitPanel.remove(limitPanel.getComponent(3));
+        limitPanel.add(bankPanel, 3);
+        limitPanel.remove(limitPanel.getComponent(5));
+        refresh(limitPanel);
+    }
 
+    // EFFECTS: runs limit amount panel
+    public void runLimitAmountPanel() {
+        JTextField text = (JTextField) amountPanel.getComponent(3);
+        updateWithInput(text, amountPanel);
+        ui.switchPanel(amountPanel);
+    }
+
+    // MODIFIES: MenuUI
+    // EFFECTS: pays credit card
+    public void payCredit() {
+        ui.payCreditCard(accountName1, accountName2, accountType, amount);
+        ui.creditClick();
+    }
+
+    // MODIFIES: MenuUI
+    // EFFECTS: changes credit card limit() 
+    public void changeLimit() {
+        ui.changeCreditLimit(accountName1, amount);
+        ui.creditClick();
+    }
+
+    // EFFECTS: creates an ActionListener for bank input
+    public ActionListener limitPanelBankAction(String bankName) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accountName1 = bankName;
+                runLimitAmountPanel();
+            }
+        };
+        return al;
+    }
+
+    // EFFECTS: creates an ActionListener for account input
+    public ActionListener limitPanelAmountAction(JTextField text) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ind = 0;
+                amount = doubleText(text.getText(), amountPanel);
+                text.setText("");
+                if (ind != 0) {
+                    changeLimit();
+                } else {
+                    updateWithInput(text, amountPanel);
+                }
+            }
+        };
+        return al;
+    }
+
+    // EFFECTS: creates an ActionListener for account input
+    public ActionListener payPanelAmountAction(JTextField text) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ind = 0;
+                amount = doubleText(text.getText(), amountPanel);
+                text.setText("");
+                if (ind != 0) {
+                    payCredit();
+                } else {
+                    updateWithInput(text, amountPanel);
+                }
+            }
+        };
+        return al;
     }
 
     // EFFECTS: creates an ActionListener for account input
@@ -170,18 +344,29 @@ public class CreditPanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 accountType = account;
                 ind++;
+                runAmountPanel();
+                refresh(payPanel);
             }
         };
         return al;
     }
 
     // EFFECTS: creates an ActionListener for bank input
-    public ActionListener bankAction(String bankName) {
+    public ActionListener payPanelBankAction(String bankName) {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                accountName1 = bankName;
+                if (ind == 0) {
+                    accountName1 = bankName;
+                } else if (ind == 1)
+                    accountName2 = bankName;  
                 ind++;
+                JLabel label = (JLabel) payPanel.getComponent(1);
+                label.setText(payLabels[ind]);
+                if (ind > 1) {
+                    runAccPanel();
+                }
+                refresh(payPanel);
             }
         };
         return al;
