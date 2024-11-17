@@ -86,7 +86,7 @@ public class MenuPanel extends PanelManager implements ActionListener {
         } else if (e.getSource() == bankButton) {
             ui.bankClick();
         } else if (e.getSource() == creditButton) {
-
+            ui.creditClick();
         } else if (e.getSource() == transferButton) {
             ui.transferClick();
         } else if (e.getSource() == quitButton) {

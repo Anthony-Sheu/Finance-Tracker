@@ -91,6 +91,7 @@ public class BankPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates the label for the bank panel
     public void labelInit() {
         label = new JLabel("BANKING MENU", JLabel.CENTER);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
     }
 
     // MODIFIES: this

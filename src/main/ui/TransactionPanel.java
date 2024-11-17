@@ -86,7 +86,8 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: initializes the main panel
     public void panelInit() {
-        label = new JLabel("TRANSACTION MENU", JLabel.CENTER);
+        label = new JLabel("<html><center>TRANSACTION<br>MENU</center><html>", JLabel.CENTER);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 18));
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(2, 4));
         mainPanel.add(label);

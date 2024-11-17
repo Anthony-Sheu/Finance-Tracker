@@ -8,10 +8,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+
+import org.junit.internal.builders.JUnit3Builder;
+
+import model.Account;
+
 
 // Represents a panel for credit methods
 public class CreditPanel extends PanelManager implements ActionListener {
@@ -22,14 +26,22 @@ public class CreditPanel extends PanelManager implements ActionListener {
     private JButton limitButton;
     private JPanel payPanel;
     private JPanel limitPanel;
+    private JPanel bankPanel;
+    private JPanel accPanel;
+    private String[] payLabels;
+    private String accountName1;
+    private String accountName2;
+    private String accountType;
+    private double amount;
 
     // constructor
     public CreditPanel(MenuUI ui) {
         super(ui);
         buttonInit();
         labelInit();
-        subPanelInit();
         panelInit();
+        subPanelInit();
+        otherInit();
     }
 
     // MODIFIES: this
@@ -55,7 +67,8 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: initializes sub panels
     public void subPanelInit() {
-
+        accPanel = createAccountPanel();
+        accPanelButtonInit();
     }
 
     // MODIFIES: this
@@ -71,6 +84,38 @@ public class CreditPanel extends PanelManager implements ActionListener {
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(label, gbc);
         panelAddButtons();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes bank buttons on bank panel
+    public void bankPanelButtonInit() {
+        List<Account> bank = ui.getBanks();
+        for (int i = 0; i < bank.size(); i++) {
+            JButton button =  (JButton) bankPanel.getComponent(i);
+            button.addActionListener(bankAction(button.getText()));
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes account buttons on acc panel
+    public void accPanelButtonInit() {
+        JButton credit = (JButton) accPanel.getComponent(2);
+        accPanel.remove(credit);
+        for (int i = 0; i < 2; i++) {
+            JButton button = (JButton) accPanel.getComponent(i);
+            button.addActionListener(accountAction(button.getText()));
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes aggregated labels
+    public void otherInit() {
+        payLabels = new String[] {
+            "Which credit account would you like to pay?",
+            "Which banking institution would you like to pay out of?",
+            "Which account would you like to pay out of?",
+            "How much would you like to pay?"
+        };
     }
 
     // MODIFIES: this
@@ -91,6 +136,55 @@ public class CreditPanel extends PanelManager implements ActionListener {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(backButton, gbc);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates pay panel
+    public void createPayPanel() {
+        payPanel = createInputPanel();
+    }
+
+    // EFFECTS: runs pay panel
+    public void runPayPanel() {
+        ind = 0;
+        createPayPanel();
+        bankPanel = createBankPanel();
+        JLabel label = (JLabel) payPanel.getComponent(1);
+        label.setText(payLabels[ind]);
+        JTextField text = (JTextField) payPanel.getComponent(3);
+        payPanel.remove(text);
+        payPanel.add(bankPanel, 3);
+        bankPanelButtonInit();
+        refresh(mainPanel);
+    }
+
+    // EFFECTS: runs change credit limit panel
+    public void runLimitPanel() {
+
+    }
+
+    // EFFECTS: creates an ActionListener for account input
+    public ActionListener accountAction(String account) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accountType = account;
+                ind++;
+            }
+        };
+        return al;
+    }
+
+    // EFFECTS: creates an ActionListener for bank input
+    public ActionListener bankAction(String bankName) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accountName1 = bankName;
+                ind++;
+            }
+        };
+        return al;
     }
 
     // EFFECTS: checks for button input

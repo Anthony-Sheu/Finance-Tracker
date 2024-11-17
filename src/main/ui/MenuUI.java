@@ -174,6 +174,11 @@ public class MenuUI extends Menu implements Communication {
         switchPanel(transferPanel.getMainPanel());
     }
 
+    // EFFECTS: goes to credit card menu
+    public void creditClick() {
+        switchPanel(creditPanel.getMainPanel());
+    }
+
     // EFFECTS: pays credit card from specified account
     public void payClick() {
         creditPanel.runPayPanel();
