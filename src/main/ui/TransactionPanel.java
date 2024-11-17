@@ -581,7 +581,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 accountType = button.getText();
                 changeUITransaction();
-                ui.backClick();
+                updateScreen(mainPanel, ui.getAccount());
             }
         };
         return al;

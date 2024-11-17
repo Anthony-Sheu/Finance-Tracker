@@ -19,16 +19,20 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.json.JSONML;
+
 import model.Account;
 
 // Represents a panel manager that contains general methods
 public class PanelManager {
 
+    private static final String WARN = "***WARNING***";
     protected JButton[] buttonList;
     protected JButton backButton;
     protected int ind;
     protected JPanel mainPanel;
     protected MenuUI ui;
+    private JPanel updatedPanel;
     private JLabel posNum;
     private JLabel posDec;
     private JLabel dec;
@@ -75,6 +79,39 @@ public class PanelManager {
         SwingUtilities.invokeLater(() -> {
             text.requestFocusInWindow();
         });
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates an update panel with user input promp to continue program
+    private void createUpdatePanel() {
+        updatedPanel = new JPanel();
+        updatedPanel.setLayout(new BoxLayout(updatedPanel, BoxLayout.Y_AXIS));
+        JLabel label = new JLabel("Updated!", JLabel.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 22));
+        JButton cont = new JButton("Click to continue");
+        cont.setAlignmentX(Component.CENTER_ALIGNMENT);
+        updatedPanel.add(Box.createVerticalStrut(100));
+        updatedPanel.add(label);
+        updatedPanel.add(Box.createVerticalStrut(50));
+        updatedPanel.add(Box.createVerticalStrut(50));
+        updatedPanel.add(cont);
+    }
+
+    protected void updateScreen(JPanel panel, Account account) {
+        createUpdatePanel();
+        JButton cont = (JButton) updatedPanel.getComponent(4);
+        cont.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.switchPanel(panel);
+            }
+        });
+        if (account != null) {
+            checkOverDraft(account);
+        }
+        refresh(updatedPanel);
+        ui.switchPanel(updatedPanel);
     }
 
     // EFFECTS: creates bank input panel
@@ -161,6 +198,35 @@ public class PanelManager {
             }
         };
         return al;
+    }
+
+    // EFFECTS: checks of account overdraft
+    private void checkOverDraft(Account account) {
+        String s = account.getBank();
+        double amount;
+        if (account.checkOverdraftChequeing()) {
+            amount = -account.getChequeing();
+            check("Your " + s + " chequeing account is overdrafted by $", amount);
+        }
+        if (account.checkOverdraftSavings()) {
+            amount = -account.getSavings();
+            check("Your " + s + " savings account is overdrafted by $", amount);
+        }
+        if (account.checkOverLimit()) {
+            amount = Math.round((account.getCredit() - account.getCreditLimit()) * 100.0) / 100.0;
+            check("Your " + s + " credit account is overused by $", amount);
+        }
+    }
+
+    // EFFECTS: checks chequeing account overdraft
+    private void check(String s, double amount) {
+        JLabel label = new JLabel("", JLabel.CENTER);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setText("<html><center>" + WARN + "<br>" + s + amount + "</center><html>");
+        int i = updatedPanel.getComponentCount() - 2;
+        updatedPanel.add(label, i);
+        updatedPanel.add(Box.createVerticalStrut(50), i);
     }
 
     // EFFECTS: checks user input to make sure it is a positive integer

@@ -10,7 +10,7 @@ import model.Tracker;
 import model.Transaction;
 
 // represents user interface for main menu
-public class MenuUI extends Menu implements Communication {
+public class MenuUI extends Menu {
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
