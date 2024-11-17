@@ -42,4 +42,10 @@ public interface Communication {
 
     // EFFECTS: switches to transfer panel
     void transferClick();
+
+    // EFFECTS: swtiches to pay credit card panel
+    void payClick();
+
+    // EFFECTS: switches to change credit limit panel
+    void limitClick();
 }

@@ -19,6 +19,7 @@ public class MenuUI extends Menu implements Communication {
     private BankPanel bankPanel;
     private MenuPanel menuPanel;
     private TransferPanel transferPanel;
+    private CreditPanel creditPanel;
     private int month;
     private int date;
     private int year;
@@ -90,6 +91,7 @@ public class MenuUI extends Menu implements Communication {
         transactionPanel = new TransactionPanel(this);
         bankPanel = new BankPanel(this);
         transferPanel = new TransferPanel(this);
+        creditPanel = new CreditPanel(this);
     }
 
     // MODIFIES: this
@@ -172,6 +174,18 @@ public class MenuUI extends Menu implements Communication {
         switchPanel(transferPanel.getMainPanel());
     }
 
+    // EFFECTS: pays credit card from specified account
+    public void payClick() {
+        creditPanel.runPayPanel();
+        switchPanel(creditPanel.getPayPanel());
+    }
+
+    // EFFECTS: changes credit card limit
+    public void limitClick() {
+        creditPanel.runLimitPanel();
+        switchPanel(creditPanel.getLimitPanel());
+    }
+
     // EFFECTS: closes the program
     public void quitClick() {
         frame.dispose();
@@ -179,7 +193,6 @@ public class MenuUI extends Menu implements Communication {
 
     // EFFECTS: returns from sub-panels to main panel
     public void backClick() {
-
         switchPanel(menuPanel.getMainPanel());
     }
 
