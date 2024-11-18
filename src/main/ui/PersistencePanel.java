@@ -61,6 +61,14 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
+    // EFFECTS: initializes yes and no button
+    public void yesNoButtonInit() {
+        middlePanel.remove(yes);
+        middlePanel.remove(no);
+        middlePanelInit();
+    }
+
+    // MODIFIES: this
     // EFFECTS: initializes back button
     public void backButtonInit() {
         backButton = new JButton("Return to main menu");
@@ -87,13 +95,14 @@ public class PersistencePanel extends PanelManager implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: runs error panel
-    public void runErrorPanel() {
+    public void runErrorPanel(JPanel panel) {
         JButton cont = (JButton) errorPanel.getComponent(3);
-        cont.addActionListener(errorAction(ui.getMenuPanel()));
+        cont.addActionListener(errorAction(panel));
     }
 
     // EFFECTS: prompt load banking info
     public void runBankLoad() {
+        yesNoButtonInit();
         label.setText("You currently have saved banking information, would you like to load it?");
         yes.addActionListener(bankLoadAction(true));
         no.addActionListener(bankLoadAction(false));
@@ -102,21 +111,43 @@ public class PersistencePanel extends PanelManager implements ActionListener {
 
     // EFFECTS: prompt load transaction info
     public void runTranLoad() {
+        yesNoButtonInit();
         label.setText("You currently have saved transaction information, would you like to load it?");
         yes.addActionListener(tranLoadAction(true));
         no.addActionListener(tranLoadAction(false));
         refresh(mainPanel);
     }
 
+    // EFFECTS: prompt load banking info
+    public void runBankSave() {
+        yesNoButtonInit();
+        label.setText("Would you like to save your banking information?");
+        yes.addActionListener(bankSaveAction(true));
+        no.addActionListener(bankSaveAction(false));
+        refresh(mainPanel);
+    }
+
+    // EFFECTS: prompt load transaction info
+    public void runTranSave() {
+        yesNoButtonInit();
+        label.setText("Would you like to save your transaction information?");
+        yes.addActionListener(tranSaveAction(true));
+        no.addActionListener(tranSaveAction(false));
+        refresh(mainPanel);
+    }
+
+    // EFFECTS: continues program
     public ActionListener errorAction(JPanel panel) {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ui.setLoadError(false);
                 if (panel == null) {
                     ui.quitClick();
                     System.exit(0);
+                } else {
+                    ui.switchPanel(panel);
                 }
-                ui.switchPanel(panel);
             }
         };
         return al;
@@ -129,11 +160,28 @@ public class PersistencePanel extends PanelManager implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setTranLoad(bool);
-                ui.loadBankFile();
+                ui.load();
                 if (ui.getLoadError()) {
-                    runErrorPanel();
+                    runErrorPanel(ui.getMenuPanel());
                 }
                 updatePersistenceScreen(ui.getMenuPanel());
+            }
+        };
+        return al;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks if user wants to load transaction information
+    public ActionListener tranSaveAction(Boolean bool) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.setTranSave(bool);
+                ui.save();
+                if (ui.getLoadError()) {
+                    runErrorPanel(null);
+                }
+                updatePersistenceScreen(null);
             }
         };
         return al;
@@ -146,7 +194,32 @@ public class PersistencePanel extends PanelManager implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setBankLoad(bool);
-                runTranLoad();
+                if (bool == true) {
+                    runTranLoad();
+                } else {
+                    ui.load();
+                    if (ui.getLoadError()) {
+                        runErrorPanel(ui.getMenuPanel());
+                    }
+                    updatePersistenceScreen(ui.getMenuPanel());
+                }
+            }
+        };
+        return al;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks if user wants to load banking information
+    public ActionListener bankSaveAction(Boolean bool) {
+        ActionListener al = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.setBankSave(bool);
+                if (bool == true) {
+                    runTranSave();
+                } else {
+                    updatePersistenceScreen(null);
+                }
             }
         };
         return al;

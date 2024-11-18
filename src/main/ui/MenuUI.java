@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -48,15 +49,10 @@ public class MenuUI extends Menu {
     public MenuUI() {     
         super();
         super.init();
-        super.addBank("CIBC", 0, 1000, 0, 1500);
-        super.addBank("RBC", 0, 1000, 1500, 1500);
-        super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
-        super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
-        super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");
         panelInit();
         frameInit();
         varInit();
-        load();
+        startup();
     }
 
     // MODIFIES: this
@@ -83,7 +79,7 @@ public class MenuUI extends Menu {
     // MODIFIES: this
     // EFFECTS: checks if there is a save file, if there is isn't, prompts user to enter
     // their banking information, if there is, then asks user if they want to load it
-    public void load() {
+    public void startup() {
         if(!bankReader.checkFile()) {
             addBankClick();
         } else {
@@ -92,11 +88,27 @@ public class MenuUI extends Menu {
     }
 
     // MODIFIES: this
+    // EFFECTS: checks for user load choices
+    public void load() {
+        if (bankLoad) {
+            loadBankFile();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks for user save choices
+    public void save() {
+        if (bankSave) {
+            saveBankFile();
+        }
+    }
+
+    // MODIFIES: this
     // EFFECTS: loads bank information from saved json file
     public void loadBankFile() {
         try {
             super.loadBankFile();
-            if (trackerReader.checkFile() && categoryReader.checkFile()) {
+            if (trackerReader.checkFile() && categoryReader.checkFile() && tranLoad) {
                 checkTrackerFile();
             }
         } catch (IOException e) {
@@ -111,6 +123,19 @@ public class MenuUI extends Menu {
         try {
             super.checkTrackerFile();
         } catch (IOException e) {
+            loadError = true;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves banking information based on bankSave
+    public void saveBankFile() {
+        try {
+            super.saveBankFile();
+            if (tranSave) {
+                saveTrackerFile();
+            }
+        } catch (FileNotFoundException e) {
             loadError = true;
         }
     }
@@ -154,12 +179,6 @@ public class MenuUI extends Menu {
     public void loadClick() {
         persistencePanel.runBankLoad();
         switchPanel(persistencePanel.getMainPanel());
-    }
-
-    // EFFECTS: displays load error panel
-    public void loadErrorClick() {
-        persistencePanel.runErrorPanel();
-        switchPanel(persistencePanel.getErrorPanel());
     }
 
     // EFFECTS: switches to transaction menu
@@ -248,7 +267,8 @@ public class MenuUI extends Menu {
 
     // EFFECTS: closes the program
     public void quitClick() {
-        frame.dispose();
+        persistencePanel.runBankSave();
+        switchPanel(persistencePanel.getMainPanel());
     }
 
     // EFFECTS: returns from sub-panels to main panel
@@ -357,6 +377,11 @@ public class MenuUI extends Menu {
     // SETTER
     public void setTranSave(Boolean bool) {
         tranSave = bool;
+    }
+
+    // SETTER
+    public void setLoadError(Boolean bool) {
+        loadError = false;
     }
 
 

@@ -98,6 +98,7 @@ public class PanelManager {
         updatedPanel.add(cont);
     }
     
+    // REQUIRES: panel != null
     // EFFECTS: update screen after loading/saving
     protected void updatePersistenceScreen(JPanel panel) {
         createUpdatePanel();
@@ -105,6 +106,7 @@ public class PanelManager {
         cont.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 ui.switchPanel(panel);
             }
         });
