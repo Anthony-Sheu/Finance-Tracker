@@ -228,7 +228,6 @@ public class BankPanel extends PanelManager implements ActionListener {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(ind);
                 if (ind == 0) {
                     bankHolder[ind] = stringText(text.getText(), addBankPanel);
                 } else if (1 <= ind && ind <= 4) {

@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 
 import model.Account;
+import model.Banks;
 import model.Expense;
 import model.Tracker;
 import model.Transaction;
@@ -39,7 +40,8 @@ public class MenuUI extends Menu {
     public MenuUI() {     
         super();
         super.init();
-        super.addBank("CIBC", 100, 1000, 0, 1500);
+        super.addBank("CIBC", -1000, 1000, 0, 1500);
+        super.addBank("RBC", 0, 1000, 0, 1500);
         super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");
@@ -321,5 +323,15 @@ public class MenuUI extends Menu {
     // GETTER
     public Expense getExpense() {
         return expense;
+    }
+
+    // GETTER
+    public Banks getBank() {
+        return bank;
+    }
+
+    // GETTER
+    public JPanel getMenuPanel() {
+        return menuPanel.getMainPanel();
     }
 }

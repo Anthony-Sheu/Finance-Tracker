@@ -114,6 +114,34 @@ public class PanelManager {
         ui.switchPanel(updatedPanel);
     }
 
+    protected void updateTransferScreen(Account account1, Account account2) {
+        createUpdatePanel();
+        JButton cont = (JButton) updatedPanel.getComponent(4);
+        cont.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createUpdatePanel();
+                JButton cont = (JButton) updatedPanel.getComponent(4);
+                cont.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ui.switchPanel(ui.getMenuPanel());
+                    }
+                });
+                if (account2 != null) {
+                    checkOverDraft(account2);
+                }
+                refresh(updatedPanel);
+                ui.switchPanel(updatedPanel);
+            }
+        });
+        if (account1 != null) {
+            checkOverDraft(account1);
+        }
+        refresh(updatedPanel);
+        ui.switchPanel(updatedPanel);
+    }
+
     // EFFECTS: creates bank input panel
     protected JPanel createBankPanel() {
         JPanel panel = new JPanel();

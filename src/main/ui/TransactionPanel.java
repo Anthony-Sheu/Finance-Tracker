@@ -337,7 +337,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         Expense expense = ui.getExpense();
         expense.updateSpending(amount);
         tran.updateAmount(amount);
-        ui.transactionClick();
+        updateScreen(mainPanel, acc);
     }
 
     // MODIFIES: this
@@ -403,7 +403,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: runs bank panel
+    // EFFECTS: runs bank panel for add transction
     public void runBankPanel() {
         JTextField text = (JTextField) addPanel.getComponent(3);
         JButton submit = (JButton) addPanel.getComponent(5);
@@ -414,7 +414,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: runs acc panel
+    // EFFECTS: runs acc panel for add transction
     public void runAccPanel() {
         JPanel middlePanel = (JPanel) addPanel.getComponent(3);
         addPanel.remove(middlePanel);
@@ -423,7 +423,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: runs expense panel
+    // EFFECTS: runs expense panel for add transction
     public void runExpPanel() {
         JTextField text = (JTextField) addPanel.getComponent(3);
         JButton submit = (JButton) addPanel.getComponent(5);
@@ -614,7 +614,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
                 if (ind != 0 && 0 <= line) {
                     if (line < ui.getTransactionList().size()) {
                         runRemoveTransaction();
-                        ui.transactionClick();
+                        updateScreen(mainPanel, ui.getAccount());
                     } else {
                         panel.add(new JLabel("Please enter a valid line number"));
                     }

@@ -206,7 +206,11 @@ public class TransferPanel extends PanelManager implements ActionListener {
                 updateWithInput(text, mainPanel);
                 if (ind != 0) {
                     runTransfer();
-                    ui.backClick();
+                    if (accountName1.equals(accountName2)) {
+                        updateScreen(ui.getMenuPanel(), ui.getBank().findAccount(accountName1));
+                    } else {
+                        updateTransferScreen(ui.getBank().findAccount(accountName1), ui.getBank().findAccount(accountName2));
+                    }
                 }
             }
         };
