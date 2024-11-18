@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class MenuUI extends Menu {
     private MenuPanel menuPanel;
     private TransferPanel transferPanel;
     private CreditPanel creditPanel;
+    private PersistencePanel persistencePanel;
     private int month;
     private int date;
     private int year;
@@ -35,6 +37,12 @@ public class MenuUI extends Menu {
     private double cred;
     private String bankName;
     private double credLim;
+    private boolean bankLoad;
+    private boolean tranLoad;
+    private boolean bankSave;
+    private boolean tranSave;
+    private boolean loadError;
+    private boolean saveError;
 
     // EFFECTS: constructs main frame and initializes every thing else
     public MenuUI() {     
@@ -45,10 +53,14 @@ public class MenuUI extends Menu {
         super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");
-        init();
+        panelInit();
+        frameInit();
         varInit();
+        load();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes holder fields
     public void varInit() {
         month = 0;
         date = 0;
@@ -64,16 +76,43 @@ public class MenuUI extends Menu {
         cred = 0.0;
         bankName = "";
         credLim = 0.0;
+        loadError = false;
+        saveError = false;
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes main frame and panel
-    public void init() {
-        frameInit();
-        panelInit();
-        frame.setContentPane(menuPanel.getMainPanel());
-        frame.setResizable(false);
-        frame.setVisible(true);
+    // EFFECTS: checks if there is a save file, if there is isn't, prompts user to enter
+    // their banking information, if there is, then asks user if they want to load it
+    public void load() {
+        if(!bankReader.checkFile()) {
+            addBankClick();
+        } else {
+            loadClick();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads bank information from saved json file
+    public void loadBankFile() {
+        try {
+            super.loadBankFile();
+            if (trackerReader.checkFile() && categoryReader.checkFile()) {
+                checkTrackerFile();
+            }
+        } catch (IOException e) {
+            loadError = true;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: checks if there is information in tracker file, and if there is, prompts
+    // user if they would like to load it
+    public void checkTrackerFile() {
+        try {
+            super.checkTrackerFile();
+        } catch (IOException e) {
+            loadError = true;
+        }
     }
 
     // MODIFIES: this
@@ -84,6 +123,7 @@ public class MenuUI extends Menu {
         frame.setTitle("Finance Tracker GUI");
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     // MODIFIES: this
@@ -94,6 +134,7 @@ public class MenuUI extends Menu {
         bankPanel = new BankPanel(this);
         transferPanel = new TransferPanel(this);
         creditPanel = new CreditPanel(this);
+        persistencePanel = new PersistencePanel(this);
     }
 
     // MODIFIES: this
@@ -107,6 +148,18 @@ public class MenuUI extends Menu {
     // EFFECTS: adds new bank account
     public void addBank() {
         super.addBank(bankName, cheq, save, cred, credLim);
+    }
+
+    // EFFECTS: switches to prompt load panel
+    public void loadClick() {
+        persistencePanel.runBankLoad();
+        switchPanel(persistencePanel.getMainPanel());
+    }
+
+    // EFFECTS: displays load error panel
+    public void loadErrorClick() {
+        persistencePanel.runErrorPanel();
+        switchPanel(persistencePanel.getErrorPanel());
     }
 
     // EFFECTS: switches to transaction menu
@@ -286,6 +339,26 @@ public class MenuUI extends Menu {
         this.credLim = lim;
     }
 
+    // SETTER
+    public void setBankLoad(Boolean bool) {
+        bankLoad = bool;
+    }
+
+    // SETTER
+    public void setTranLoad(Boolean bool) {
+        tranLoad = bool;
+    }
+
+    // SETTER
+    public void setBankSave(Boolean bool) {
+        bankSave = bool;
+    }
+
+    // SETTER
+    public void setTranSave(Boolean bool) {
+        tranSave = bool;
+    }
+
 
 
 
@@ -333,5 +406,15 @@ public class MenuUI extends Menu {
     // GETTER
     public JPanel getMenuPanel() {
         return menuPanel.getMainPanel();
+    }
+
+    // GETTER
+    public boolean getLoadError() {
+        return loadError;
+    }
+
+    // GETTER
+    public boolean getSaveError() {
+        return saveError;
     }
 }

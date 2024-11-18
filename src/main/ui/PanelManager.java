@@ -97,7 +97,26 @@ public class PanelManager {
         updatedPanel.add(Box.createVerticalStrut(50));
         updatedPanel.add(cont);
     }
+    
+    // EFFECTS: update screen after loading/saving
+    protected void updatePersistenceScreen(JPanel panel) {
+        createUpdatePanel();
+        JButton cont = (JButton) updatedPanel.getComponent(4);
+        cont.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.switchPanel(panel);
+            }
+        });
+        if (panel == null) {
+            ui.quitClick();
+            System.exit(0);
+        }
+        refresh(updatedPanel);
+        ui.switchPanel(updatedPanel);
+    }
 
+    // EFFECTS: update screen after editing banking information and checks for overdraft
     protected void updateScreen(JPanel panel, Account account) {
         createUpdatePanel();
         JButton cont = (JButton) updatedPanel.getComponent(4);
