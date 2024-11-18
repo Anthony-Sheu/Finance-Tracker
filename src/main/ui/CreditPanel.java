@@ -279,14 +279,18 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: pays credit card
     public void payCredit() {
         ui.payCreditCard(accountName1, accountName2, accountType, amount);
-        ui.creditClick();
+        if (accountName1.equals(accountName2)) {
+            updateScreen(mainPanel, ui.getBank().findAccount(accountName1));
+        } else {
+            updateTransferScreen(ui.getBank().findAccount(accountName1), ui.getBank().findAccount(accountName2));
+        }
     }
 
     // MODIFIES: MenuUI
     // EFFECTS: changes credit card limit() 
     public void changeLimit() {
         ui.changeCreditLimit(accountName1, amount);
-        ui.creditClick();
+        updateScreen(mainPanel, ui.getAccount());
     }
 
     // EFFECTS: creates an ActionListener for bank input

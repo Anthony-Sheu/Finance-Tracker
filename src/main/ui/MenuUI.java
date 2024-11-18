@@ -40,8 +40,8 @@ public class MenuUI extends Menu {
     public MenuUI() {     
         super();
         super.init();
-        super.addBank("CIBC", -1000, 1000, 0, 1500);
-        super.addBank("RBC", 0, 1000, 0, 1500);
+        super.addBank("CIBC", 0, 1000, 0, 1500);
+        super.addBank("RBC", 0, 1000, 1500, 1500);
         super.addTransaction(9, 23, 2024, 100, "Uber", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(9, 23, 2023, 100, "loblaws", "Food", "", "CIBC", "Chequeing");
         super.addTransaction(8, 23, 2024, 50, "Uber", "Car", "", "CIBC", "Credit");

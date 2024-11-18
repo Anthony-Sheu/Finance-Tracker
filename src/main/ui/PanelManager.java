@@ -131,8 +131,12 @@ public class PanelManager {
                 if (account2 != null) {
                     checkOverDraft(account2);
                 }
-                refresh(updatedPanel);
-                ui.switchPanel(updatedPanel);
+                if (updatedPanel.getComponentCount() == 5) {
+                    ui.switchPanel(ui.getMenuPanel());
+                } else {
+                    refresh(updatedPanel);
+                    ui.switchPanel(updatedPanel);
+                }  
             }
         });
         if (account1 != null) {
