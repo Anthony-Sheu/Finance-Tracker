@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -82,7 +81,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     public void createErrorPanel() {
         errorPanel = new JPanel();
         errorPanel.setLayout(new BoxLayout(errorPanel, BoxLayout.Y_AXIS));
-        JLabel label = new JLabel("There was an error with loading/saving");
+        JLabel label = new JLabel("There was an error with loading/saving", JLabel.CENTER);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         JButton cont = new JButton("Continue");
@@ -98,8 +97,10 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     public void runErrorPanel(JPanel panel) {
         JButton cont = (JButton) errorPanel.getComponent(3);
         cont.addActionListener(errorAction(panel));
+        ui.switchPanel(errorPanel);
     }
 
+    // MODIFIES: this
     // EFFECTS: prompt load banking info
     public void runBankLoad() {
         yesNoButtonInit();
@@ -109,6 +110,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
         refresh(mainPanel);
     }
 
+    // MODIFIES: this
     // EFFECTS: prompt load transaction info
     public void runTranLoad() {
         yesNoButtonInit();
@@ -118,6 +120,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
         refresh(mainPanel);
     }
 
+    // MODIFIES: this
     // EFFECTS: prompt load banking info
     public void runBankSave() {
         yesNoButtonInit();
@@ -127,6 +130,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
         refresh(mainPanel);
     }
 
+    // MODIFIES: this
     // EFFECTS: prompt load transaction info
     public void runTranSave() {
         yesNoButtonInit();
@@ -141,7 +145,6 @@ public class PersistencePanel extends PanelManager implements ActionListener {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ui.setLoadError(false);
                 if (panel == null) {
                     ui.quitClick();
                     System.exit(0);
@@ -163,8 +166,9 @@ public class PersistencePanel extends PanelManager implements ActionListener {
                 ui.load();
                 if (ui.getLoadError()) {
                     runErrorPanel(ui.getMenuPanel());
+                } else {
+                   updatePersistenceScreen(ui.getMenuPanel()); 
                 }
-                updatePersistenceScreen(ui.getMenuPanel());
             }
         };
         return al;
@@ -178,10 +182,11 @@ public class PersistencePanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 ui.setTranSave(bool);
                 ui.save();
-                if (ui.getLoadError()) {
+                if (ui.getSaveError()) {
                     runErrorPanel(null);
-                }
-                updatePersistenceScreen(null);
+                } else {
+                    updatePersistenceScreen(null);
+                }   
             }
         };
         return al;
@@ -197,11 +202,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
                 if (bool == true) {
                     runTranLoad();
                 } else {
-                    ui.load();
-                    if (ui.getLoadError()) {
-                        runErrorPanel(ui.getMenuPanel());
-                    }
-                    updatePersistenceScreen(ui.getMenuPanel());
+                    ui.addBankClick();
                 }
             }
         };

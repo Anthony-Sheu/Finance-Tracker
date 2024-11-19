@@ -136,7 +136,17 @@ public class MenuUI extends Menu {
                 saveTrackerFile();
             }
         } catch (FileNotFoundException e) {
-            loadError = true;
+            saveError = true;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves transaction information based on tranSave
+    public void saveTrackerFile() {
+        try {
+            super.saveTrackerFile();
+        } catch (FileNotFoundException e) {
+            saveError = true;
         }
     }
 
@@ -377,11 +387,6 @@ public class MenuUI extends Menu {
     // SETTER
     public void setTranSave(Boolean bool) {
         tranSave = bool;
-    }
-
-    // SETTER
-    public void setLoadError(Boolean bool) {
-        loadError = false;
     }
 
 
