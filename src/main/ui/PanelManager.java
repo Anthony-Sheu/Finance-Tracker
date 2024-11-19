@@ -135,30 +135,14 @@ public class PanelManager {
         ui.switchPanel(updatedPanel);
     }
 
-    protected void updateTransferScreen(Account account1, Account account2) {
+    // EFFECTS: updates first transfer screen
+    protected void updateTransferFirstScreen(Account account1, Account account2) {
         createUpdatePanel();
         JButton cont = (JButton) updatedPanel.getComponent(4);
         cont.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createUpdatePanel();
-                JButton cont = (JButton) updatedPanel.getComponent(4);
-                cont.addActionListener(new ActionListener() {
-                    // EFFECTS: overrides actionPerformed
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        ui.switchPanel(ui.getMenuPanel());
-                    }
-                });
-                if (account2 != null) {
-                    checkOverDraft(account2);
-                }
-                if (updatedPanel.getComponentCount() == 5) {
-                    ui.switchPanel(ui.getMenuPanel());
-                } else {
-                    refresh(updatedPanel);
-                    ui.switchPanel(updatedPanel);
-                }  
+                updateTransferSecondScreen(account2);
             }
         });
         if (account1 != null) {
@@ -166,6 +150,34 @@ public class PanelManager {
         }
         refresh(updatedPanel);
         ui.switchPanel(updatedPanel);
+    }
+
+    // EFFECTS: updates second transfer screen
+    private void updateTransferSecondScreen(Account acc) {
+        createUpdatePanel();
+        JButton cont = (JButton) updatedPanel.getComponent(4);
+        cont.addActionListener(updateTransferScreenHelper());
+        if (acc != null) {
+            checkOverDraft(acc);
+        }
+        if (updatedPanel.getComponentCount() == 5) {
+            ui.switchPanel(ui.getMenuPanel());
+        } else {
+            refresh(updatedPanel);
+            ui.switchPanel(updatedPanel);
+        }
+    }
+
+    // EFFECTS: creates ActionListener for updateTransferScreen
+    private ActionListener updateTransferScreenHelper() {
+        ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.switchPanel(ui.getMenuPanel());
+            }
+        };
+        return al;
     }
 
     // EFFECTS: creates bank input panel
@@ -284,6 +296,7 @@ public class PanelManager {
         updatedPanel.add(Box.createVerticalStrut(50), i);
     }
 
+    // REQUIRES: panel is created from createInputPanel()
     // EFFECTS: checks user input to make sure it is a positive integer
     protected int intText(String text, JPanel panel) {
         int num;
@@ -296,20 +309,16 @@ public class PanelManager {
                 }
                 return num;
             } else {
-                if (!checkThirdLastError(panel)) {
-                    panel.add(posNum, panel.getComponentCount() - 2);
-                } else {
+                if (checkThirdLastError(panel)) {
                     removeThirdLastErrorLabel(panel);
-                    panel.add(posNum, panel.getComponentCount() - 2);
-                }
+                }  
+                panel.add(posNum, panel.getComponentCount() - 2);
             }
         } catch (NumberFormatException e) {
-            if (!checkThirdLastError(panel)) {
-                panel.add(posNum, panel.getComponentCount() - 2);
-            } else {
+            if (checkThirdLastError(panel)) {
                 removeThirdLastErrorLabel(panel);
-                panel.add(posNum, panel.getComponentCount() - 2);
             }
+            panel.add(posNum, panel.getComponentCount() - 2);
         }
         return 0;
     }
@@ -326,24 +335,21 @@ public class PanelManager {
                 }
                 return num;
             } else {
-                if (!checkLastError(panel)) {
-                    panel.add(posNum);
-                } else {
+                if (checkLastError(panel)) {
                     removeLastErrorLabel(panel);
-                    panel.add(posNum);
                 }
+                panel.add(posNum);
             }
         } catch (NumberFormatException e) {
-            if (!checkLastError(panel)) {
-                panel.add(posNum);
-            } else {
+            if (checkLastError(panel)) {
                 removeLastErrorLabel(panel);
-                panel.add(posNum);
             }
+            panel.add(posNum);
         }
         return 0;
     }
 
+    // REQUIRES: panel is created from createInputPanel()
     // EFFECTS: checks user input to make sure it is a positive (or zero) double
     protected double doubleText(String text, JPanel panel) {
         double num;
@@ -356,34 +362,29 @@ public class PanelManager {
                 }
                 return num;
             } else {
-                if (!checkThirdLastError(panel)) {
-                    panel.add(posDec, panel.getComponentCount() - 2);
-                } else {
+                if (checkThirdLastError(panel)) {
                     removeThirdLastErrorLabel(panel);
-                    panel.add(posDec, panel.getComponentCount() - 2);
                 }
+                panel.add(posDec, panel.getComponentCount() - 2);
             }
         } catch (NumberFormatException e) {
-            if (!checkThirdLastError(panel)) {
-                panel.add(dec, panel.getComponentCount() - 2);
-            } else {
+            if (checkThirdLastError(panel)) {
                 removeThirdLastErrorLabel(panel);
-                panel.add(dec, panel.getComponentCount() - 2);
             }
+            panel.add(dec, panel.getComponentCount() - 2);
         }
         return 0.0;
     }
 
+    // REQUIRES: panel is created from createInputPanel()
     // EFFECTS: checks user input to make sure it is a valid string
     protected String stringText(String text, JPanel panel) {
         try {
             Double.parseDouble(text);
-            if (!checkThirdLastError(panel)) {
-                panel.add(properString, panel.getComponentCount() - 2);
-            } else {
+            if (checkThirdLastError(panel)) {
                 removeThirdLastErrorLabel(panel);
-                panel.add(properString, panel.getComponentCount() - 2);
             }
+            panel.add(properString, panel.getComponentCount() - 2);
         } catch (NumberFormatException e) {
             ind++;
             if (checkThirdLastError(panel)) {

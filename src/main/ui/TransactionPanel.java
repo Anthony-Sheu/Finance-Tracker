@@ -275,8 +275,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             bottomPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(0, 10, 10, 10);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
             bottomPanel.add(button, gbc);
             gbc.gridx = 1;
             bottomPanel.add(textField, gbc);
@@ -311,8 +309,6 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             bottomPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(0, 10, 10, 10);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
             bottomPanel.add(button, gbc);
             gbc.gridx = 1;
             bottomPanel.add(textField, gbc);
@@ -716,13 +712,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 JTextField text = (JTextField) addPanel.getComponent(3);
                 JLabel label = (JLabel) addPanel.getComponent(1);
-                if (0 <= ind && ind <= 2) {
-                    transactionHolder[ind] = intText(text.getText(), addPanel);
-                } else if (ind == 3) {
-                    transactionHolder[ind] = doubleText(text.getText(), addPanel);
-                } else if (ind == 4 || ind == 6) {
-                    transactionHolder[ind] = stringText(text.getText(), addPanel);
-                } 
+                addTransactionActionHelper();
                 text.setText("");
                 label.setText(transactionLabels[ind]);  
                 updateWithInput(text, addPanel);
@@ -735,6 +725,18 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             }
         };
         return al;
+    }
+
+    // EFFECTS: decides which panel to go to next
+    private void addTransactionActionHelper() {
+        JTextField text = (JTextField) addPanel.getComponent(3);
+        if (0 <= ind && ind <= 2) {
+            transactionHolder[ind] = intText(text.getText(), addPanel);
+        } else if (ind == 3) {
+            transactionHolder[ind] = doubleText(text.getText(), addPanel);
+        } else if (ind == 4 || ind == 6) {
+            transactionHolder[ind] = stringText(text.getText(), addPanel);
+        }
     }
 
     // EFFECTS: communication with MenuUI

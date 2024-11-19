@@ -169,7 +169,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
                 if (ui.getLoadError()) {
                     runErrorPanel(ui.getMenuPanel());
                 } else {
-                   updatePersistenceScreen(ui.getMenuPanel()); 
+                    updatePersistenceScreen(ui.getMenuPanel()); 
                 }
             }
         };

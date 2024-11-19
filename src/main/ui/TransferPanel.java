@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Account;
+
 // Represents a panel that transfer amounts between accounts
 public class TransferPanel extends PanelManager implements ActionListener {
 
@@ -220,7 +222,9 @@ public class TransferPanel extends PanelManager implements ActionListener {
                     if (accountName1.equals(accountName2)) {
                         updateScreen(ui.getMenuPanel(), ui.getBank().findAccount(accountName1));
                     } else {
-                        updateTransferScreen(ui.getBank().findAccount(accountName1), ui.getBank().findAccount(accountName2));
+                        Account acc1 = ui.getBank().findAccount(accountName1);
+                        Account acc2 = ui.getBank().findAccount(accountName2);
+                        updateTransferFirstScreen(acc1, acc2);
                     }
                 }
             }

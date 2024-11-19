@@ -80,7 +80,7 @@ public class MenuUI extends Menu {
     // EFFECTS: checks if there is a save file, if there is isn't, prompts user to enter
     // their banking information, if there is, then asks user if they want to load it
     public void startup() {
-        if(!bankReader.checkFile()) {
+        if (!bankReader.checkFile()) {
             addBankClick();
         } else {
             loadClick();

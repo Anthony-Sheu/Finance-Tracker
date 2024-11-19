@@ -15,7 +15,11 @@ import javax.swing.JPanel;
 public class MenuPanel extends PanelManager implements ActionListener {
 
     private JPanel mainPanel;
-    private JButton transactionsButton, bankButton, creditButton, transferButton, quitButton;
+    private JButton transactionsButton;
+    private JButton bankButton;
+    private JButton creditButton;
+    private JButton transferButton;
+    private JButton quitButton;
     private JLabel label;
     private GridBagConstraints gbc;
     

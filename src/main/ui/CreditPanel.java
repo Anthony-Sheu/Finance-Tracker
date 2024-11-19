@@ -260,7 +260,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
         if (accountName1.equals(accountName2)) {
             updateScreen(mainPanel, ui.getBank().findAccount(accountName1));
         } else {
-            updateTransferScreen(ui.getBank().findAccount(accountName1), ui.getBank().findAccount(accountName2));
+            updateTransferFirstScreen(ui.getBank().findAccount(accountName1), ui.getBank().findAccount(accountName2));
         }
     }
 
@@ -357,8 +357,9 @@ public class CreditPanel extends PanelManager implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (ind == 0) {
                     accountName1 = bankName;
-                } else if (ind == 1)
-                    accountName2 = bankName;  
+                } else if (ind == 1) {
+                    accountName2 = bankName; 
+                }
                 ind++;
                 JLabel label = (JLabel) payPanel.getComponent(1);
                 label.setText(payLabels[ind]);

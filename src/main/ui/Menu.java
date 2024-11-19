@@ -113,8 +113,8 @@ public class Menu {
     // MODIFIES: this
     // EFFECTS: creates a new transaction and adds it to tracker, also updates 
     // banking accounts and expense category spendings
-    protected void addTransaction(int m, int d, int y, double a, String s, String e, String n, String aN, String aT) {
-        tracker.addTransaction(new Transaction(m, d, y, a, s, e, n, aN, aT));
+    protected void addTransaction(int m, int d, int y, double a, String s, String e, String n, String an, String at) {
+        tracker.addTransaction(new Transaction(m, d, y, a, s, e, n, an, at));
         category.checkCategory(e).updateSpending(a);
     }
 

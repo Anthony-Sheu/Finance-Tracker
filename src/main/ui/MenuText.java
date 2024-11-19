@@ -475,7 +475,8 @@ public class MenuText extends Menu {
     // MODIFIES: this
     // EFFECTS: pays credit card by specified amount
     public void payCreditCard() {
-        String bank1, bank2;
+        String bank1;
+        String bank2;
         String acc;
         double amount;
         System.out.println("=====================================================");
