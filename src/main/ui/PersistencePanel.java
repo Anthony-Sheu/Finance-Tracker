@@ -143,6 +143,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     // EFFECTS: continues program
     public ActionListener errorAction(JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (panel == null) {
@@ -160,6 +161,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     // EFFECTS: checks if user wants to load transaction information
     public ActionListener tranLoadAction(Boolean bool) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setTranLoad(bool);
@@ -178,6 +180,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     // EFFECTS: checks if user wants to load transaction information
     public ActionListener tranSaveAction(Boolean bool) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setTranSave(bool);
@@ -196,6 +199,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     // EFFECTS: checks if user wants to load banking information
     public ActionListener bankLoadAction(Boolean bool) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setBankLoad(bool);
@@ -213,6 +217,7 @@ public class PersistencePanel extends PanelManager implements ActionListener {
     // EFFECTS: checks if user wants to load banking information
     public ActionListener bankSaveAction(Boolean bool) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.setBankSave(bool);

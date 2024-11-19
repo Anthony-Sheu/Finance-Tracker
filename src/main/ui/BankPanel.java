@@ -200,18 +200,16 @@ public class BankPanel extends PanelManager implements ActionListener {
         JButton submit = (JButton) addBankPanel.getComponent(5);
         JLabel label = (JLabel) addBankPanel.getComponent(1);
         JTextField text = (JTextField) addBankPanel.getComponent(3);
-        SwingUtilities.invokeLater(() -> {
-            text.requestFocusInWindow();
-        });
         label.setText(bankLabels[0]);
         submit.addActionListener(addBankAction(text, label));
-        refresh(addBankPanel);
+        updateWithInput(text, addBankPanel);
     }
 
     // MODIFIES: this
     // EFFECTS: returns to balance viewing panel
     public ActionListener backToBalanceAction(JButton button) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == button) {
@@ -226,6 +224,7 @@ public class BankPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for add bank panel
     public ActionListener addBankAction(JTextField text, JLabel label) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ind == 0) {
@@ -240,10 +239,7 @@ public class BankPanel extends PanelManager implements ActionListener {
                     changeUIBank(bankHolder);
                     ui.backClick();
                 }
-                refresh(addBankPanel);
-                SwingUtilities.invokeLater(() -> {
-                    text.requestFocusInWindow();
-                });
+                updateWithInput(text, addBankPanel);
             }
         };
         return al;

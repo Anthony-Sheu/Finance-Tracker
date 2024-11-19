@@ -12,8 +12,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import org.json.JSONML;
-
 import model.Account;
 
 
@@ -98,12 +96,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
         limitPanelBankButtonInit();
         limitPanelAmountButtonInit();
         JButton button = new JButton("Return to credit menu");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ui.creditClick();
-            }
-        });
+        button.addActionListener(backToCreditAction());
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         limitPanel.add(button);
     }
@@ -138,12 +131,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
         JLabel label = (JLabel) amountPanel.getComponent(1);
         label.setText("How much would you like to pay?");
         JButton button = new JButton("Return to credit menu");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ui.creditClick();
-            }
-        });
+        button.addActionListener(backToCreditAction());
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setPreferredSize(new Dimension(200, 40));
         amountPanel.add(button);
@@ -168,12 +156,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
         JLabel label = (JLabel) amountPanel.getComponent(1);
         label.setText("How much is your new credit card limit?");
         JButton button = new JButton("Return to credit menu");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ui.creditClick();
-            }
-        });
+        button.addActionListener(backToCreditAction());
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setPreferredSize(new Dimension(200, 40));
         amountPanel.add(button);
@@ -215,12 +198,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     public void createPayPanel() {
         payPanel = createInputPanel();
         JButton button = new JButton("Return to credit menu");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ui.creditClick();
-            }
-        });
+        button.addActionListener(backToCreditAction());
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         payPanel.add(button);
     }
@@ -293,9 +271,22 @@ public class CreditPanel extends PanelManager implements ActionListener {
         updateScreen(mainPanel, ui.getAccount());
     }
 
+    // EFFECTS: creates an ActionListener to return to credit menu
+    public ActionListener backToCreditAction() {
+        ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ui.creditClick();
+            }
+        };
+        return al;
+    }
+
     // EFFECTS: creates an ActionListener for bank input
     public ActionListener limitPanelBankAction(String bankName) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 accountName1 = bankName;
@@ -308,6 +299,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for account input
     public ActionListener limitPanelAmountAction(JTextField text) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
@@ -326,6 +318,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for account input
     public ActionListener payPanelAmountAction(JTextField text) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
@@ -344,6 +337,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for account input
     public ActionListener accountAction(String account) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 accountType = account;
@@ -358,6 +352,7 @@ public class CreditPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for bank input
     public ActionListener payPanelBankAction(String bankName) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ind == 0) {

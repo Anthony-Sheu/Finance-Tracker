@@ -10,9 +10,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.PrivateKey;
 import java.util.*;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -175,10 +175,10 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         addPanel = createInputPanel();
         JButton submit = (JButton) addPanel.getComponent(5);
         submit.addActionListener(addTransactionAction());
-        JButton backButton = new JButton("Return to transaction menu");
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.addActionListener(createBackButton(mainPanel));
-        addPanel.add(backButton);
+        JButton button = new JButton("Return to transaction menu");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(createBackButton(mainPanel));
+        addPanel.add(button);
     }
 
     // MODIFIES: this
@@ -233,14 +233,28 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         JButton button = new JButton("Return to transaction menu");
         button.addActionListener(createBackButton(mainPanel)); 
         showInDatePanel = createShowPanel(button);
-        monthPanel = createInputPanel();
+        monthYearPanelInit();
         JButton submit = (JButton) monthPanel.getComponent(5);
         JTextField text = (JTextField) monthPanel.getComponent(3);
         submit.addActionListener(monthAction(text, monthPanel));
-        yearPanel = createInputPanel();
         submit = (JButton) yearPanel.getComponent(5);
         text = (JTextField) yearPanel.getComponent(3);
         submit.addActionListener(yearAction(text, yearPanel));
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes the month and year input panel
+    public void monthYearPanelInit() {
+        monthPanel = createInputPanel();
+        JButton button = new JButton("Return to transaction menu");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(createBackButton(mainPanel));
+        monthPanel.add(button);
+        yearPanel = createInputPanel();
+        button = new JButton("Return to transaction menu");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(createBackButton(mainPanel));
+        yearPanel.add(button);
     }
 
 
@@ -270,11 +284,12 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             submit.addActionListener(lineRemoveAction(textField, bottomPanel));
             gbc.gridx = 2;
             bottomPanel.add(submit, gbc);
+            updateWithInput(textField, bottomPanel);
         } else {
             bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
             bottomPanel.add(button);
         }
-        updateWithInput(textField, bottomPanel);
+        refresh(removePanel);
     }
 
     // MODIFIES: MenuUI
@@ -469,6 +484,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             gbc.gridx = temp[0][i];
             gbc.gridy = temp[1][i];
             button.addActionListener(new ActionListener() {
+                // EFFECTS: overrides actionPerformed
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     expense = exp.getExpense();
@@ -497,6 +513,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
             gbc.gridx = temp[0][i];
             gbc.gridy = temp[1][i];
             button.addActionListener(new ActionListener() {
+                // EFFECTS: overrides actionPerformed
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     expense = exp.getExpense();
@@ -562,6 +579,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener to check bank name input
     public ActionListener bankAction(JButton button) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 accountName = button.getText();
@@ -577,6 +595,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener to check account name input
     public ActionListener accountAction(JButton button) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 accountType = button.getText();
@@ -590,6 +609,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for taking in an amount to change a transaction by
     public ActionListener editAction(JTextField text, JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
@@ -607,10 +627,11 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for taking in a line input for remove transaction
     public ActionListener lineRemoveAction(JTextField text, JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
-                line = intText(text.getText(), panel) - 1;
+                line = intTextLast(text.getText(), panel) - 1;
                 if (ind != 0 && 0 <= line) {
                     if (line < ui.getTransactionList().size()) {
                         runRemoveTransaction();
@@ -629,10 +650,11 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for taking in a line input in edit transaction
     public ActionListener lineEditAction(JTextField text, JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
-                line = intText(text.getText(), panel) - 1;
+                line = intTextLast(text.getText(), panel) - 1;
                 if (ind != 0 && 0 <= line) {
                     if (line < ui.getTransactionList().size()) {
                         runEditAmount();
@@ -650,6 +672,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for year input
     public ActionListener yearAction(JTextField text, JPanel panel) {   
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
@@ -668,6 +691,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener for month input
     public ActionListener monthAction(JTextField text, JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
@@ -687,6 +711,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates a ActionListener for add transaction panel
     public ActionListener addTransactionAction() {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTextField text = (JTextField) addPanel.getComponent(3);

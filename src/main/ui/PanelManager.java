@@ -19,8 +19,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.json.JSONML;
-
 import model.Account;
 
 // Represents a panel manager that contains general methods
@@ -104,6 +102,7 @@ public class PanelManager {
         createUpdatePanel();
         JButton cont = (JButton) updatedPanel.getComponent(4);
         cont.addActionListener(new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -123,6 +122,7 @@ public class PanelManager {
         createUpdatePanel();
         JButton cont = (JButton) updatedPanel.getComponent(4);
         cont.addActionListener(new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.switchPanel(panel);
@@ -144,6 +144,7 @@ public class PanelManager {
                 createUpdatePanel();
                 JButton cont = (JButton) updatedPanel.getComponent(4);
                 cont.addActionListener(new ActionListener() {
+                    // EFFECTS: overrides actionPerformed
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         ui.switchPanel(ui.getMenuPanel());
@@ -245,6 +246,7 @@ public class PanelManager {
     // EFFECTS: creates a button that goes to a specific menu
     protected ActionListener createBackButton(JPanel panel) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ui.switchPanel(panel);
@@ -289,24 +291,54 @@ public class PanelManager {
             num = Integer.parseInt(text);
             if (num > 0) {
                 ind++;
-                if (checkLastError(panel)) {
-                    removeErrorLabel(panel);
+                if (checkThirdLastError(panel)) {
+                    removeThirdLastErrorLabel(panel);
                 }
                 return num;
             } else {
-                if (!checkLastError(panel)) {
+                if (!checkThirdLastError(panel)) {
                     panel.add(posNum, panel.getComponentCount() - 2);
                 } else {
-                    removeErrorLabel(panel);
+                    removeThirdLastErrorLabel(panel);
                     panel.add(posNum, panel.getComponentCount() - 2);
                 }
             }
         } catch (NumberFormatException e) {
-            if (!checkLastError(panel)) {
+            if (!checkThirdLastError(panel)) {
                 panel.add(posNum, panel.getComponentCount() - 2);
             } else {
-                removeErrorLabel(panel);
+                removeThirdLastErrorLabel(panel);
                 panel.add(posNum, panel.getComponentCount() - 2);
+            }
+        }
+        return 0;
+    }
+
+    // EFFECTS: checks user input to make sure it is a positive integer
+    protected int intTextLast(String text, JPanel panel) {
+        int num;
+        try {
+            num = Integer.parseInt(text);
+            if (num > 0) {
+                ind++;
+                if (checkLastError(panel)) {
+                    removeLastErrorLabel(panel);
+                }
+                return num;
+            } else {
+                if (!checkLastError(panel)) {
+                    panel.add(posNum);
+                } else {
+                    removeLastErrorLabel(panel);
+                    panel.add(posNum);
+                }
+            }
+        } catch (NumberFormatException e) {
+            if (!checkLastError(panel)) {
+                panel.add(posNum);
+            } else {
+                removeLastErrorLabel(panel);
+                panel.add(posNum);
             }
         }
         return 0;
@@ -319,23 +351,23 @@ public class PanelManager {
             num = Double.parseDouble(text);
             if (num >= 0) {
                 ind++;
-                if (checkLastError(panel)) {
-                    removeErrorLabel(panel);
+                if (checkThirdLastError(panel)) {
+                    removeThirdLastErrorLabel(panel);
                 }
                 return num;
             } else {
-                if (!checkLastError(panel)) {
+                if (!checkThirdLastError(panel)) {
                     panel.add(posDec, panel.getComponentCount() - 2);
                 } else {
-                    removeErrorLabel(panel);
+                    removeThirdLastErrorLabel(panel);
                     panel.add(posDec, panel.getComponentCount() - 2);
                 }
             }
         } catch (NumberFormatException e) {
-            if (!checkLastError(panel)) {
+            if (!checkThirdLastError(panel)) {
                 panel.add(dec, panel.getComponentCount() - 2);
             } else {
-                removeErrorLabel(panel);
+                removeThirdLastErrorLabel(panel);
                 panel.add(dec, panel.getComponentCount() - 2);
             }
         }
@@ -346,16 +378,16 @@ public class PanelManager {
     protected String stringText(String text, JPanel panel) {
         try {
             Double.parseDouble(text);
-            if (!checkLastError(panel)) {
+            if (!checkThirdLastError(panel)) {
                 panel.add(properString, panel.getComponentCount() - 2);
             } else {
-                removeErrorLabel(panel);
+                removeThirdLastErrorLabel(panel);
                 panel.add(properString, panel.getComponentCount() - 2);
             }
         } catch (NumberFormatException e) {
             ind++;
-            if (checkLastError(panel)) {
-                removeErrorLabel(panel);
+            if (checkThirdLastError(panel)) {
+                removeThirdLastErrorLabel(panel);
             }
             return text;
         }
@@ -363,14 +395,25 @@ public class PanelManager {
     }
 
     // EFFECTS: checks whether the third recent item added was a JLabel (error message)
-    protected boolean checkLastError(JPanel panel) {
+    protected boolean checkThirdLastError(JPanel panel) {
         return panel.getComponent(panel.getComponentCount() - 3) instanceof JLabel;
+    }
+
+    // EFFECTS: checks whether the third recent item added was a JLabel (error message)
+    protected boolean checkLastError(JPanel panel) {
+        return panel.getComponent(panel.getComponentCount() - 1) instanceof JLabel;
     }
 
     // MODIFIES: panel
     // EFFECTS: removes the latest error label
-    protected void removeErrorLabel(JPanel panel) {
+    protected void removeThirdLastErrorLabel(JPanel panel) {
         panel.remove(panel.getComponent(panel.getComponentCount() - 3));
+    }
+
+    // MODIFIES: panel
+    // EFFECTS: removes the latest error label
+    protected void removeLastErrorLabel(JPanel panel) {
+        panel.remove(panel.getComponent(panel.getComponentCount() - 1));
     }
 
     // GETTER

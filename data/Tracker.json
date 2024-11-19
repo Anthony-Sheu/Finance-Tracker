@@ -1,1 +1,11 @@
-{"Transactions": []}
+{"Transactions": [{
+    "Month": 9,
+    "Account Name": "CIBC",
+    "Year": 2024,
+    "Expense": "Food",
+    "Amount": 10,
+    "Note": "No note",
+    "Store": "uber",
+    "Date": 8,
+    "Account Type": "Chequeing"
+}]}

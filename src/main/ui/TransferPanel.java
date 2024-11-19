@@ -94,11 +94,15 @@ public class TransferPanel extends PanelManager implements ActionListener {
         JButton submit = new JButton("Submit");
         submit.setAlignmentX(Component.CENTER_ALIGNMENT);
         submit.addActionListener(submitAction(text));
-        panel.add(Box.createVerticalStrut(100));
+        panel.add(Box.createVerticalStrut(0));
+        panel.add(Box.createVerticalStrut(0));
+        panel.add(Box.createVerticalStrut(50));
         panel.add(text);
         panel.add(Box.createVerticalStrut(25));
         panel.add(submit);
         panel.add(Box.createVerticalStrut(25));
+        panel.add(Box.createVerticalStrut(50));
+        panel.add(Box.createVerticalStrut(0));
         return panel;
     }
 
@@ -125,8 +129,9 @@ public class TransferPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: runs transfer panel
     public void runTransferPanel() {
-        bankPanel = createBankPanel();
-        bankPanelButtonInit();
+        // bankPanel = createBankPanel();
+        // bankPanelButtonInit();
+        subPanelInit();
         JLabel label = (JLabel) mainPanel.getComponent(1);
         label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         JPanel middlePanel = (JPanel) mainPanel.getComponent(3);
@@ -157,13 +162,16 @@ public class TransferPanel extends PanelManager implements ActionListener {
             mainPanel.add(accPanel, 3);
         } else {
             mainPanel.add(amountPanel, 3);
+            updateWithInput((JTextField) amountPanel.getComponent(3), amountPanel);
         }
         refresh(mainPanel);
     }
 
+    // REQUIRES: ind == 0 or ind == 2
     // EFFECTS: creates an ActionListener to check bank name input
     public ActionListener bankAction(JButton button) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ind == 0) {
@@ -178,9 +186,11 @@ public class TransferPanel extends PanelManager implements ActionListener {
         return al;
     }
 
+    // REQUIRES: ind == 1 or ind == 3
     // EFFECTS: creates an ActionListener to check account name input
     public ActionListener accountAction(JButton button) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ind == 1) {
@@ -198,12 +208,13 @@ public class TransferPanel extends PanelManager implements ActionListener {
     // EFFECTS: creates an ActionListener to take in double input
     public ActionListener submitAction(JTextField text) {
         ActionListener al = new ActionListener() {
+            // EFFECTS: overrides actionPerformed
             @Override
             public void actionPerformed(ActionEvent e) {
                 ind = 0;
-                amount = doubleText(text.getText(), mainPanel);
+                amount = doubleText(text.getText(), amountPanel);
                 text.setText("");
-                updateWithInput(text, mainPanel);
+                updateWithInput(text, amountPanel);
                 if (ind != 0) {
                     runTransfer();
                     if (accountName1.equals(accountName2)) {
