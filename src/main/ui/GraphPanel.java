@@ -41,8 +41,8 @@ public class GraphPanel extends PanelManager implements ActionListener {
     private int yearToGraph;
     private JPanel middlePanel;
     private JPanel yearPanel;
-    private int MAX_Y;
-    private int TICK_SPACING;
+    private int maxY;
+    private int tickSpacing;
     
     // EFFECTS: constructs graph panel
     public GraphPanel(MenuUI ui) {
@@ -154,15 +154,15 @@ public class GraphPanel extends PanelManager implements ActionListener {
     // EFFECTS: collects graph data and stores it in spending, also determines the graph max height
     // from finding the month with the most spendings
     public void collectData() {
-        MAX_Y = 0;
+        maxY = 0;
         List<Transaction> tran = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             tran = ui.getTracker().sortMonth(i + 1, yearToGraph);
             int total = findTotal(tran);
-            MAX_Y = Math.max(MAX_Y, total);
+            maxY = Math.max(maxY, total);
             spending[i] = total;
         }
-        TICK_SPACING = MAX_Y / TICK_COUNT;
+        tickSpacing = maxY / TICK_COUNT;
     }
 
     // EFFECTS: takes in a list of transactions sorted by month and year and adds the total
@@ -182,7 +182,7 @@ public class GraphPanel extends PanelManager implements ActionListener {
         for (int i = 0; i <= TICK_COUNT; i++) {
             int y = HEIGHT - BOTTOM_MARGIN - (i * TICK_HEIGHT);
             g2.drawLine(LEFT_MARGIN - 5, y, LEFT_MARGIN, y);
-            g2.drawString(String.valueOf(i * TICK_SPACING), LEFT_MARGIN - 40, y + 5);
+            g2.drawString(String.valueOf(i * tickSpacing), LEFT_MARGIN - 40, y + 5);
         }
     }
 
@@ -200,7 +200,7 @@ public class GraphPanel extends PanelManager implements ActionListener {
     // EFFECTS: draws the bars of the bar graph
     public void drawBars(Graphics2D g2) {
         for (int i = 0; i < spending.length; i++) {
-            int barHeight = (spending[i] * GRAPH_HEIGHT) / MAX_Y; // Normalize height
+            int barHeight = (spending[i] * GRAPH_HEIGHT) / maxY; // Normalize height
             int x = LEFT_MARGIN + (i * BAR_WIDTH) + 10;
             int y = HEIGHT - BOTTOM_MARGIN - barHeight;
             g2.setColor(BAR_COLOR);
