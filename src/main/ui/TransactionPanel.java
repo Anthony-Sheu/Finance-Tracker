@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -263,7 +262,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
 
 
     // MODIFIES: this
-    // EFFECTS: 
+    // EFFECTS: runs the remove panel and checks if there are any present transactions
     public void runRemovePanel() {
         updateScrollPane("Enter the line number you wish to remove", ui.getTransactionList(), removePanel);
         JPanel bottomPanel = (JPanel) removePanel.getComponent(2);
@@ -297,7 +296,7 @@ public class TransactionPanel extends PanelManager implements ActionListener {
     }
 
     // MODIFIES: this
-    // EFFECTS: runs edit panel
+    // EFFECTS: runs edit panel and checks if there are any present transactions
     public void runEditPanel() {
         updateScrollPane("Enter the line number you wish to edit", ui.getTransactionList(), editPanel);
         JPanel bottomPanel = (JPanel) editPanel.getComponent(2);
