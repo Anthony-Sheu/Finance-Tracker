@@ -333,6 +333,10 @@ public class TransactionPanel extends PanelManager implements ActionListener {
         JLabel label = (JLabel) panel.getComponent(1);
         label.setFont(new Font("SansSerif", Font.PLAIN, 22));
         label.setText("Enter the amount you wish to update it to");
+        JButton button = new JButton("Return to transaction menu");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.addActionListener(createBackButton(mainPanel));
+        panel.add(button);
         updateWithInput(text, panel);
         ui.switchPanel(panel);
     }

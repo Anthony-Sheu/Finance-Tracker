@@ -20,6 +20,7 @@ public class MenuPanel extends PanelManager implements ActionListener {
     private JButton creditButton;
     private JButton transferButton;
     private JButton quitButton;
+    private JButton graphButton;
     private JLabel label;
     private GridBagConstraints gbc;
     
@@ -49,23 +50,17 @@ public class MenuPanel extends PanelManager implements ActionListener {
     // MODIFIES: this
     // EFFECTS: adds buttons to panel
     public void panelAddButtons() {
-        int[][] temp = {{0, 1, 0, 1}, {1, 1, 2, 2}};
+        int[][] temp = {{0, 1, 0, 1, 0, 1}, {1, 1, 2, 2, 3, 3}};
         gbc.gridwidth = 1;
         gbc.insets = new Insets(25, 5, 25, 5);
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             gbc.gridx = temp[0][i];
             gbc.gridy = temp[1][i];
             mainPanel.add(buttonList[i], gbc);
         }
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        quitButton.setPreferredSize(new Dimension(100, 40));
-        mainPanel.add(quitButton, gbc);
     }
 
     // MODIFIES: this
@@ -76,8 +71,9 @@ public class MenuPanel extends PanelManager implements ActionListener {
         creditButton = new JButton("Credit card");
         transferButton = new JButton("Transfer between accounts");
         quitButton = new JButton("Quit");
+        graphButton = new JButton("Display graph");
         buttonList = new JButton[] {
-            transactionsButton, bankButton, creditButton, transferButton, quitButton
+            transactionsButton, bankButton, creditButton, transferButton, graphButton, quitButton
         };
         addAction(this, buttonList);
     }
@@ -95,6 +91,8 @@ public class MenuPanel extends PanelManager implements ActionListener {
             ui.transferClick();
         } else if (e.getSource() == quitButton) {
             ui.quitClick();
+        } else if (e.getSource() == graphButton) {
+            ui.graphClick();
         }
     }
 

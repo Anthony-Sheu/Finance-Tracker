@@ -24,6 +24,7 @@ public class MenuUI extends Menu {
     private TransferPanel transferPanel;
     private CreditPanel creditPanel;
     private PersistencePanel persistencePanel;
+    private GraphPanel graphPanel;
     private int month;
     private int date;
     private int year;
@@ -170,6 +171,7 @@ public class MenuUI extends Menu {
         transferPanel = new TransferPanel(this);
         creditPanel = new CreditPanel(this);
         persistencePanel = new PersistencePanel(this);
+        graphPanel = new GraphPanel(this);
     }
 
     // MODIFIES: this
@@ -189,6 +191,12 @@ public class MenuUI extends Menu {
     public void loadClick() {
         persistencePanel.runBankLoad();
         switchPanel(persistencePanel.getMainPanel());
+    }
+
+    // EFFECTS: switches to graph panel
+    public void graphClick() {
+        graphPanel.runGraphClick();
+        switchPanel(graphPanel.getYearPanel());
     }
 
     // EFFECTS: switches to transaction menu
