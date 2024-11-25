@@ -30,3 +30,61 @@ Ever since I opened my first bank account and started working at 16, my dad has 
 - As a user, I want to be able to add/remove expense categories
 - As a user, I want to be able to have the choice to save all my transactions and banking information to a file
 - As a user, I want to be able to load my transactions and banking information from a previous session
+
+## Phase 4: Task 2
+Mon Nov 25 14:43:43 PST 2024
+new bank account added
+Mon Nov 25 14:43:43 PST 2024
+new bank account added
+Mon Nov 25 14:43:43 PST 2024
+New transaction added to tracker
+Mon Nov 25 14:43:55 PST 2024
+New transaction added to tracker
+Mon Nov 25 14:44:00 PST 2024
+Amount refunded
+Mon Nov 25 14:44:00 PST 2024
+old transaction removed from tracker
+Mon Nov 25 14:44:12 PST 2024
+New transaction added to tracker
+Mon Nov 25 14:44:18 PST 2024
+Amount refunded
+Mon Nov 25 14:44:18 PST 2024
+Updated old transaction amount in tracker list
+Mon Nov 25 14:44:55 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:44:58 PST 2024
+list of transactions sorted by expense category
+Mon Nov 25 14:44:59 PST 2024
+list of transactions sorted by expense category
+Mon Nov 25 14:45:11 PST 2024
+new bank account added
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:14 PST 2024
+list of transactions sorted by month/year
+Mon Nov 25 14:45:22 PST 2024
+chequeing account updated
+Mon Nov 25 14:45:22 PST 2024
+chequeing account updated
+Mon Nov 25 14:45:22 PST 2024
+transferred between two accounts

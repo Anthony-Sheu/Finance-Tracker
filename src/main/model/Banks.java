@@ -19,7 +19,7 @@ public class Banks {
     public void newAccount(Account account) {
         this.bank.add(account);
         log.logEvent(
-            new Event("new account added to bank")
+            new Event("new account added to bank list")
         );
     }
 
@@ -83,7 +83,7 @@ public class Banks {
         updateTransfer(account1, acc1Type, -amount);
         updateTransfer(account2, acc2Type, amount);
         log.logEvent(
-                new Event("transfered betweent two accounts")
+                new Event("transferred between two accounts")
         );
     }
 

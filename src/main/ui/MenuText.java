@@ -7,7 +7,6 @@ import java.io.IOException;
 import model.Account;
 import model.Expense;
 import model.Transaction;
-import model.Event;
 
 // Represents a menu on the console application
 public class MenuText extends Menu {
