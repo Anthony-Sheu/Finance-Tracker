@@ -7,6 +7,7 @@ import java.util.Scanner;
 import model.Account;
 import model.Banks;
 import model.Categories;
+import model.Event;
 import model.EventLog;
 import model.Expense;
 import model.Tracker;
@@ -192,6 +193,13 @@ public class Menu {
     // EFFECTS: moves a certain amount from one account to another
     protected void transfer(String acc1Name, String acc1Type, String acc2Name, String acc2Type, double amount) {
         bank.transfer(acc1Name, acc1Type, acc2Name, acc2Type, amount);
+    }
+
+    // EFFECTS: prints the events log to the console
+    protected void printLog() {
+        for (Event e : log) {
+            System.out.println(e.toString());
+        }
     }
 
 }

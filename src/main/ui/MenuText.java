@@ -81,13 +81,6 @@ public class MenuText extends Menu {
         enter();
     }
 
-    // EFFECTS: prints the events log
-    public void printLog() {
-        for (Event e : log) {
-            System.out.println(e.toString());
-        }
-    }
-
     // EFFECTS: loads current banking information into json file
     public void saveBankFile() {
         try {

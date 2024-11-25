@@ -19,7 +19,7 @@ public class Banks {
     public void newAccount(Account account) {
         this.bank.add(account);
         log.logEvent(
-            new Event("new bank account added")
+            new Event("new account added to bank")
         );
     }
 

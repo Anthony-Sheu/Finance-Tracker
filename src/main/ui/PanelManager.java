@@ -97,7 +97,7 @@ public class PanelManager {
     }
     
     // REQUIRES: panel != null
-    // EFFECTS: update screen after loading/saving
+    // EFFECTS: update screen after loading/saving, then eventually quit
     protected void updatePersistenceScreen(JPanel panel) {
         createUpdatePanel();
         JButton cont = (JButton) updatedPanel.getComponent(4);
@@ -110,6 +110,7 @@ public class PanelManager {
             }
         });
         if (panel == null) {
+            ui.printLog();
             ui.quitClick();
             System.exit(0);
         }
