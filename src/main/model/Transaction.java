@@ -36,6 +36,9 @@ public class Transaction {
     // EFFECTS: updates the current transaction's amount
     public void updateAmount(double amount) {
         this.amount = amount;
+        EventLog.getInstance().logEvent(
+            new Event("Updated old transaction amount in tracker list")
+        );
     }
 
     // GETTER

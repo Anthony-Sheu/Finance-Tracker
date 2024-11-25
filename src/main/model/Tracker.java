@@ -24,7 +24,7 @@ public class Tracker {
     public void addTransaction(Transaction transaction) {
         this.tracker.add(transaction);
         log.logEvent(
-            new Event("New transaction added")
+            new Event("New transaction added to tracker")
         );
     }
 
@@ -33,7 +33,7 @@ public class Tracker {
     public void removeTransaction(Transaction transaction) {
         this.tracker.remove(transaction);
         log.logEvent(
-            new Event("old transaction removed")
+            new Event("old transaction removed from tracker")
         );
     }
 
