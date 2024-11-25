@@ -32,8 +32,8 @@ Ever since I opened my first bank account and started working at 16, my dad has 
 - As a user, I want to be able to load my transactions and banking information from a previous session
 
 ## Phase 4: Task 2
-Mon Nov 25 14:43:43 PST 2024
-new bank account added
+Mon Nov 25 14:43:43 PST 2024  
+new bank account added  
 Mon Nov 25 14:43:43 PST 2024
 new bank account added
 Mon Nov 25 14:43:43 PST 2024
