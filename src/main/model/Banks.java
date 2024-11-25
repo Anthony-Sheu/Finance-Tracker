@@ -6,16 +6,21 @@ import java.util.*;
 public class Banks {
 
     private List<Account> bank;
+    private EventLog log;
 
     // EFFECTS: constructs a list of bank accounts
     public Banks() {
         this.bank = new ArrayList<>();
+        log = EventLog.getInstance();
     }
 
     // MODIFIES: this
     // EFFECTS: adds new bank account to list
     public void newAccount(Account account) {
         this.bank.add(account);
+        log.logEvent(
+            new Event("new bank account added")
+        );
     }
 
     // EFFCTS: returns account from account name
@@ -53,10 +58,19 @@ public class Banks {
     public void updateTransfer(Account account, String type, double amount) {
         if (type.equals("Chequeing")) {
             account.updateChequeing(amount);
+            log.logEvent(
+                new Event("chequeing account updated")
+            );
         } else if (type.equals("Savings")) {
             account.updateSavings(amount);
+            log.logEvent(
+                new Event("savings account updated")
+            );
         } else {
             account.updateCredit(amount);
+            log.logEvent(
+                new Event("credit account updated")
+            );
         }
     }
 
@@ -68,6 +82,9 @@ public class Banks {
         Account account2 = findAccount(acc2Name);
         updateTransfer(account1, acc1Type, -amount);
         updateTransfer(account2, acc2Type, amount);
+        log.logEvent(
+                new Event("transfered betweent two accounts")
+        );
     }
 
 }

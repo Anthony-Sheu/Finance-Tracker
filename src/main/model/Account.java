@@ -64,6 +64,9 @@ public class Account {
         } else {
             overLimit = false;
         }
+        EventLog.getInstance().logEvent(
+            new Event("Credit limit changed")
+        );
     }
 
     // MODIFES: this
@@ -127,6 +130,9 @@ public class Account {
         } else {
             updateCredit(-amount);
         }
+        EventLog.getInstance().logEvent(
+            new Event("Amount refunded")
+        );
     }
 
     // EFFECTS: prints banking information

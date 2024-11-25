@@ -6,10 +6,12 @@ import java.util.*;
 public class Tracker {
 
     private List<Transaction> tracker;
+    private EventLog log;
 
     // EFFECTS: constructs a list of transactions
     public Tracker() {
         this.tracker = new ArrayList<>();
+        log = EventLog.getInstance();
     }
 
     // EFFECTS: returns list of all transactions
@@ -18,15 +20,21 @@ public class Tracker {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a new transaction to the collection
+    // EFFECTS: adds a new transaction to the collection and logs event
     public void addTransaction(Transaction transaction) {
         this.tracker.add(transaction);
+        log.logEvent(
+            new Event("New transaction added")
+        );
     }
 
     // MODIFIES: this
     // EFFECTS: removes an old transaction
     public void removeTransaction(Transaction transaction) {
         this.tracker.remove(transaction);
+        log.logEvent(
+            new Event("old transaction removed")
+        );
     }
 
     // MODIFIES: this
@@ -38,6 +46,9 @@ public class Tracker {
                 sortedTransaction.add(t);
             }
         }
+        log.logEvent(
+            new Event("list of transactions sorted by month/year")
+        );
         return sortedTransaction;
     }
 
@@ -50,6 +61,9 @@ public class Tracker {
                 sortedTransaction.add(t);
             }
         }
+        log.logEvent(
+            new Event("list of transactions sorted by expense category")
+        );
         return sortedTransaction;
     }
 

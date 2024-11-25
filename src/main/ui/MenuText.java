@@ -7,6 +7,7 @@ import java.io.IOException;
 import model.Account;
 import model.Expense;
 import model.Transaction;
+import model.Event;
 
 // Represents a menu on the console application
 public class MenuText extends Menu {
@@ -76,7 +77,15 @@ public class MenuText extends Menu {
         } else {
             System.out.println("Banking information was not saved.");
         }
+        printLog();
         enter();
+    }
+
+    // EFFECTS: prints the events log
+    public void printLog() {
+        for (Event e : log) {
+            System.out.println(e.toString());
+        }
     }
 
     // EFFECTS: loads current banking information into json file

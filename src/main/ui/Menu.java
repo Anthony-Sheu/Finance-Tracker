@@ -7,6 +7,7 @@ import java.util.Scanner;
 import model.Account;
 import model.Banks;
 import model.Categories;
+import model.EventLog;
 import model.Expense;
 import model.Tracker;
 import model.Transaction;
@@ -36,6 +37,7 @@ public class Menu {
     protected TrackerReader trackerReader;
     protected CategoriesWriter categoryWriter;
     protected CategoriesReader categoryReader;
+    protected EventLog log;
 
     // EFFECTS: constructor
     public Menu() {
@@ -54,6 +56,7 @@ public class Menu {
         trackerWriter = new TrackerWriter(TRACKER_STORE);
         categoryReader = new CategoriesReader(CATEGORIES_STORE);
         categoryWriter = new CategoriesWriter(CATEGORIES_STORE);
+        log = EventLog.getInstance();
         categoryInit();
     }
 
